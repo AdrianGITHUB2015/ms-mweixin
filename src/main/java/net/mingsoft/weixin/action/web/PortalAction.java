@@ -31,11 +31,12 @@ public class PortalAction extends BaseAction {
 
 	@ResponseBody
 	@GetMapping(produces = "text/plain;charset=utf-8")
-	public String authGet(@RequestParam(name = "signature", required = false) String signature,
+	public String get(@RequestParam(name = "signature", required = false) String signature,
 			@RequestParam(name = "timestamp", required = false) String timestamp,
 			@RequestParam(name = "nonce", required = false) String nonce,
 			@RequestParam(name = "echostr", required = false) String echostr) {
 		wxService = new WeixinService();
+		//需要通过weixinBiz查询对应token的微信配置信息
 		final WxMpInMemoryConfigStorage config = new WxMpInMemoryConfigStorage();
 	    config.setAppId("wxa733ea82a763bdb0");// 设置微信公众号的appid
 	    config.setSecret("f9f34d533ec28ca0d4ef8fab61948386");// 设置微信公众号的app corpSecret

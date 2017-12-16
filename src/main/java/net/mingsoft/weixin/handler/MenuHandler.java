@@ -31,6 +31,7 @@ public class MenuHandler extends AbstractHandler {
     WeixinService weixinService = (WeixinService) wxMpService;
 
     String key = wxMessage.getEventKey();
+    this.logger.debug("点击菜单类型："+key);
 //    WxMenuKey menuKey;
 //    try {
 //      menuKey = JSON.parseObject(key, WxMenuKey.class);
@@ -40,7 +41,7 @@ public class MenuHandler extends AbstractHandler {
 //          .toUser(wxMessage.getFromUser()).build();
 //    }
 //
-//    AbstractBuilder builder = null;
+    AbstractBuilder builder = null;
 //    switch (menuKey.getType()) {
 //    case XmlMsgType.TEXT:
 //      builder = new TextBuilder();
@@ -57,7 +58,7 @@ public class MenuHandler extends AbstractHandler {
 //    default:
 //      break;
 //    }
-//
+
 //    if (builder != null) {
 //      try {
 //        return builder.build(menuKey.getContent(), wxMessage, weixinService);

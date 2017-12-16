@@ -57,6 +57,8 @@ public class WeixinService extends WxMpServiceImpl {
   private SubscribeHandler subscribeHandler;
 
   private WxMpMessageRouter router;
+  @Autowired
+  private ScanHandler scanHandler;
 
   @PostConstruct
   public void init() {
@@ -67,66 +69,62 @@ public class WeixinService extends WxMpServiceImpl {
 //    config.setAesKey(this.wxConfig.getAesKey());// 设置消息加解密密钥
 //    super.setWxMpConfigStorage(config);
 
-    this.refreshRouter();
-  }
+	    final WxMpMessageRouter newRouter = new WxMpMessageRouter(this);
 
-  private void refreshRouter() {
-    final WxMpMessageRouter newRouter = new WxMpMessageRouter(this);
+	    // 记录所有事件的日志
+	    newRouter.rule().handler(this.logHandler).next();
 
-    // 记录所有事件的日志
-    newRouter.rule().handler(this.logHandler).next();
+	    // 接收客服会话管理事件
+	    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+	            .event(WxMpEventConstants.CustomerService.KF_CREATE_SESSION)
+	        .handler(this.kfSessionHandler).end();
+	    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+	            .event(WxMpEventConstants.CustomerService.KF_CLOSE_SESSION)
+	        .handler(this.kfSessionHandler).end();
+	    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+	            .event(WxMpEventConstants.CustomerService.KF_SWITCH_SESSION)
+	        .handler(this.kfSessionHandler).end();
+	    
+	    // 门店审核事件
+	    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+	      .event(WxMpEventConstants.POI_CHECK_NOTIFY)
+	      .handler(this.storeCheckNotifyHandler)
+	      .end();
 
-    // 接收客服会话管理事件
-    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-            .event(WxMpEventConstants.CustomerService.KF_CREATE_SESSION)
-        .handler(this.kfSessionHandler).end();
-    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-            .event(WxMpEventConstants.CustomerService.KF_CLOSE_SESSION)
-        .handler(this.kfSessionHandler).end();
-    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-            .event(WxMpEventConstants.CustomerService.KF_SWITCH_SESSION)
-        .handler(this.kfSessionHandler).end();
-    
-    // 门店审核事件
-    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-      .event(WxMpEventConstants.POI_CHECK_NOTIFY)
-      .handler(this.storeCheckNotifyHandler)
-      .end();
+	    // 自定义菜单事件
+	    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+	        .event(MenuButtonType.CLICK).handler(this.menuHandler).end();
 
-    // 自定义菜单事件
-    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-        .event(MenuButtonType.CLICK).handler(this.getMenuHandler()).end();
+	    // 点击菜单连接事件
+	    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+	        .event(MenuButtonType.VIEW).handler(this.nullHandler).end();
 
-    // 点击菜单连接事件
-    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-        .event(MenuButtonType.VIEW).handler(this.nullHandler).end();
+	    // 关注事件
+	    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+	        .event(EventType.SUBSCRIBE).handler(this.subscribeHandler)
+	        .end();
 
-    // 关注事件
-    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-        .event(EventType.SUBSCRIBE).handler(this.getSubscribeHandler())
-        .end();
+	    // 取消关注事件
+	    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+	        .event(EventType.UNSUBSCRIBE).handler(this.unsubscribeHandler)
+	        .end();
 
-    // 取消关注事件
-    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-        .event(EventType.UNSUBSCRIBE).handler(this.getUnsubscribeHandler())
-        .end();
+	    // 上报地理位置事件
+	    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+	        .event(EventType.LOCATION).handler(this.locationHandler).end();
 
-    // 上报地理位置事件
-    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-        .event(EventType.LOCATION).handler(this.getLocationHandler()).end();
+	    // 接收地理位置消息
+	    newRouter.rule().async(false).msgType(XmlMsgType.LOCATION)
+	        .handler(this.locationHandler).end();
 
-    // 接收地理位置消息
-    newRouter.rule().async(false).msgType(XmlMsgType.LOCATION)
-        .handler(this.getLocationHandler()).end();
+	    // 扫码事件
+	    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+	        .event(EventType.SCAN).handler(this.scanHandler).end();
 
-    // 扫码事件
-    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-        .event(EventType.SCAN).handler(this.getScanHandler()).end();
+	    // 默认
+	    newRouter.rule().async(false).handler(this.msgHandler).end();
 
-    // 默认
-    newRouter.rule().async(false).handler(this.getMsgHandler()).end();
-
-    this.router = newRouter;
+	    this.router = newRouter;
   }
 
 
@@ -150,29 +148,4 @@ public class WeixinService extends WxMpServiceImpl {
 
     return false;
   }
-
-  protected MenuHandler getMenuHandler() {
-    return this.menuHandler;
-  }
-
-  protected SubscribeHandler getSubscribeHandler() {
-    return this.subscribeHandler;
-  }
-
-  protected UnsubscribeHandler getUnsubscribeHandler() {
-    return this.unsubscribeHandler;
-  }
-
-  protected AbstractHandler getLocationHandler() {
-    return this.locationHandler;
-  }
-
-  protected MsgHandler getMsgHandler() {
-    return this.msgHandler;
-  }
-
-  protected AbstractHandler getScanHandler() {
-    return null;
-  }
-
 }
