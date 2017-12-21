@@ -26,21 +26,21 @@ public class WeixinService extends WxMpServiceImpl {
 
 	protected LogHandler logHandler = new LogHandler();
 
-	protected NullHandler nullHandler;
+	protected NullHandler nullHandler = new NullHandler();
 
-	protected KfSessionHandler kfSessionHandler;
+	protected KfSessionHandler kfSessionHandler = new KfSessionHandler();
 
-	protected StoreCheckNotifyHandler storeCheckNotifyHandler;
+	protected StoreCheckNotifyHandler storeCheckNotifyHandler = new StoreCheckNotifyHandler();
 
-	private LocationHandler locationHandler;
+	private LocationHandler locationHandler = new LocationHandler();
 
-	private MenuHandler menuHandler;
+	private MenuHandler menuHandler = new MenuHandler();
 
-	private MsgHandler msgHandler;
+	private MsgHandler msgHandler = new MsgHandler();
 
-	private UnsubscribeHandler unsubscribeHandler;
+	private UnsubscribeHandler unsubscribeHandler = new UnsubscribeHandler();
 
-	private SubscribeHandler subscribeHandler;
+	private SubscribeHandler subscribeHandler = new SubscribeHandler();
 
 	private WxMpMessageRouter router;
 	private ScanHandler scanHandler;
@@ -50,7 +50,7 @@ public class WeixinService extends WxMpServiceImpl {
 		config.setAppId(weixin.getWeixinAppId());// 设置微信公众号的appid
 		config.setSecret(weixin.getWeixinAppSecret());// 设置微信公众号的app corpSecret
 		config.setToken(weixin.getWeixinToken());// 设置微信公众号的token
-		config.setAesKey(weixin.getAesKey());// 设置消息加解密密钥
+		config.setAesKey(weixin.getWeixinAesKey());// 设置消息加解密密钥
 		super.setWxMpConfigStorage(config);
 
 		final WxMpMessageRouter newRouter = new WxMpMessageRouter(this);
