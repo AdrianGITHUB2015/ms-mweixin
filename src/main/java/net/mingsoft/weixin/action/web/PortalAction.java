@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mingsoft.base.action.BaseAction;
 import com.mingsoft.weixin.biz.IWeixinBiz;
+import com.mingsoft.weixin.entity.WeixinEntity;
 
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
@@ -35,14 +36,7 @@ public class PortalAction extends BaseAction {
 			@RequestParam(name = "timestamp", required = false) String timestamp,
 			@RequestParam(name = "nonce", required = false) String nonce,
 			@RequestParam(name = "echostr", required = false) String echostr) {
-		wxService = new WeixinService();
-		//需要通过weixinBiz查询对应token的微信配置信息
-		final WxMpInMemoryConfigStorage config = new WxMpInMemoryConfigStorage();
-	    config.setAppId("wxa733ea82a763bdb0");// 设置微信公众号的appid
-	    config.setSecret("f9f34d533ec28ca0d4ef8fab61948386");// 设置微信公众号的app corpSecret
-	    config.setToken("ticket");// 设置微信公众号的token
-	    config.setAesKey("cNaEcb1yjwwUEYEoKNH6fZH3GOyeMklgOXDLHkYB6FY");// 设置消息加解密密钥
-	    wxService.setWxMpConfigStorage(config);
+		wxService = new WeixinService(new WeixinEntity());
 		
 		
 		this.logger.debug("\n接收到来自微信服务器的认证消息：[{}, {}, {}, {}]", new String[] { signature, timestamp, nonce, echostr });
