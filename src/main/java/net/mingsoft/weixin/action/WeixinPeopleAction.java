@@ -190,9 +190,9 @@ public class WeixinPeopleAction extends BaseAction{
 					weixinPeopleBiz.updatePeopleUser(weixinPeople);
 				}
 			}
-			if(wxUsers.getNextOpenid() != null){
+			/*if(wxUsers.getNextOpenid() != null){
 				getWeixinPeople(weixin, wxUsers.getNextOpenid());
-			}
+			}*/
 			
 		} catch (WxErrorException e) {
 			// TODO Auto-generated catch block
