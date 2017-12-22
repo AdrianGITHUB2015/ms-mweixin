@@ -48,7 +48,7 @@
 	<properties>
 		<java.version>1.7</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ms.base.version>1.0.2-SNAPSHOT</ms.base.version>
+		<ms.base.version>1.0.3-SNAPSHOT</ms.base.version>
 		<ms.basic.version>1.0.4-SNAPSHOT</ms.basic.version>
 		<ms.mdiy.version>1.0.3-SNAPSHOT</ms.mdiy.version>
 		<ms.mcms.version>4.6.1-SNAPSHOT</ms.mcms.version>
