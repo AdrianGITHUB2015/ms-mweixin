@@ -15,13 +15,13 @@ public class PayService extends WxPayServiceImpl{
 
   public WxPayService wxPayService(WeixinEntity weixin) {
 	  WxPayConfig payConfig = new WxPayConfig();
-	  payConfig.setAppId(weixin.getWeixinAppId());
-	  payConfig.setMchId(weixin.getWeixinPayMchId());
-	  payConfig.setMchKey(weixin.getWeixinPayKey());
+	  payConfig.setAppId(weixin.getWeixinAppId()); //微信APPID
+	  payConfig.setMchId(weixin.getWeixinPayMchId()); //微信支付商户号
+	  payConfig.setMchKey(weixin.getWeixinPayKey()); //支付key
 	  
-	  payConfig.setSubAppId(StringUtils.trimToNull(this.properties.getSubAppId()));
-	  payConfig.setSubMchId(StringUtils.trimToNull(this.properties.getSubMchId()));
-	  payConfig.setKeyPath(weixin);
+	  //payConfig.setSubAppId(StringUtils.trimToNull(this.properties.getSubAppId()));
+	  //payConfig.setSubMchId(StringUtils.trimToNull(this.properties.getSubMchId()));
+	  //payConfig.setKeyPath(weixin);
 	  
 	  WxPayService wxPayService = new WxPayServiceImpl();
 	  wxPayService.setConfig(payConfig);
