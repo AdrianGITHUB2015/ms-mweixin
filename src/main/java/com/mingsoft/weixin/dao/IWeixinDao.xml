@@ -32,6 +32,7 @@
 		<where>
 			<if test="weixinAppId != null">and WEIXIN_APPID = #{weixinAppId}</if>
 			<if test="weixinOriginId != null">and weixin_origin_id = #{weixinOriginId}</if>
+			<if test="weixinToken != null">and WEIXIN_TOKEN = #{weixinToken}</if>
 		</where>
 	</select>
 	<!-- 根据自定义字段查询微信实体结束 -->

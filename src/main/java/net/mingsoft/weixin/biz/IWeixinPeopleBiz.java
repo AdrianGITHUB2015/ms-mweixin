@@ -17,29 +17,38 @@ The MIT License (MIT) * Copyright (c) 2017 铭飞科技
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */package com.mingsoft.weixin.biz;
+ */package net.mingsoft.weixin.biz;
+
 import java.util.List;
-
-
-import com.mingsoft.base.biz.IBaseBiz;
+import com.mingsoft.people.biz.IPeopleUserBiz;
 import com.mingsoft.util.PageUtil;
 import com.mingsoft.weixin.entity.WeixinEntity;
+import com.mingsoft.weixin.entity.WeixinPeopleEntity;
+
+import me.chanjar.weixin.mp.bean.result.WxMpUser;
 
 /**
- * 微信业务层
- * @author Administrator
- *
+ * 微信用户业务层接口
+ * @author 铭飞开发团队
+ * @version 
+ * 版本号：100<br/>
+ * 创建日期：2017-11-18 11:23:59<br/>
+ * 历史修订：<br/>
  */
-public interface IWeixinBiz extends IBaseBiz {
-	
+public interface IWeixinPeopleBiz  extends IPeopleUserBiz  {
+		
 	/**
-	 * 根据微信ID批量删除
-	 * @param ids weixinID集合
+	 * 查询用户信息
+	 * @param weixinPeopleOpenId 微信用户的唯一标识
+	 * @param appId 应用ID
+	 * @param weixinId 关联的微信ID
+	 * @return 微信用户实体
 	 */
-	public void deleteByIds(int[] ids);
-	
+	WeixinPeopleEntity getEntityByOpenIdAndAppIdAndWeixinId(String weixinPeopleOpenId,int appId,int weixinId);
 	/**
-	 * 根据token获取微信实体
+	 * 根据user保存或更新用户
+	 * @param user 微信工具获取的实体
+	 * @param weixinId 当前微信ID。
 	 */
-	public WeixinEntity getByWeixinNo(String weixinNo);
+	void saveOrUpdate(WxMpUser user,int weixinId);
 }

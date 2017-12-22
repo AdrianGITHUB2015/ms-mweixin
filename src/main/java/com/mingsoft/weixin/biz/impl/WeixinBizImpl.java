@@ -28,6 +28,8 @@ import com.mingsoft.weixin.biz.IWeixinBiz;
 import com.mingsoft.weixin.dao.IWeixinDao;
 import com.mingsoft.weixin.entity.WeixinEntity;
 
+import net.mingsoft.basic.util.BasicUtil;
+
 /**
  * mswx-铭飞微信酒店预订平台
  * Copyright: Copyright (c) 2014 - 2015
@@ -61,5 +63,17 @@ public class WeixinBizImpl extends BaseBizImpl implements IWeixinBiz {
 	@Override
 	public void deleteByIds(int[] ids) {
 		weixinDao.deleteByIds(ids);
+	}
+
+
+	@Override
+	public WeixinEntity getByWeixinNo(String weixinNo) {
+		//通过微信token和AppId获取微信实体
+		WeixinEntity weixin = new WeixinEntity();
+		weixin.setWeixinNo(weixinNo);
+		weixin.setAppId(BasicUtil.getAppId());
+		
+		WeixinEntity _weixin = (WeixinEntity) weixinDao.getByEntity(weixin);
+		return _weixin;
 	}
 }

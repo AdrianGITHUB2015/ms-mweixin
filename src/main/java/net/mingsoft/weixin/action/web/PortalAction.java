@@ -3,6 +3,7 @@ package net.mingsoft.weixin.action.web;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,14 +19,23 @@ import com.mingsoft.weixin.entity.WeixinEntity;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.weixin.service.WeixinService;
 
+/**
+ * 微信入口
+ * @author 铭飞开发团队
+ * @version 
+ * 版本号：100<br/>
+ * 创建日期：2017-11-18 11:23:59<br/>
+ * 历史修订：<br/>
+ */
 @RestController
 @RequestMapping("/mweixin/portal")
 public class PortalAction extends BaseAction {
 	
 	private WeixinService wxService;
-	
+	@Autowired
 	private IWeixinBiz weixinBiz;
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -36,8 +46,10 @@ public class PortalAction extends BaseAction {
 			@RequestParam(name = "timestamp", required = false) String timestamp,
 			@RequestParam(name = "nonce", required = false) String nonce,
 			@RequestParam(name = "echostr", required = false) String echostr) {
-		wxService = new WeixinService(new WeixinEntity());
-		
+		String weixinNo = BasicUtil.getString("weixinNo");
+		//获取微信实体，构建服务
+		WeixinEntity weixin = weixinBiz.getByWeixinNo(weixinNo);
+		wxService = new WeixinService(weixin);
 		
 		this.logger.debug("\n接收到来自微信服务器的认证消息：[{}, {}, {}, {}]", new String[] { signature, timestamp, nonce, echostr });
 		if (StringUtils.isAnyBlank(signature, timestamp, nonce, echostr)) {

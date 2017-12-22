@@ -45,7 +45,7 @@ public class WeixinService extends WxMpServiceImpl {
 	private WxMpMessageRouter router;
 	private ScanHandler scanHandler;
 
-	public  WeixinService(WeixinEntity weixin) {
+	public WeixinService(WeixinEntity weixin) {
 		final WxMpInMemoryConfigStorage config = new WxMpInMemoryConfigStorage();
 		config.setAppId(weixin.getWeixinAppId());// 设置微信公众号的appid
 		config.setSecret(weixin.getWeixinAppSecret());// 设置微信公众号的app corpSecret

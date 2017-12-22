@@ -85,7 +85,7 @@
 	    	$.ajax({
 	        	type:"post",
 	        	dataType: "json",
-	        	url:"${managerPath}/net/weixin/weixinPeople/importPeople.do",
+	        	url:"${managerPath}/mweixin/weixinPeople/importPeople.do",
 	        	beforeSend:function(){
 	        		$("#synchronousPeople").text("同步中..");
 	        		$(".sendMessage").attr("disabled","true");

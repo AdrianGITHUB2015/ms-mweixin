@@ -1,5 +1,5 @@
 /**
-The MIT License (MIT) * Copyright (c) 2017 铭飞科技
+The MIT License (MIT) * Copyright (c) 2016 铭飞科技
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -17,29 +17,38 @@ The MIT License (MIT) * Copyright (c) 2017 铭飞科技
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */package com.mingsoft.weixin.biz;
-import java.util.List;
+ */
 
+package net.mingsoft.weixin.biz.impl;
 
-import com.mingsoft.base.biz.IBaseBiz;
-import com.mingsoft.util.PageUtil;
-import com.mingsoft.weixin.entity.WeixinEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.mingsoft.base.biz.impl.BaseBizImpl;
+import com.mingsoft.base.dao.IBaseDao;
+
+import net.mingsoft.weixin.biz.IOauthBiz;
+
+import com.mingsoft.weixin.dao.IOauthDao;
 
 /**
- * 微信业务层
- * @author Administrator
- *
+ * 微信网页2.0授权表管理持久化层
+ * @author 铭飞开发团队
+ * @version 
+ * 版本号：1.0.0<br/>
+ * 创建日期：2017-5-25 22:04:59<br/>
+ * 历史修订：<br/>
  */
-public interface IWeixinBiz extends IBaseBiz {
+ @Service("netOauthBizImpl")
+public class OauthBizImpl extends BaseBizImpl implements IOauthBiz {
+
 	
-	/**
-	 * 根据微信ID批量删除
-	 * @param ids weixinID集合
-	 */
-	public void deleteByIds(int[] ids);
+	@Autowired
+	private IOauthDao oauthDao;
 	
-	/**
-	 * 根据token获取微信实体
-	 */
-	public WeixinEntity getByWeixinNo(String weixinNo);
+	
+		@Override
+	protected IBaseDao getDao() {
+		// TODO Auto-generated method stub
+		return oauthDao;
+	} 
 }
