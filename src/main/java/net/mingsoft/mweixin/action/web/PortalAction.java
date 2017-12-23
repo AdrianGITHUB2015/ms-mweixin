@@ -1,4 +1,4 @@
-package net.mingsoft.weixin.action.web;
+package net.mingsoft.mweixin.action.web;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.mingsoft.mweixin.dao.IPassiveMessageDao">
+	
+	<resultMap id="resultMap" type="net.mingsoft.mweixin.entity.PassiveMessageEntity">
+		<id column="PM_ID" property="pmId" /><!--自增长ID -->
+		<result column="PM_WEIXIN_ID" property="pmWeixinId" /><!--微信编号 -->
+		<result column="PM_EVENT_ID" property="pmEventId" /><!--该回复属于的分类中的事件ID,1新关注2二维码扫描5未关注扫描二维码6点击事件4文本消息3二维码扫描&提示框 -->
+		<result column="PM_NEWS_ID" property="pmNewsId" /><!--回复的素材ID -->
+		<result column="PM_MESSAGE_ID" property="pmMessageId" /><!--对应自定义模板回复消息id,与PM_NEWS_ID只能同时存在一个 -->
+		<result column="PM_APP_ID" property="pmAppId" /><!--该回复所属的应用ID -->
+		<result column="PM_REPLY_NUM" property="pmReplyNum" /><!--被动回复的次数;为1时表示用户第一次被动响应消息,依次递增,当超出时取值为0的进行回复 -->
+		<result column="PM_KEY" property="pmKey" /><!--事件关键字 -->
+		<result column="PM_TYPE" property="pmType" /><!--回复属性:1.最终回复;达到迭代次数之后的回复消息,2.拓展回复迭代回复(优先迭代回复) -->
+		<result column="PM_TAG" property="pmTag" /><!-- -->
+	</resultMap>
+	
+	<!--保存-->	
+	<insert id="saveEntity" useGeneratedKeys="true" keyProperty="pmId"
+		parameterType="net.mingsoft.mweixin.entity.PassiveMessageEntity" >
+		insert into wx_passive_message
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="pmWeixinId &gt; 0">PM_WEIXIN_ID,</if>
+			<if test="pmEventId &gt; 0">PM_EVENT_ID,</if>
+			<if test="pmNewsId &gt; 0">PM_NEWS_ID,</if>
+			<if test="pmMessageId &gt; 0">PM_MESSAGE_ID,</if>
+			<if test="pmAppId &gt; 0">PM_APP_ID,</if>
+			<if test="pmReplyNum &gt; 0">PM_REPLY_NUM,</if>
+			<if test="pmKey != null and pmKey != ''">PM_KEY,</if>
+			<if test="pmType &gt; 0">PM_TYPE,</if>
+			<if test="pmTag != null and pmTag != ''">PM_TAG,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="pmWeixinId &gt; 0">#{pmWeixinId},</if>
+			<if test="pmEventId &gt; 0">#{pmEventId},</if>
+			<if test="pmNewsId &gt; 0">#{pmNewsId},</if>
+			<if test="pmMessageId &gt; 0">#{pmMessageId},</if>
+			<if test="pmAppId &gt; 0">#{pmAppId},</if>
+			<if test="pmReplyNum &gt; 0">#{pmReplyNum},</if>
+			<if test="pmKey != null and pmKey != ''">#{pmKey},</if>
+			<if test="pmType &gt; 0">#{pmType},</if>
+			<if test="pmTag != null and pmTag != ''">#{pmTag},</if>
+		</trim>
+	</insert>
+	
+	<!--更新-->	
+	<update id="updateEntity" parameterType="net.mingsoft.mweixin.entity.PassiveMessageEntity">
+		update wx_passive_message
+		<set>
+			<if test="pmWeixinId &gt; 0">PM_WEIXIN_ID=#{pmWeixinId},</if>			
+			<if test="pmEventId &gt; 0">PM_EVENT_ID=#{pmEventId},</if>			
+			<if test="pmNewsId &gt; 0">PM_NEWS_ID=#{pmNewsId},</if>			
+			<if test="pmMessageId &gt; 0">PM_MESSAGE_ID=#{pmMessageId},</if>			
+			<if test="pmAppId &gt; 0">PM_APP_ID=#{pmAppId},</if>			
+			<if test="pmReplyNum &gt; 0">PM_REPLY_NUM=#{pmReplyNum},</if>			
+			<if test="pmKey != null and pmKey != ''">PM_KEY=#{pmKey},</if>			
+			<if test="pmType &gt; 0">PM_TYPE=#{pmType},</if>			
+			<if test="pmTag != null and pmTag != ''">PM_TAG=#{pmTag},</if>			
+		</set>
+		where PM_ID = #{pmId}
+	</update>
+	
+	<!--根据id获取-->	
+	<select id="getEntity" resultMap="resultMap" parameterType="int">
+		select * from wx_passive_message where PM_ID=#{pmId}
+	</select>
+	
+	<!--根据实体获取-->
+	<select id="getByEntity" resultMap="resultMap" parameterType="net.mingsoft.mweixin.entity.PassiveMessageEntity">
+		select * from wx_passive_message 
+		<where>
+			<if test="pmWeixinId &gt; 0"> and PM_WEIXIN_ID=#{pmWeixinId} </if>				
+			<if test="pmEventId &gt; 0"> and PM_EVENT_ID=#{pmEventId} </if>				
+			<if test="pmNewsId &gt; 0"> and PM_NEWS_ID=#{pmNewsId} </if>				
+			<if test="pmMessageId &gt; 0"> and PM_MESSAGE_ID=#{pmMessageId} </if>				
+			<if test="pmAppId &gt; 0"> and PM_APP_ID=#{pmAppId} </if>				
+			<if test="pmReplyNum &gt; 0"> and PM_REPLY_NUM=#{pmReplyNum} </if>				
+			<if test="pmKey != null and pmKey != ''"> and PM_KEY=#{pmKey} </if>				
+			<if test="pmType &gt; 0"> and PM_TYPE=#{pmType} </if>				
+			<if test="pmTag != null and pmTag != ''"> and PM_TAG=#{pmTag} </if>				
+		</where>
+		limit 0,1
+	</select>	
+	
+	
+	<!--删除-->	
+	<delete id="deleteEntity" parameterType="int">
+		delete from wx_passive_message  where PM_ID=#{pmId}
+	</delete>	
+	
+	<!--批量删除-->	
+	<delete id="delete" >
+		delete from wx_passive_message
+		<where>
+			 PM_ID  in <foreach collection="ids" item="item" index="index" 
+			open="(" separator="," close=")">#{item}</foreach>
+		</where>
+	</delete>
+	<!--查询全部-->	
+	<select id="queryAll" resultMap="resultMap">
+		select * from wx_passive_message order by PM_ID desc
+	</select>
+	<!--条件查询-->	
+	<select id="query" resultMap="resultMap">
+		select * from wx_passive_message  
+		<where>
+				<if test="pmWeixinId &gt; 0"> and PM_WEIXIN_ID=#{pmWeixinId} </if>				
+				<if test="pmEventId &gt; 0"> and PM_EVENT_ID=#{pmEventId} </if>				
+				<if test="pmNewsId &gt; 0"> and PM_NEWS_ID=#{pmNewsId} </if>				
+				<if test="pmMessageId &gt; 0"> and PM_MESSAGE_ID=#{pmMessageId} </if>				
+				<if test="pmAppId &gt; 0"> and PM_APP_ID=#{pmAppId} </if>				
+				<if test="pmReplyNum &gt; 0"> and PM_REPLY_NUM=#{pmReplyNum} </if>				
+				<if test="pmKey != null and pmKey != ''"> and PM_KEY=#{pmKey} </if>				
+				<if test="pmType &gt; 0"> and PM_TYPE=#{pmType} </if>				
+				<if test="pmTag != null and pmTag != ''"> and PM_TAG=#{pmTag} </if>				
+		</where>		
+		order by PM_ID desc
+	</select>
+	
+</mapper>

@@ -1,4 +1,4 @@
-package net.mingsoft.weixin.action.web;
+package net.mingsoft.mweixin.action.web;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
