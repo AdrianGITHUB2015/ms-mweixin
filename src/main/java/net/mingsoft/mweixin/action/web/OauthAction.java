@@ -30,8 +30,8 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import net.mingsoft.basic.util.BasicUtil;
-import net.mingsoft.weixin.biz.IOauthBiz;
-import net.mingsoft.weixin.biz.IWeixinPeopleBiz;
+import net.mingsoft.mweixin.biz.IOauthBiz;
+import net.mingsoft.mweixin.biz.IWeixinPeopleBiz;
 import net.mingsoft.weixin.service.WeixinService;
 	
 /**

@@ -17,7 +17,7 @@ The MIT License (MIT) * Copyright (c) 2017 铭飞科技
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */package net.mingsoft.weixin.biz.impl;
+ */package net.mingsoft.mweixin.biz.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,7 +39,7 @@ import com.mingsoft.weixin.util.UserUtils;
 
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import net.mingsoft.basic.util.BasicUtil;
-import net.mingsoft.weixin.biz.IWeixinPeopleBiz;
+import net.mingsoft.mweixin.biz.IWeixinPeopleBiz;
 
 /**
  * 微信用户业务层

@@ -1,5 +1,5 @@
 /**
-The MIT License (MIT) * Copyright (c) 2017 铭飞科技
+The MIT License (MIT) * Copyright (c) 2016 铭飞科技
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -17,38 +17,37 @@ The MIT License (MIT) * Copyright (c) 2017 铭飞科技
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */package net.mingsoft.weixin.biz;
+ */
 
-import java.util.List;
-import com.mingsoft.people.biz.IPeopleUserBiz;
-import com.mingsoft.util.PageUtil;
-import com.mingsoft.weixin.entity.WeixinEntity;
-import com.mingsoft.weixin.entity.WeixinPeopleEntity;
+package net.mingsoft.mweixin.biz.impl;
 
-import me.chanjar.weixin.mp.bean.result.WxMpUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.mingsoft.base.biz.impl.BaseBizImpl;
+import com.mingsoft.base.dao.IBaseDao;
+import com.mingsoft.weixin.dao.IOauthDao;
+
+import net.mingsoft.mweixin.biz.IOauthBiz;
 
 /**
- * 微信用户业务层接口
+ * 微信网页2.0授权表管理持久化层
  * @author 铭飞开发团队
  * @version 
- * 版本号：100<br/>
- * 创建日期：2017-11-18 11:23:59<br/>
+ * 版本号：1.0.0<br/>
+ * 创建日期：2017-5-25 22:04:59<br/>
  * 历史修订：<br/>
  */
-public interface IWeixinPeopleBiz  extends IPeopleUserBiz  {
-		
-	/**
-	 * 查询用户信息
-	 * @param weixinPeopleOpenId 微信用户的唯一标识
-	 * @param appId 应用ID
-	 * @param weixinId 关联的微信ID
-	 * @return 微信用户实体
-	 */
-	WeixinPeopleEntity getEntityByOpenIdAndAppIdAndWeixinId(String weixinPeopleOpenId,int appId,int weixinId);
-	/**
-	 * 根据user保存或更新用户
-	 * @param user 微信工具获取的实体
-	 * @param weixinId 当前微信ID。
-	 */
-	void saveOrUpdate(WxMpUser user,int weixinId);
+ @Service("netOauthBizImpl")
+public class OauthBizImpl extends BaseBizImpl implements IOauthBiz {
+
+	
+	@Autowired
+	private IOauthDao oauthDao;
+	
+	
+		@Override
+	protected IBaseDao getDao() {
+		// TODO Auto-generated method stub
+		return oauthDao;
+	} 
 }

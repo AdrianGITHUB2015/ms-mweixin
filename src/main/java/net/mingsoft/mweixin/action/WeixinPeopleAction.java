@@ -44,7 +44,7 @@ import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import me.chanjar.weixin.mp.bean.result.WxMpUserList;
 import net.mingsoft.basic.bean.EUListBean;
 import net.mingsoft.basic.util.BasicUtil;
-import net.mingsoft.weixin.biz.IWeixinPeopleBiz;
+import net.mingsoft.mweixin.biz.IWeixinPeopleBiz;
 import net.mingsoft.weixin.service.WeixinService;
 
 /**

@@ -1,4 +1,4 @@
-package net.mingsoft.weixin.biz;
+package net.mingsoft.mweixin.biz;
 
 import com.mingsoft.base.biz.IBaseBiz;
 
