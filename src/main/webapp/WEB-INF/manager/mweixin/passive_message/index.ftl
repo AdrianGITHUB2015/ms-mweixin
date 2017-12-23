@@ -8,8 +8,8 @@
 	<@ms.panel>
 		<div id="toolbar">
 			<@ms.panelNavBtnGroup>
-				<@shiro.hasPermission name="PassiveMessage:save"><@ms.panelNavBtnAdd id="addPassiveMessageBtn" title=""/></@shiro.hasPermission> 
-				<@shiro.hasPermission name="PassiveMessage:del"><@ms.panelNavBtnDel id="delPassiveMessageBtn" title=""/></@shiro.hasPermission> 
+				<@ms.panelNavBtnAdd id="addPassiveMessageBtn" title=""/> 
+				<@ms.panelNavBtnDel id="delPassiveMessageBtn" title=""/>
 			</@ms.panelNavBtnGroup>
 		</div>
 		<table id="passiveMessageList" 

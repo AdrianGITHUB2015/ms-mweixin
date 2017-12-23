@@ -178,7 +178,6 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 	 */
 	@PostMapping("/save")
 	@ResponseBody
-	@RequiresPermissions("passiveMessage:save")
 	public void save(@ModelAttribute PassiveMessageEntity passiveMessage, HttpServletResponse response, HttpServletRequest request,BindingResult result) {
 		//验证回复的素材ID的值是否合法			
 		if(StringUtil.isBlank(passiveMessage.getPmNewsId())){
@@ -233,7 +232,6 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 	 */
 	@RequestMapping("/delete")
 	@ResponseBody
-	@RequiresPermissions("passiveMessage:del")
 	public void delete(@RequestBody List<PassiveMessageEntity> passiveMessages,HttpServletResponse response, HttpServletRequest request) {
 		int[] ids = new int[passiveMessages.size()];
 		for(int i = 0;i<passiveMessages.size();i++){
@@ -273,7 +271,6 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 	 */
 	@PostMapping("/update")
 	@ResponseBody	
-	@RequiresPermissions("passiveMessage:update") 
 	public void update(@ModelAttribute PassiveMessageEntity passiveMessage, HttpServletResponse response,
 			HttpServletRequest request) {
 		//验证回复的素材ID的值是否合法			

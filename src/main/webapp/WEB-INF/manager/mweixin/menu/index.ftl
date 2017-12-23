@@ -8,8 +8,8 @@
 	<@ms.panel>
 		<div id="toolbar">
 			<@ms.panelNavBtnGroup>
-				<@shiro.hasPermission name="Menu:save"><@ms.panelNavBtnAdd id="addMenuBtn" title=""/></@shiro.hasPermission> 
-				<@shiro.hasPermission name="Menu:del"><@ms.panelNavBtnDel id="delMenuBtn" title=""/></@shiro.hasPermission> 
+				<@ms.panelNavBtnAdd id="addMenuBtn" title=""/> 
+				<@ms.panelNavBtnDel id="delMenuBtn" title=""/>
 			</@ms.panelNavBtnGroup>
 		</div>
 		<table id="menuList" 

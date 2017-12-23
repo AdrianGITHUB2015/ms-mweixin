@@ -67,12 +67,12 @@
 	};
 	var nodes = [
 		{ "id":0, "name":"微信设置", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/weixin/'+${weixinId}+'/edit.do')"},
-		{ "id":1, "name":"微信菜单", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/weixin/menu/list.do')"},
+		{ "id":1, "name":"微信菜单", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/mweixin/menu/index.do')"},
 		{ "id":1, "name":"素材列表", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/weixin/news/list.do')"},
 		{ "id":1, "name":"微信用户", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/weixin/weixinPeople/index.do')"},
 		{ "id":1, "name":"群发消息", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/weixin/message/index.do')"},
 		{ "id":1, "name":"关注回复", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/weixin/subscribe/subscribe.do')"},
-		{ "id":1, "name":"关键字回复", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/weixin/messagekey/index.do')"},
+		{ "id":1, "name":"关键字回复", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/mweixin/passiveMessage/index.do')"},
 		{ "id":1, "name":"返回", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/weixin/index.do'),$('.ms-content-menu').hide(),$('.ms-content-body').css('width','100%'),$('.ms-content-body-panel').css('width','100%')"}
 	]
 	/******设置节点信息结束******/

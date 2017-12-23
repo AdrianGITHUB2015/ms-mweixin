@@ -184,7 +184,6 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	 */
 	@PostMapping("/save")
 	@ResponseBody
-	@RequiresPermissions("menu:save")
 	public void save(@ModelAttribute MenuEntity menu, HttpServletResponse response, HttpServletRequest request,BindingResult result) {
 		//验证菜单所属商家编号的值是否合法			
 		if(StringUtil.isBlank(menu.getMenuAppId())){
@@ -293,7 +292,6 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	 */
 	@RequestMapping("/delete")
 	@ResponseBody
-	@RequiresPermissions("menu:del")
 	public void delete(@RequestBody List<MenuEntity> menus,HttpServletResponse response, HttpServletRequest request) {
 		int[] ids = new int[menus.size()];
 		for(int i = 0;i<menus.size();i++){
@@ -335,7 +333,6 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	 */
 	@PostMapping("/update")
 	@ResponseBody	
-	@RequiresPermissions("menu:update") 
 	public void update(@ModelAttribute MenuEntity menu, HttpServletResponse response,
 			HttpServletRequest request) {
 		//验证菜单所属商家编号的值是否合法			
