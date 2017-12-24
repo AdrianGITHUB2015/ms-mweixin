@@ -1,6 +1,7 @@
 <@ms.html5>
 	<@ms.nav title="微信菜单管理"></@ms.nav>
 	<@ms.searchForm name="searchForm" isvalidation=true>
+	<@ms.text label="菜单名称" name="menuTitle" value="${(menuEntity.menuTitle)?default('')}"  width="240px;" placeholder="请输入菜单名称" validation={"maxlength":"50","data-bv-stringlength-message":"菜单名称长度不能超过五十个字符长度!"}/>
 			<@ms.searchFormButton>
 				 <@ms.queryButton onclick="search()"/> 
 			</@ms.searchFormButton>			
@@ -42,114 +43,52 @@
 			toolbar: "#toolbar",
 	    	columns: [{ checkbox: true},
 				    	{
-				        	field: 'menuId',
-				        	title: '菜单自增长编号',
-				        	width:'10',
-				        	align: 'center',
-				        	formatter:function(value,row,index) {
-				        		var url = "${managerPath}/mweixin/menu/form.do?menuId="+row.menuId;
-				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
-				        	}
-				    	},
-							    	{
-				        	field: 'menuAppId',
-				        	title: '菜单所属商家编号',
-				        	width:'10',
-				        	align: 'center',
-				        	formatter:function(value,row,index) {
-				        		var url = "${managerPath}/mweixin/menu/form.do?menuId="+row.menuId;
-				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
-				        	}
-				    	},
-							    	{
 				        	field: 'menuTitle',
-				        	title: '单菜名称',
+				        	title: '菜单名称',
 				        	width:'15',
-				        	align: 'center',
 				        	formatter:function(value,row,index) {
 				        		var url = "${managerPath}/mweixin/menu/form.do?menuId="+row.menuId;
 				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
 				        	}
-				    	},
-							    	{
-				        	field: 'menuUrl',
-				        	title: '单菜链接地址',
-				        	width:'300',
-				        	align: 'center',
-				        	formatter:function(value,row,index) {
-				        		var url = "${managerPath}/mweixin/menu/form.do?menuId="+row.menuId;
-				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
-				        	}
-				    	},
-							    	{
+				    	},{
 				        	field: 'menuStatus',
-				        	title: '菜单状态 0：不启用 1：启用',
+				        	title: '菜单状态',
 				        	width:'10',
 				        	align: 'center',
 				        	formatter:function(value,row,index) {
-				        		var url = "${managerPath}/mweixin/menu/form.do?menuId="+row.menuId;
-				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
+				        		switch(value){
+				        			case 1: return "不启用";break;
+				        			case 2: return "启用";break;
+				        		}
 				        	}
-				    	},
-							    	{
-				        	field: 'menuMenuId',
-				        	title: '父菜单编号',
-				        	width:'10',
-				        	align: 'center',
-				        	formatter:function(value,row,index) {
-				        		var url = "${managerPath}/mweixin/menu/form.do?menuId="+row.menuId;
-				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
-				        	}
-				    	},
-							    	{
+				    	},{
 				        	field: 'menuType',
-				        	title: '菜单属性 0:链接 1:回复',
+				        	title: '菜单属性',
 				        	width:'10',
 				        	align: 'center',
 				        	formatter:function(value,row,index) {
-				        		var url = "${managerPath}/mweixin/menu/form.do?menuId="+row.menuId;
-				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
+				        		switch(value){
+				        			case 1: return "链接";break;
+				        			case 2: return "回复";break;
+				        		}
 				        	}
-				    	},
-							    	{
-				        	field: 'menuSort',
-				        	title: '',
-				        	width:'10',
-				        	align: 'center',
-				        	formatter:function(value,row,index) {
-				        		var url = "${managerPath}/mweixin/menu/form.do?menuId="+row.menuId;
-				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
-				        	}
-				    	},
-							    	{
+				    	},{
 				        	field: 'menuStyle',
-				        	title: '类型：1文本 2图文 4外链接',
+				        	title: '类型',
 				        	width:'10',
 				        	align: 'center',
 				        	formatter:function(value,row,index) {
-				        		var url = "${managerPath}/mweixin/menu/form.do?menuId="+row.menuId;
-				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
+				        		switch(value){
+				        			case 1: return "文本";break;
+				        			case 2: return "图文";break;
+				        			case 3: return "外链接";break;
+				        		}
 				        	}
-				    	},
-							    	{
-				        	field: 'menuOauthId',
-				        	title: '授权数据编号',
-				        	width:'10',
-				        	align: 'center',
-				        	formatter:function(value,row,index) {
-				        		var url = "${managerPath}/mweixin/menu/form.do?menuId="+row.menuId;
-				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
-				        	}
-				    	},
-							    	{
-				        	field: 'menuWeixinId',
-				        	title: '微信编号',
-				        	width:'10',
-				        	align: 'center',
-				        	formatter:function(value,row,index) {
-				        		var url = "${managerPath}/mweixin/menu/form.do?menuId="+row.menuId;
-				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
-				        	}
+				    	},{
+				        	field: 'menuUrl',
+				        	title: '菜单链接地址',
+				        	width:'300',
+				        	align: 'center'
 				    	}
 			]
 	    })

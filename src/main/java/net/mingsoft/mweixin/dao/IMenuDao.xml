@@ -5,8 +5,8 @@
 	<resultMap id="resultMap" type="net.mingsoft.mweixin.entity.MenuEntity">
 		<id column="MENU_ID" property="menuId" /><!--菜单自增长编号 -->
 		<result column="MENU_APP_ID" property="menuAppId" /><!--菜单所属商家编号 -->
-		<result column="MENU_TITLE" property="menuTitle" /><!--单菜名称 -->
-		<result column="MENU_URL" property="menuUrl" /><!--单菜链接地址 -->
+		<result column="MENU_TITLE" property="menuTitle" /><!--菜单名称 -->
+		<result column="MENU_URL" property="menuUrl" /><!--菜单链接地址 -->
 		<result column="MENU_STATUS" property="menuStatus" /><!--菜单状态 0：不启用 1：启用 -->
 		<result column="MENU_MENU_ID" property="menuMenuId" /><!--父菜单编号 -->
 		<result column="MENU_TYPE" property="menuType" /><!--菜单属性 0:链接 1:回复 -->
@@ -110,7 +110,7 @@
 		select * from wx_menu  
 		<where>
 				<if test="menuAppId &gt; 0"> and MENU_APP_ID=#{menuAppId} </if>				
-				<if test="menuTitle != null and menuTitle != ''"> and MENU_TITLE=#{menuTitle} </if>				
+				<if test="menuTitle != null and menuTitle != ''"> and MENU_TITLE like CONCAT('%',#{menuTitle},'%')</if>				
 				<if test="menuUrl != null and menuUrl != ''"> and MENU_URL=#{menuUrl} </if>				
 				<if test="menuStatus &gt; 0"> and MENU_STATUS=#{menuStatus} </if>				
 				<if test="menuMenuId &gt; 0"> and MENU_MENU_ID=#{menuMenuId} </if>				

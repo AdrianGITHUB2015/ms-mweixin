@@ -110,7 +110,7 @@
 				<if test="pmMessageId &gt; 0"> and PM_MESSAGE_ID=#{pmMessageId} </if>				
 				<if test="pmAppId &gt; 0"> and PM_APP_ID=#{pmAppId} </if>				
 				<if test="pmReplyNum &gt; 0"> and PM_REPLY_NUM=#{pmReplyNum} </if>				
-				<if test="pmKey != null and pmKey != ''"> and PM_KEY=#{pmKey} </if>				
+				<if test="pmKey != null and pmKey != ''"> and PM_KEY like CONCAT('%',#{pmKey},'%')</if>				
 				<if test="pmType &gt; 0"> and PM_TYPE=#{pmType} </if>				
 				<if test="pmTag != null and pmTag != ''"> and PM_TAG=#{pmTag} </if>				
 		</where>		

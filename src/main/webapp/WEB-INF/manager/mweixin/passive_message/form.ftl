@@ -13,7 +13,7 @@
     			<@ms.number label="被动回复的次数;为1时表示用户第一次被动响应消息,依次递增,当超出时取值为0的进行回复" name="pmReplyNum" value="${(passiveMessageEntity.pmReplyNum)?default('')}" width="240px;" placeholder="请输入被动回复的次数;为1时表示用户第一次被动响应消息,依次递增,当超出时取值为0的进行回复" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"被动回复的次数;为1时表示用户第一次被动响应消息,依次递增,当超出时取值为0的进行回复长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
     			<@ms.text label="事件关键字" name="pmKey" value="${(passiveMessageEntity.pmKey)?default('')}"  width="240px;" placeholder="请输入事件关键字" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"事件关键字长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
     			<@ms.number label="回复属性:1.最终回复;达到迭代次数之后的回复消息,2.拓展回复迭代回复(优先迭代回复)" name="pmType" value="${(passiveMessageEntity.pmType)?default('')}" width="240px;" placeholder="请输入回复属性:1.最终回复;达到迭代次数之后的回复消息,2.拓展回复迭代回复(优先迭代回复)" validation={"required":"false","maxlength":"50","data-bv-stringlength-message":"回复属性:1.最终回复;达到迭代次数之后的回复消息,2.拓展回复迭代回复(优先迭代回复)长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
-    			<@ms.text label="" name="pmTag" value="${(passiveMessageEntity.pmTag)?default('')}"  width="240px;" placeholder="请输入" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
+    			<@ms.text label="扩展标签" name="pmTag" value="${(passiveMessageEntity.pmTag)?default('')}"  width="240px;" placeholder="请输入" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
     	</@ms.form>
     </@ms.panel>
 </@ms.html5>

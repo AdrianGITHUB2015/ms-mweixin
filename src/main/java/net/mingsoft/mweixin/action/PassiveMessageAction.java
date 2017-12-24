@@ -102,7 +102,7 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 	 */
 	@RequestMapping("/form")
 	public String form(@ModelAttribute PassiveMessageEntity passiveMessage,HttpServletResponse response,HttpServletRequest request,ModelMap model){
-		if(passiveMessage.getPmId()<=0){
+		if(passiveMessage.getPmId() != null){
 			BaseEntity passiveMessageEntity = passiveMessageBiz.getEntity(passiveMessage.getPmId());			
 			model.addAttribute("passiveMessageEntity",passiveMessageEntity);
 		}

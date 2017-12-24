@@ -65,8 +65,8 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	 * <i>menu参数包含字段信息参考：</i><br/>
 	 * menuId 菜单自增长编号<br/>
 	 * menuAppId 菜单所属商家编号<br/>
-	 * menuTitle 单菜名称<br/>
-	 * menuUrl 单菜链接地址<br/>
+	 * menuTitle 菜单名称<br/>
+	 * menuUrl 菜单链接地址<br/>
 	 * menuStatus 菜单状态 0：不启用 1：启用<br/>
 	 * menuMenuId 父菜单编号<br/>
 	 * menuType 菜单属性 0:链接 1:回复<br/>
@@ -79,8 +79,8 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	 * { <br/>
 	 * menuId: 菜单自增长编号<br/>
 	 * menuAppId: 菜单所属商家编号<br/>
-	 * menuTitle: 单菜名称<br/>
-	 * menuUrl: 单菜链接地址<br/>
+	 * menuTitle: 菜单名称<br/>
+	 * menuUrl: 菜单链接地址<br/>
 	 * menuStatus: 菜单状态 0：不启用 1：启用<br/>
 	 * menuMenuId: 父菜单编号<br/>
 	 * menuType: 菜单属性 0:链接 1:回复<br/>
@@ -104,7 +104,7 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	 */
 	@RequestMapping("/form")
 	public String form(@ModelAttribute MenuEntity menu,HttpServletResponse response,HttpServletRequest request,ModelMap model){
-		if(menu.getMenuId()<=0){
+		if(menu.getMenuId() != null){
 			BaseEntity menuEntity = menuBiz.getEntity(menu.getMenuId());			
 			model.addAttribute("menuEntity",menuEntity);
 		}
@@ -117,8 +117,8 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	 * <i>menu参数包含字段信息参考：</i><br/>
 	 * menuId 菜单自增长编号<br/>
 	 * menuAppId 菜单所属商家编号<br/>
-	 * menuTitle 单菜名称<br/>
-	 * menuUrl 单菜链接地址<br/>
+	 * menuTitle 菜单名称<br/>
+	 * menuUrl 菜单链接地址<br/>
 	 * menuStatus 菜单状态 0：不启用 1：启用<br/>
 	 * menuMenuId 父菜单编号<br/>
 	 * menuType 菜单属性 0:链接 1:回复<br/>
@@ -130,8 +130,8 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	 * <dd>{ <br/>
 	 * menuId: 菜单自增长编号<br/>
 	 * menuAppId: 菜单所属商家编号<br/>
-	 * menuTitle: 单菜名称<br/>
-	 * menuUrl: 单菜链接地址<br/>
+	 * menuTitle: 菜单名称<br/>
+	 * menuUrl: 菜单链接地址<br/>
 	 * menuStatus: 菜单状态 0：不启用 1：启用<br/>
 	 * menuMenuId: 父菜单编号<br/>
 	 * menuType: 菜单属性 0:链接 1:回复<br/>
@@ -158,8 +158,8 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	 * <i>menu参数包含字段信息参考：</i><br/>
 	 * menuId 菜单自增长编号<br/>
 	 * menuAppId 菜单所属商家编号<br/>
-	 * menuTitle 单菜名称<br/>
-	 * menuUrl 单菜链接地址<br/>
+	 * menuTitle 菜单名称<br/>
+	 * menuUrl 菜单链接地址<br/>
 	 * menuStatus 菜单状态 0：不启用 1：启用<br/>
 	 * menuMenuId 父菜单编号<br/>
 	 * menuType 菜单属性 0:链接 1:回复<br/>
@@ -171,8 +171,8 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	 * <dd>{ <br/>
 	 * menuId: 菜单自增长编号<br/>
 	 * menuAppId: 菜单所属商家编号<br/>
-	 * menuTitle: 单菜名称<br/>
-	 * menuUrl: 单菜链接地址<br/>
+	 * menuTitle: 菜单名称<br/>
+	 * menuUrl: 菜单链接地址<br/>
 	 * menuStatus: 菜单状态 0：不启用 1：启用<br/>
 	 * menuMenuId: 父菜单编号<br/>
 	 * menuType: 菜单属性 0:链接 1:回复<br/>
@@ -194,7 +194,7 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.app.id"), "1", "10"));
 			return;			
 		}
-		//验证单菜名称的值是否合法			
+		//验证菜单名称的值是否合法			
 		if(StringUtil.isBlank(menu.getMenuTitle())){
 			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.title")));
 			return;			
@@ -203,7 +203,7 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.title"), "1", "15"));
 			return;			
 		}
-		//验证单菜链接地址的值是否合法			
+		//验证菜单链接地址的值是否合法			
 		if(StringUtil.isBlank(menu.getMenuUrl())){
 			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.url")));
 			return;			
@@ -307,8 +307,8 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	 * <i>menu参数包含字段信息参考：</i><br/>
 	 * menuId 菜单自增长编号<br/>
 	 * menuAppId 菜单所属商家编号<br/>
-	 * menuTitle 单菜名称<br/>
-	 * menuUrl 单菜链接地址<br/>
+	 * menuTitle 菜单名称<br/>
+	 * menuUrl 菜单链接地址<br/>
 	 * menuStatus 菜单状态 0：不启用 1：启用<br/>
 	 * menuMenuId 父菜单编号<br/>
 	 * menuType 菜单属性 0:链接 1:回复<br/>
@@ -320,8 +320,8 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	 * <dd>{ <br/>
 	 * menuId: 菜单自增长编号<br/>
 	 * menuAppId: 菜单所属商家编号<br/>
-	 * menuTitle: 单菜名称<br/>
-	 * menuUrl: 单菜链接地址<br/>
+	 * menuTitle: 菜单名称<br/>
+	 * menuUrl: 菜单链接地址<br/>
 	 * menuStatus: 菜单状态 0：不启用 1：启用<br/>
 	 * menuMenuId: 父菜单编号<br/>
 	 * menuType: 菜单属性 0:链接 1:回复<br/>
@@ -344,7 +344,7 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.app.id"), "1", "10"));
 			return;			
 		}
-		//验证单菜名称的值是否合法			
+		//验证菜单名称的值是否合法			
 		if(StringUtil.isBlank(menu.getMenuTitle())){
 			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.title")));
 			return;			
@@ -353,7 +353,7 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.title"), "1", "15"));
 			return;			
 		}
-		//验证单菜链接地址的值是否合法			
+		//验证菜单链接地址的值是否合法			
 		if(StringUtil.isBlank(menu.getMenuUrl())){
 			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.url")));
 			return;			

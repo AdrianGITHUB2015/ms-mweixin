@@ -26,11 +26,11 @@ public class MenuEntity extends BaseEntity {
 	 */
 	private Integer menuAppId; 
 	/**
-	 * 单菜名称
+	 * 菜单名称
 	 */
 	private String menuTitle; 
 	/**
-	 * 单菜链接地址
+	 * 菜单链接地址
 	 */
 	private String menuUrl; 
 	/**
@@ -90,27 +90,27 @@ public class MenuEntity extends BaseEntity {
 		return this.menuAppId;
 	}
 	/**
-	 * 设置单菜名称
+	 * 设置菜单名称
 	 */
 	public void setMenuTitle(String menuTitle) {
 		this.menuTitle = menuTitle;
 	}
 
 	/**
-	 * 获取单菜名称
+	 * 获取菜单名称
 	 */
 	public String getMenuTitle() {
 		return this.menuTitle;
 	}
 	/**
-	 * 设置单菜链接地址
+	 * 设置菜单链接地址
 	 */
 	public void setMenuUrl(String menuUrl) {
 		this.menuUrl = menuUrl;
 	}
 
 	/**
-	 * 获取单菜链接地址
+	 * 获取菜单链接地址
 	 */
 	public String getMenuUrl() {
 		return this.menuUrl;
