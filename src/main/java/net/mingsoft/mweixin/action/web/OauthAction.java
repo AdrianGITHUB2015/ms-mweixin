@@ -84,7 +84,7 @@ public class OauthAction extends com.mingsoft.weixin.action.BaseAction{
 	 */
 	@ResponseBody
 	@GetMapping(produces = "text/plain;charset=utf-8")
-	public void get(HttpServletResponse response,HttpServletRequest request)throws ServletException, IOException {	
+	public void login(HttpServletResponse response,HttpServletRequest request)throws ServletException, IOException {
 		String weixinNo = request.getParameter("weixinNo"); //获取token
 		WeixinEntity weixin = weixinBiz.getByWeixinNo(weixinNo);
 		wxService = new WeixinService(weixin);
