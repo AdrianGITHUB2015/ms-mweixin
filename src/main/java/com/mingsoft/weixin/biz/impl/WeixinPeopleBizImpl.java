@@ -240,5 +240,14 @@ public class WeixinPeopleBizImpl  extends PeopleUserBizImpl implements IWeixinPe
 		}
 	}
 	
+	/**
+	 * 根据微信openId查询用户实体
+	 */
+	@Override
+	public WeixinPeopleEntity getByOpenId(String openId) {
+		// TODO Auto-generated method stub
+		return weixinPeopleDao.getByOpenId(openId);
+	}
+	
 
 }

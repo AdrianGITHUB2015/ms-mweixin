@@ -153,6 +153,7 @@
 	</select>
 	<!-- 根据自定义字段条件查询微信用户实体结束 -->
 	
+	<!-- 方法过期推荐使用 getByOpenId-->
 	<!-- 根据条件查询微信实体开始 -->
 	<select id="getWeixinPeopleEntity" resultMap="resultMap">
 		select <include refid="column_list"/> from wx_people wp
@@ -166,4 +167,14 @@
 		</where>
 	</select>
 	<!-- 根据条件查询微信实体结束 -->
+	
+	<!-- 根据微信openId查询用户信息 -->
+	<select id="getByOpenId" resultMap="resultMap">
+		select <include refid="column_list"/> from wx_people wp
+		left join  people p on wp.PW_PEOPLE_ID=p.people_id
+		left join people_user pu on pu.pu_people_id=wp.PW_PEOPLE_ID
+		<where>
+			<if test="openId != null">and wp.PW_OPEN_ID = #{openId}</if>		
+		</where>
+	</select>
 </mapper>
