@@ -75,7 +75,7 @@ public class OauthAction extends com.mingsoft.weixin.action.BaseAction{
 		WeixinEntity weixin = weixinBiz.getByWeixinNo(weixinNo);
 		wxService = new WeixinService(weixin);
 		//组织重定向链接，通过链接进行授权
-		String oauthUrl = "http://ticket.mingsoft.net/wb-ticket/mweixin/oauth.do?weixinNo="+weixinNo+"&url="+url;
+		String oauthUrl = BasicUtil.getUrl()+"/mweixin/oauth.do?weixinNo="+weixinNo+"&url="+url;
 		return "redirect:"+wxService.oauth2buildAuthorizationUrl(oauthUrl, "snsapi_userinfo" , null);
 		
 	}
