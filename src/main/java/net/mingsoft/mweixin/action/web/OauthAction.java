@@ -61,8 +61,9 @@ public class OauthAction extends com.mingsoft.weixin.action.BaseAction{
 	 * 授权登录
 	 */
 	@RequestMapping("/getUrl")
-	public String getUrl(@RequestParam(required = false) String weixinNo,HttpServletResponse response,HttpServletRequest request){
-		String url = "http://ticket.mingsoft.net/wb-ticket/index.do";
+	public String getUrl(@RequestParam(required = false) String weixinNo,
+						 @RequestParam(required = false) String url,
+						 HttpServletResponse response,HttpServletRequest request){
 		if(!StringUtil.isBlank(url)) {
 			try {
 				url = URLEncoder.encode(url,"UTF-8");
