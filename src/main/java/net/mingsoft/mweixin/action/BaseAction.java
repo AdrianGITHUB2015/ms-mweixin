@@ -19,8 +19,12 @@ import com.mingsoft.base.entity.SessionEntity;
 import com.mingsoft.basic.biz.IModelBiz;
 import com.mingsoft.basic.entity.ModelEntity;
 import com.mingsoft.util.StringUtil;
+import com.mingsoft.weixin.biz.IWeixinBiz;
+import com.mingsoft.weixin.entity.WeixinEntity;
 
 import net.mingsoft.basic.util.BasicUtil;
+import net.mingsoft.basic.util.SpringUtil;
+import net.mingsoft.weixin.service.WeixinService;
 
 /**
  * mweixin基础控制层
@@ -45,4 +49,14 @@ public class BaseAction extends com.mingsoft.basic.action.BaseAction{
 		return str;
 	}
 
+	/**
+	 * 构建微信的服务工具，
+	 * @param weixinNo 微信号
+	 * @return WeixinService
+	 */
+	protected WeixinService builderWeixinService(String weixinNo) {
+		IWeixinBiz weixinBiz = SpringUtil.getBean(IWeixinBiz.class);
+		WeixinEntity weixin = weixinBiz.getByWeixinNo(weixinNo);
+		return new WeixinService(weixin);
+	}
 }
