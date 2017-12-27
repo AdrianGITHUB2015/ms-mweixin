@@ -1,6 +1,7 @@
 <@ms.html5>
 	<@ms.nav title="微信被动消息回复管理"></@ms.nav>
 	<@ms.searchForm name="searchForm" isvalidation=true>
+		<@ms.text label="事件关键字" maxlength="20" name="pmKey" value=""  width="240px;" placeholder="请输入事件关键字" />
 			<@ms.searchFormButton>
 				 <@ms.queryButton onclick="search()"/> 
 			</@ms.searchFormButton>			
@@ -77,7 +78,7 @@
 				    	},
 							    	{
 				        	field: 'pmMessageId',
-				        	title: '对应自定义模板回复消息id,与PM_NEWS_ID只能同时存在一个',
+				        	title: '消息id',
 				        	width:'10',
 				        	align: 'center',
 				        	
@@ -90,13 +91,9 @@
 				    	},
 							    	{
 				        	field: 'pmReplyNum',
-				        	title: '被动回复的次数;为1时表示用户第一次被动响应消息,依次递增,当超出时取值为0的进行回复',
+				        	title: '被动回复的次数',
 				        	width:'10',
-				        	align: 'center',
-				        	formatter:function(value,row,index) {
-				        		var url = "${managerPath}/mweixin/passiveMessage/form.do?pmId="+row.pmId;
-				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
-				        	}
+				        	align: 'center'
 				    	},
 							    	{
 				        	field: 'pmKey',
