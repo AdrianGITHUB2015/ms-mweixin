@@ -13,6 +13,7 @@
 		<result column="PM_KEY" property="pmKey" /><!--事件关键字 -->
 		<result column="PM_TYPE" property="pmType" /><!--回复属性:1.最终回复;达到迭代次数之后的回复消息,2.拓展回复迭代回复(优先迭代回复) -->
 		<result column="PM_TAG" property="pmTag" /><!-- -->
+		<result column="PM_CONTENT" property="pmContent" /><!--关注回复的内容-->
 	</resultMap>
 	
 	<!--保存-->	
@@ -29,6 +30,7 @@
 			<if test="pmKey != null and pmKey != ''">PM_KEY,</if>
 			<if test="pmType &gt; 0">PM_TYPE,</if>
 			<if test="pmTag != null and pmTag != ''">PM_TAG,</if>
+			<if test="pmContent != null and pmContent != ''">PM_CONTENT,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="pmWeixinId &gt; 0">#{pmWeixinId},</if>
@@ -40,6 +42,7 @@
 			<if test="pmKey != null and pmKey != ''">#{pmKey},</if>
 			<if test="pmType &gt; 0">#{pmType},</if>
 			<if test="pmTag != null and pmTag != ''">#{pmTag},</if>
+			<if test="pmContent != null and pmContent != ''">#{pmContent},</if>
 		</trim>
 	</insert>
 	
@@ -55,7 +58,8 @@
 			<if test="pmReplyNum &gt; 0">PM_REPLY_NUM=#{pmReplyNum},</if>			
 			<if test="pmKey != null and pmKey != ''">PM_KEY=#{pmKey},</if>			
 			<if test="pmType &gt; 0">PM_TYPE=#{pmType},</if>			
-			<if test="pmTag != null and pmTag != ''">PM_TAG=#{pmTag},</if>			
+			<if test="pmTag != null and pmTag != ''">PM_TAG=#{pmTag},</if>
+			<if test="pmContent != null and pmContent != ''">PM_CONTENT=#{pmContent},</if>			
 		</set>
 		where PM_ID = #{pmId}
 	</update>
@@ -77,7 +81,8 @@
 			<if test="pmReplyNum &gt; 0"> and PM_REPLY_NUM=#{pmReplyNum} </if>				
 			<if test="pmKey != null and pmKey != ''"> and PM_KEY=#{pmKey} </if>				
 			<if test="pmType &gt; 0"> and PM_TYPE=#{pmType} </if>				
-			<if test="pmTag != null and pmTag != ''"> and PM_TAG=#{pmTag} </if>				
+			<if test="pmTag != null and pmTag != ''"> and PM_TAG=#{pmTag} </if>
+			<if test="pmContent != null and pmContent != ''"> and PM_CONTENT=#{pmContent} </if>				
 		</where>
 		limit 0,1
 	</select>	
@@ -110,9 +115,10 @@
 				<if test="pmMessageId &gt; 0"> and PM_MESSAGE_ID=#{pmMessageId} </if>				
 				<if test="pmAppId &gt; 0"> and PM_APP_ID=#{pmAppId} </if>				
 				<if test="pmReplyNum &gt; 0"> and PM_REPLY_NUM=#{pmReplyNum} </if>				
-				<if test="pmKey != null and pmKey != ''"> and PM_KEY like CONCAT('%',#{pmKey},'%')</if>				
+				<if test="pmKey != null and pmKey != ''"> and PM_KEY=#{pmKey}</if>				
 				<if test="pmType &gt; 0"> and PM_TYPE=#{pmType} </if>				
-				<if test="pmTag != null and pmTag != ''"> and PM_TAG=#{pmTag} </if>				
+				<if test="pmTag != null and pmTag != ''"> and PM_TAG=#{pmTag} </if>	
+				<if test="pmContent != null and pmContent != ''"> and PM_CONTENT=#{pmContent} </if>				
 		</where>		
 		order by PM_ID desc
 	</select>

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -25,9 +24,10 @@ import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
 import net.mingsoft.mweixin.entity.MenuEntity;
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
 import net.mingsoft.base.util.JSONObject;
-import com.mingsoft.util.PageUtil;
 import com.mingsoft.util.StringUtil;
 import com.mingsoft.weixin.entity.WeixinEntity;
+import com.xiaoleilu.hutool.lang.Validator;
+import com.xiaoleilu.hutool.util.ObjectUtil;
 import com.mingsoft.base.entity.BaseEntity;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.basic.bean.ListBean;
@@ -188,22 +188,13 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 	@PostMapping("/save")
 	@ResponseBody
 	public void save(@ModelAttribute PassiveMessageEntity passiveMessage, HttpServletResponse response, HttpServletRequest request,BindingResult result) {
-		//验证回复的素材ID的值是否合法			
-		if(StringUtil.isBlank(passiveMessage.getPmNewsId())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("pm.news.id")));
+		//验证关键字回复内容的值是否合法			
+		if(StringUtil.isBlank(passiveMessage.getPmContent())){
+			this.outJson(response, null,false,getResString("err.empty", this.getResString("pm.content")));
 			return;			
 		}
-		if(!StringUtil.checkLength(passiveMessage.getPmNewsId()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.news.id"), "1", "10"));
-			return;			
-		}
-		//验证被动回复的次数;为1时表示用户第一次被动响应消息,依次递增,当超出时取值为0的进行回复的值是否合法			
-		if(StringUtil.isBlank(passiveMessage.getPmReplyNum())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("pm.reply.num")));
-			return;			
-		}
-		if(!StringUtil.checkLength(passiveMessage.getPmReplyNum()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.reply.num"), "1", "10"));
+		if(!StringUtil.checkLength(passiveMessage.getPmContent()+"", 1, 10)){
+			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.content"), "1", "150"));
 			return;			
 		}
 		//验证事件关键字的值是否合法			
@@ -212,16 +203,7 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 			return;			
 		}
 		if(!StringUtil.checkLength(passiveMessage.getPmKey()+"", 1, 300)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.key"), "1", "300"));
-			return;			
-		}
-		//验证的值是否合法			
-		if(StringUtil.isBlank(passiveMessage.getPmTag())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("pm.tag")));
-			return;			
-		}
-		if(!StringUtil.checkLength(passiveMessage.getPmTag()+"", 1, 30)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.tag"), "1", "30"));
+			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.key"), "1", "200"));
 			return;			
 		}
 		WeixinEntity weixin = this.getWeixinSession(request);
@@ -231,6 +213,10 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 		}
 		passiveMessage.setPmAppId(BasicUtil.getAppId());
 		passiveMessage.setPmWeixinId(weixin.getWeixinId());
+		if(isRepeat(passiveMessage)){
+			this.outJson(response, null, false, this.getResString("pm.key.repeat"));
+			return;	
+		}
 		passiveMessageBiz.saveEntity(passiveMessage);
 		this.outJson(response, JSONObject.toJSONString(passiveMessage));
 	}
@@ -289,22 +275,13 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 	@ResponseBody	
 	public void update(@ModelAttribute PassiveMessageEntity passiveMessage, HttpServletResponse response,
 			HttpServletRequest request) {
-		//验证回复的素材ID的值是否合法			
-		if(StringUtil.isBlank(passiveMessage.getPmNewsId())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("pm.news.id")));
+		//验证关键字回复内容的值是否合法			
+		if(StringUtil.isBlank(passiveMessage.getPmContent())){
+			this.outJson(response, null,false,getResString("err.empty", this.getResString("pm.content")));
 			return;			
 		}
-		if(!StringUtil.checkLength(passiveMessage.getPmNewsId()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.news.id"), "1", "10"));
-			return;			
-		}
-		//验证被动回复的次数;为1时表示用户第一次被动响应消息,依次递增,当超出时取值为0的进行回复的值是否合法			
-		if(StringUtil.isBlank(passiveMessage.getPmReplyNum())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("pm.reply.num")));
-			return;			
-		}
-		if(!StringUtil.checkLength(passiveMessage.getPmReplyNum()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.reply.num"), "1", "10"));
+		if(!StringUtil.checkLength(passiveMessage.getPmContent()+"", 1, 10)){
+			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.content"), "1", "150"));
 			return;			
 		}
 		//验证事件关键字的值是否合法			
@@ -313,20 +290,50 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 			return;			
 		}
 		if(!StringUtil.checkLength(passiveMessage.getPmKey()+"", 1, 300)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.key"), "1", "300"));
+			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.key"), "1", "200"));
 			return;			
 		}
-		//验证的值是否合法			
-		if(StringUtil.isBlank(passiveMessage.getPmTag())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("pm.tag")));
-			return;			
+		WeixinEntity weixin = this.getWeixinSession(request);
+		if(weixin == null || weixin.getWeixinId()<=0){
+			this.outJson(response, null, false);
+			return;
 		}
-		if(!StringUtil.checkLength(passiveMessage.getPmTag()+"", 1, 30)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.tag"), "1", "30"));
-			return;			
+		passiveMessage.setPmAppId(BasicUtil.getAppId());
+		passiveMessage.setPmWeixinId(weixin.getWeixinId());
+		if(isRepeat(passiveMessage)){
+			this.outJson(response, null, false, this.getResString("pm.key.repeat"));
+			return;	
 		}
 		passiveMessageBiz.updateEntity(passiveMessage);
 		this.outJson(response, JSONObject.toJSONString(passiveMessage));
 	}
-		
+	
+	/**
+	 * 检查关键字是否重复
+	 * @param PassiveMessageEntity 关键字实体包含id或pmKey 
+	 * @return  
+	 * ture：重名 <br/>
+	 * false：不重名
+	 * 
+	 */
+	public boolean isRepeat(@ModelAttribute PassiveMessageEntity passiveMessage) {
+		boolean flag = true;
+		PassiveMessageEntity passiveMessageEntity = new PassiveMessageEntity();
+		if(!ObjectUtil.isNull(passiveMessage)){
+			if(Validator.isNotEmpty(passiveMessage.getPmKey())){
+				passiveMessageEntity.setPmKey(passiveMessage.getPmKey());
+				PassiveMessageEntity _passiveMessage = (PassiveMessageEntity) passiveMessageBiz.getEntity(passiveMessageEntity);
+				//先根据名称查询，无结果则不重名
+				if(ObjectUtil.isNull(_passiveMessage)){
+					flag = false;
+				//有结果再判断判断有无id，无id就重名，有id就说明是编辑的时候没有改名称，不算重名
+				}else if(Validator.isNotEmpty(passiveMessage.getId())){
+					if(_passiveMessage.getId().equals(passiveMessage.getId())){
+						flag = false;
+					}
+				}
+			}
+		}
+		return flag;
+	}
 }

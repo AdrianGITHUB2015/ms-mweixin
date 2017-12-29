@@ -1,7 +1,7 @@
 <@ms.html5>
 	<@ms.nav title="微信被动消息回复管理"></@ms.nav>
 	<@ms.searchForm name="searchForm" isvalidation=true>
-		<@ms.text label="事件关键字" maxlength="20" name="pmKey" value=""  width="240px;" placeholder="请输入事件关键字" />
+		<@ms.text label="关键字" maxlength="20" name="pmKey" value=""  width="170px;" placeholder="请输入关键字" />
 			<@ms.searchFormButton>
 				 <@ms.queryButton onclick="search()"/> 
 			</@ms.searchFormButton>			
@@ -43,84 +43,23 @@
 			toolbar: "#toolbar",
 	    	columns: [{ checkbox: true},
 				    	{
-				        	field: 'pmWeixinId',
-				        	title: '微信编号',
-				        	width:'10',
-				        	align: 'center'
-				    	},
-							    	{
 				        	field: 'pmId',
-				        	title: '自增长ID',
+				        	title: '编号',
 				        	width:'10',
 				        	align: 'center'
-				    	},
-							    	{
-				        	field: 'pmEventId',
-				        	title: '该回复属于的分类中的事件ID',
-				        	width:'10',
-				        	align: 'center',
-				        	formatter:function(value,row,index) {
-				        		switch(value){
-				        			case 1: return "新关注";break;
-				        			case 2: return "二维码扫描";break;
-				        			case 3: return "二维码扫描&提示框";break;
-				        			case 4: return "文本消息";break;
-				        			case 5: return "未关注扫描二维码";break;
-				        			case 6: return "点击事件";break;
-				        		}
-				        	}
-				    	},
-							    	{
-				        	field: 'pmNewsId',
-				        	title: '回复的素材ID',
-				        	width:'10',
-				        	align: 'center'
-				    	},
-							    	{
-				        	field: 'pmMessageId',
-				        	title: '消息id',
-				        	width:'10',
-				        	align: 'center',
-				        	
-				    	},
-							    	{
-				        	field: 'pmAppId',
-				        	title: '该回复所属的应用ID',
-				        	width:'10',
-				        	align: 'center'
-				    	},
-							    	{
-				        	field: 'pmReplyNum',
-				        	title: '被动回复的次数',
-				        	width:'10',
-				        	align: 'center'
-				    	},
-							    	{
+				    	},{
 				        	field: 'pmKey',
-				        	title: '事件关键字',
-				        	width:'300',
+				        	title: '关键字',
+				        	width:'100',
 				        	align: 'center',
 				        	formatter:function(value,row,index) {
 				        		var url = "${managerPath}/mweixin/passiveMessage/form.do?pmId="+row.pmId;
 				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
 				        	}
-				    	},
-							    	{
-				        	field: 'pmType',
-				        	title: '回复属性',
-				        	width:'10',
-				        	align: 'center',
-				        	formatter:function(value,row,index) {
-				        		switch(value){
-				        			case 1: return "最终回复";break;
-				        			case 2: return "拓展回复迭代回复";break;
-				        		}
-				        	}
-				    	},
-							    	{
-				        	field: 'pmTag',
-				        	title: '扩展标签',
-				        	width:'30',
+				    	},{
+				        	field: 'pmContent',
+				        	title: '回复内容标签',
+				        	width:'200',
 				        	align: 'center'
 				    	}
 			]

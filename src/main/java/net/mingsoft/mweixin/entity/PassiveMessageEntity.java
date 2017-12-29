@@ -58,7 +58,27 @@ public class PassiveMessageEntity extends BaseEntity {
 	 */
 	private String pmTag; 
 	
-		
+	/**
+	 * 消息回复内容
+	 */
+	private String pmContent; 
+	
+	/**
+	 * 获取消息回复内容
+	 * @return
+	 */
+	public String getPmContent() {
+		return pmContent;
+	}
+
+	/**
+	 * 设置消息回复内容
+	 * @param pmContent
+	 */
+	public void setPmContent(String pmContent) {
+		this.pmContent = pmContent;
+	}
+
 	/**
 	 * 设置微信编号
 	 */

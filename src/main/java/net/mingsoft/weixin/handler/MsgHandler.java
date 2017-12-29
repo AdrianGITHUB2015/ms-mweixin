@@ -2,6 +2,8 @@ package net.mingsoft.weixin.handler;
 
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +12,8 @@ import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
+import net.mingsoft.mweixin.entity.PassiveMessageEntity;
 import net.mingsoft.weixin.builder.TextBuilder;
 import net.mingsoft.weixin.service.WeixinService;
 
@@ -18,9 +22,15 @@ import net.mingsoft.weixin.service.WeixinService;
  */
 @Component
 public class MsgHandler extends AbstractHandler {
-
-  @Override
-  public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
+	
+	/**
+	 * 注入微信被动消息回复业务层
+	 */	
+	@Resource(name="netPassiveMessageBizImpl")
+	private IPassiveMessageBiz passiveMessageBiz;
+	
+	@Override
+	public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
                                   Map<String, Object> context, WxMpService wxMpService,
                                   WxSessionManager sessionManager) {
 
@@ -29,17 +39,16 @@ public class MsgHandler extends AbstractHandler {
     if (!wxMessage.getMsgType().equals(WxConsts.XmlMsgType.EVENT)) {
       //TODO 可以选择将消息保存到本地
     }
-
-    //当用户输入关键词如“你好”，“客服”等，并且有客服在线时，把消息转发给在线客服
-    if (StringUtils.startsWithAny(wxMessage.getContent(), "你好", "客服")
-        && weixinService.hasKefuOnline()) {
-      return WxMpXmlOutMessage
-          .TRANSFER_CUSTOMER_SERVICE().fromUser(wxMessage.getToUser())
-          .toUser(wxMessage.getFromUser()).build();
+    String msg = wxMessage.getContent();
+    //获取信息
+    PassiveMessageEntity passiveMessage = new PassiveMessageEntity();
+    passiveMessage.setPmKey(msg);
+    //通过获取的信息，查询关键字表
+    if(passiveMessageBiz.getEntity(passiveMessage) == null){
+    	return null;
     }
-
-    //TODO 组装回复消息
-    String content = "回复信息内容";
+    //设置content
+    String content = passiveMessage.getPmContent();;
     return new TextBuilder().build(content, wxMessage, weixinService);
 
   }
