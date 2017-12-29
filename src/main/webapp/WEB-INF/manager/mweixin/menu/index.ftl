@@ -1,7 +1,7 @@
 <@ms.html5>
 	<@ms.nav title="微信菜单管理"></@ms.nav>
 	<@ms.searchForm name="searchForm" isvalidation=true>
-	<@ms.text label="菜单名称" name="menuTitle" value="${(menuEntity.menuTitle)?default('')}"  width="240px;" placeholder="请输入菜单名称" validation={"maxlength":"50","data-bv-stringlength-message":"菜单名称长度不能超过五十个字符长度!"}/>
+	<@ms.text label="菜单名称" name="menuTitle" value=""  width="170px;" maxlength="20" placeholder="请输入菜单名称"/>
 			<@ms.searchFormButton>
 				 <@ms.queryButton onclick="search()"/> 
 			</@ms.searchFormButton>			
@@ -12,6 +12,7 @@
 				<@ms.panelNavBtnAdd id="addMenuBtn" title=""/> 
 				<@ms.panelNavBtnDel id="delMenuBtn" title=""/>
 			</@ms.panelNavBtnGroup>
+			<@ms.button id="create" value="发布"/> 
 		</div>
 		<table id="menuList" 
 			data-show-refresh="true"
@@ -43,24 +44,24 @@
 			toolbar: "#toolbar",
 	    	columns: [{ checkbox: true},
 				    	{
+				        	field: 'menuId',
+				        	title: '编号',
+				        	align: 'center',
+				        	width:'15'
+				    	},{
 				        	field: 'menuTitle',
 				        	title: '菜单名称',
 				        	width:'15',
+				        	align: 'center',
 				        	formatter:function(value,row,index) {
 				        		var url = "${managerPath}/mweixin/menu/form.do?menuId="+row.menuId;
 				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
 				        	}
 				    	},{
-				        	field: 'menuStatus',
-				        	title: '菜单状态',
-				        	width:'10',
+				        	field: 'menuMenuId',
+				        	title: '父集编号',
 				        	align: 'center',
-				        	formatter:function(value,row,index) {
-				        		switch(value){
-				        			case 1: return "不启用";break;
-				        			case 2: return "启用";break;
-				        		}
-				        	}
+				        	width:'15'
 				    	},{
 				        	field: 'menuType',
 				        	title: '菜单属性',
@@ -73,22 +74,16 @@
 				        		}
 				        	}
 				    	},{
-				        	field: 'menuStyle',
-				        	title: '类型',
+				        	field: 'menuStatus',
+				        	title: '菜单状态',
 				        	width:'10',
 				        	align: 'center',
 				        	formatter:function(value,row,index) {
 				        		switch(value){
-				        			case 1: return "文本";break;
-				        			case 2: return "图文";break;
-				        			case 3: return "外链接";break;
+				        			case 1: return "启用";break;
+				        			case 2: return "不启用";break;
 				        		}
 				        	}
-				    	},{
-				        	field: 'menuUrl',
-				        	title: '菜单链接地址',
-				        	width:'300',
-				        	align: 'center'
 				    	}
 			]
 	    })
@@ -109,6 +104,25 @@
 		}
 	})
 	
+	//发布按钮
+	$("#create").click(function(){
+		$(this).text("正在发布...");
+		$(this).attr("disabled","true");
+		$.ajax({
+			type: "post",
+			url: "${managerPath}/mweixin/menu/create.do",
+			dataType: "json",
+			contentType: "application/json",
+			success:function(msg) {
+				if(msg.result == true) {
+					<@ms.notify msg= "发布成功" type= "success" />
+				}else {
+					<@ms.notify msg= "发布失败" type= "fail" />
+				}
+				location.reload();
+			}
+		})
+	});
 	$("#deleteMenuBtn").click(function(){
 		var rows = $("#menuList").bootstrapTable("getSelections");
 		$(this).text("正在删除...");

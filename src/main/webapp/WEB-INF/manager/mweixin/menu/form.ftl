@@ -19,21 +19,8 @@
     <@ms.panel>
     	<@ms.form name="menuForm" isvalidation=true>
     		<@ms.hidden name="menuId" value="${(menuEntity.menuId)?default('')}"/>
-    			<@ms.number label="菜单所属商家编号" name="menuAppId" value="${(menuEntity.menuAppId)?default('')}" width="240px;" placeholder="请输入菜单所属商家编号" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"菜单所属商家编号长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
-    			<@ms.text label="菜单名称" name="menuTitle" value="${(menuEntity.menuTitle)?default('')}"  width="240px;" placeholder="请输入菜单名称" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"菜单名称长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
-    			<@ms.text label="菜单链接地址" name="menuUrl" value="${(menuEntity.menuUrl)?default('')}"  width="240px;" placeholder="请输入菜单链接地址" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"菜单链接地址长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
-    			<@ms.select 
-    				id="menuStatus"
-				    name="menuStatus" 
-				    label="菜单状态" 
-				    width="240"  
-				    list=[{"id":1,"value":"不启用"},{"id":2,"value":"启用"}] 
-				    value="${(menuEntity.menuStatus)?default('')}"
-				    listKey="id" 
-				    listValue="value"  
-				    validation={"required":"true", "data-bv-notempty-message":"必选项目"}
-				/>
     			<@ms.number label="父菜单编号" name="menuMenuId" value="${(menuEntity.menuMenuId)?default('')}" width="240px;" placeholder="请输入父菜单编号" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"父菜单编号长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
+    			<@ms.text label="菜单名称" name="menuTitle" value="${(menuEntity.menuTitle)?default('')}"  width="240px;" placeholder="请输入菜单名称" validation={"required":"true","maxlength":"7","data-bv-stringlength-message":"菜单名称长度不能超过七个字符长度!", "data-bv-notempty-message":"必填项目"}/>
     			<@ms.select 
     				id="menuType"
 				    name="menuType" 
@@ -45,24 +32,34 @@
 				    listValue="value"  
 				    validation={"required":"true", "data-bv-notempty-message":"必选项目"}
 				/>
-    			<@ms.number label="排序" name="menuSort" value="${(menuEntity.menuSort)?default('')}" width="240px;" placeholder="请输入" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
-    			<@ms.select 
-    				id="menuStyle"
-				    name="menuStyle" 
-				    label="菜单类型" 
+				<div class="menuUrl">
+					<@ms.text label="菜单链接地址" name="menuUrl" value="${(menuEntity.menuUrl)?default('')}"  width="240px;" placeholder="请输入菜单链接地址" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"菜单链接地址长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
+				</div>
+				<@ms.select 
+    				id="menuStatus"
+				    name="menuStatus" 
+				    label="菜单状态" 
 				    width="240"  
-				    list=[{"id":1,"value":"文本"},{"id":2,"value":"图文"},{"id":3,"value":"外链接"}] 
-				    value="${(menuEntity.menuStyle)?default('')}"
+				    list=[{"id":1,"value":"启用"},{"id":2,"value":"不启用"}] 
+				    value="${(menuEntity.menuStatus)?default('')}"
 				    listKey="id" 
 				    listValue="value"  
 				    validation={"required":"true", "data-bv-notempty-message":"必选项目"}
 				/>
-    			<@ms.number label="授权数据编号" name="menuOauthId" value="${(menuEntity.menuOauthId)?default('')}" width="240px;" placeholder="请输入授权数据编号" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"授权数据编号长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
-    			<@ms.number label="微信编号" name="menuWeixinId" value="${(menuEntity.menuWeixinId)?default('')}" width="240px;" placeholder="请输入微信编号" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"微信编号长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
     	</@ms.form>
     </@ms.panel>
 </@ms.html5>
 <script>
+	$('#menuType').on('select2:select', function (e) {
+		if(e.params.data.id == 2){
+			$(".menuUrl").hide();
+		}else{
+			$(".menuUrl").show();
+		}
+	});
+	if(${(menuEntity.menuType)?default(0)} == 2){
+		$(".menuUrl").hide();
+	}
 	$("#menuStyle").select2({width: "210px"});
 	$("#menuType").select2({width: "210px"});
 	$("#menuStatus").select2({width: "210px"});
@@ -79,25 +76,47 @@
 				<@ms.notify msg= "数据提交失败，请检查数据格式！" type= "warning" />
 				return;
 		}
+		var menuData = $("form[name = 'menuForm']").serialize();
 		var btnWord =$(".btn-success").text();
 		$(".btn-success").text(btnWord+"中...");
 		$(".btn-success").prop("disabled",true);
 		$.ajax({
 			type:"post",
 			dataType:"json",
-			data:$("form[name = 'menuForm']").serialize(),
-			url:url,
-			success: function(status) {
-				if(status.menuId > 0) { 
-					<@ms.notify msg="保存或更新成功" type= "success" />
-					location.href = "${managerPath}/mweixin/menu/index.do";
-				}
+			data:menuData,
+			url:"${managerPath}/mweixin/menu/check.do",
+			success: function(data) {
+				if(data.result == true) { 
+					$.ajax({
+						type:"post",
+						dataType:"json",
+						data:menuData,
+						url:url,
+						success: function(data) {
+							if(data.result > 0) { 
+								<@ms.notify msg="保存或更新成功" type= "success" />
+								location.href = "${managerPath}/mweixin/menu/index.do";
+							}
+							else{
+								$(".btn-success").text(btnWord);
+								$(".btn-success").removeAttr("disabled");
+								$('.ms-notifications').offset({top:43}).notify({
+								   type:'fail',
+								   message: { text:data.resultMsg }
+								}).show();
+							}
+						}
+					})
+				}	
 				else{
 					$(".btn-success").text(btnWord);
 					$(".btn-success").removeAttr("disabled");
-					<@ms.notify msg= "保存或更新失败！" type= "fail" />
+					$('.ms-notifications').offset({top:43}).notify({
+					   type:'fail',
+					   message: { text:data.resultMsg }
+					}).show();
 				}
 			}
 		})
-	}	
+		}
 </script>

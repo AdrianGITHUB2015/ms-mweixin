@@ -1,37 +1,37 @@
 package net.mingsoft.mweixin.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.validation.BindingResult;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.ui.ModelMap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import net.mingsoft.mweixin.biz.IMenuBiz;
-import net.mingsoft.mweixin.entity.MenuEntity;
-import net.mingsoft.base.util.JSONObject;
-import com.mingsoft.util.PageUtil;
-import com.mingsoft.util.StringUtil;
 import com.mingsoft.base.entity.BaseEntity;
-import net.mingsoft.basic.util.BasicUtil;
-import net.mingsoft.basic.bean.ListBean;
 import com.mingsoft.base.filter.DateValueFilter;
 import com.mingsoft.base.filter.DoubleValueFilter;
+import com.mingsoft.util.StringUtil;
+import com.mingsoft.weixin.entity.WeixinEntity;
+import com.xiaoleilu.hutool.util.StrUtil;
+
+import me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
+import me.chanjar.weixin.common.bean.menu.WxMenu;
+import me.chanjar.weixin.common.bean.menu.WxMenuButton;
+import me.chanjar.weixin.common.exception.WxErrorException;
+import net.mingsoft.base.util.JSONObject;
 import net.mingsoft.basic.bean.EUListBean;
+import net.mingsoft.basic.util.BasicUtil;
+import net.mingsoft.mweixin.biz.IMenuBiz;
+import net.mingsoft.mweixin.entity.MenuEntity;
 	
 /**
  * 微信菜单管理控制层
@@ -51,6 +51,75 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	@Resource(name="netMenuBizImpl")
 	private IMenuBiz menuBiz;
 	
+	 private String menuId = null;
+	
+	 
+	/**
+	 */
+	@RequestMapping("/create")
+	public void create(HttpServletResponse response,HttpServletRequest request){
+		MenuEntity menuEntity = new MenuEntity();
+		menuEntity.setMenuAppId(BasicUtil.getAppId());
+		//取出微信实体
+		WeixinEntity weixin = this.getWeixinSession(request);
+		if(weixin == null || weixin.getWeixinId() <= 0){
+			this.outJson(response, null, false);
+			return;
+		}
+		menuEntity.setMenuWeixinId(weixin.getWeixinId());
+		//第一步读取当前微信对应的所有菜单信息
+		List<MenuEntity> menuList = menuBiz.query(menuEntity);
+		WxMenu menu = new WxMenu();
+		//第二步将本地菜单赋值到WxMenuButton对象
+		for(MenuEntity _menuEntity : menuList){
+			WxMenuButton parentButton = new WxMenuButton();
+			//按钮启用才发布
+			if(_menuEntity.getMenuStatus() == 1){
+				if(_menuEntity.getMenuMenuId() == null){
+					//获取一级按钮
+					switch (_menuEntity.getMenuType()){
+						case 2: parentButton.setType(MenuButtonType.CLICK);
+						break;
+						case 1: parentButton.setType(MenuButtonType.VIEW);
+						parentButton.setUrl(_menuEntity.getMenuUrl());
+						break;
+					}	
+					parentButton.setName(_menuEntity.getMenuTitle());
+			        MenuEntity parenMenutEntity = new MenuEntity();
+			        parenMenutEntity.setMenuMenuId(_menuEntity.getMenuId());
+			        //查询该按钮下的子按钮
+			        menuList = menuBiz.query(parenMenutEntity);
+			        for(MenuEntity menuSubEntity : menuList){
+			        	WxMenuButton subButton = new WxMenuButton();
+			        	switch (_menuEntity.getMenuType()){
+							case 2: subButton.setType(MenuButtonType.CLICK);
+							break;
+							case 1: subButton.setType(MenuButtonType.VIEW);
+							subButton.setUrl(menuSubEntity.getMenuUrl());
+							break;
+						}
+			        	subButton.setName(menuSubEntity.getMenuTitle());
+			        	parentButton.getSubButtons().add(subButton);
+			        }
+			        //第三步将WxMenuButton赋值WxMenu
+			        menu.getButtons().add(parentButton);
+				}
+			}
+		}
+		//当前的微信信息
+		String weixinNo = weixin.getWeixinNo();
+		// 菜单发布
+		try {
+			this.builderWeixinService(weixinNo).getMenuService().menuCreate(menu);
+			this.outJson(response, null, true);
+			return;
+		} catch (WxErrorException e) {
+			e.printStackTrace();
+			this.outJson(response, null, false);
+			return;
+		}
+	}
+	 
 	/**
 	 * 返回主界面index
 	 */
@@ -94,6 +163,13 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	@RequestMapping("/list")
 	@ResponseBody
 	public void list(@ModelAttribute MenuEntity menu,HttpServletResponse response, HttpServletRequest request,ModelMap model,BindingResult result) {
+		menu.setMenuAppId(BasicUtil.getAppId());
+		WeixinEntity weixin = this.getWeixinSession(request);
+		if(weixin == null || weixin.getWeixinId()<=0){
+			this.outJson(response, null, false);
+			return;
+		}
+		menu.setMenuWeixinId(weixin.getWeixinId());
 		BasicUtil.startPage();
 		List menuList = menuBiz.query(menu);
 		this.outJson(response, net.mingsoft.base.util.JSONArray.toJSONString(new EUListBean(menuList,(int)BasicUtil.endPage(menuList).getTotal()),new DoubleValueFilter(),new DateValueFilter()));
@@ -185,15 +261,6 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	@PostMapping("/save")
 	@ResponseBody
 	public void save(@ModelAttribute MenuEntity menu, HttpServletResponse response, HttpServletRequest request,BindingResult result) {
-		//验证菜单所属商家编号的值是否合法			
-		if(StringUtil.isBlank(menu.getMenuAppId())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.app.id")));
-			return;			
-		}
-		if(!StringUtil.checkLength(menu.getMenuAppId()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.app.id"), "1", "10"));
-			return;			
-		}
 		//验证菜单名称的值是否合法			
 		if(StringUtil.isBlank(menu.getMenuTitle())){
 			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.title")));
@@ -201,15 +268,6 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 		}
 		if(!StringUtil.checkLength(menu.getMenuTitle()+"", 1, 15)){
 			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.title"), "1", "15"));
-			return;			
-		}
-		//验证菜单链接地址的值是否合法			
-		if(StringUtil.isBlank(menu.getMenuUrl())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.url")));
-			return;			
-		}
-		if(!StringUtil.checkLength(menu.getMenuUrl()+"", 1, 300)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.url"), "1", "300"));
 			return;			
 		}
 		//验证菜单状态 0：不启用 1：启用的值是否合法			
@@ -221,15 +279,6 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.status"), "1", "10"));
 			return;			
 		}
-		//验证父菜单编号的值是否合法			
-		if(StringUtil.isBlank(menu.getMenuMenuId())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.menu.id")));
-			return;			
-		}
-		if(!StringUtil.checkLength(menu.getMenuMenuId()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.menu.id"), "1", "10"));
-			return;			
-		}
 		//验证菜单属性 0:链接 1:回复的值是否合法			
 		if(StringUtil.isBlank(menu.getMenuType())){
 			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.type")));
@@ -239,44 +288,15 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.type"), "1", "10"));
 			return;			
 		}
-		//验证的值是否合法			
-		if(StringUtil.isBlank(menu.getMenuSort())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.sort")));
-			return;			
+		WeixinEntity weixin = this.getWeixinSession(request);
+		if(weixin == null || weixin.getWeixinId()<=0){
+			this.outJson(response, null, false);
+			return;
 		}
-		if(!StringUtil.checkLength(menu.getMenuSort()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.sort"), "1", "10"));
-			return;			
-		}
-		//验证类型：1文本 2图文 4外链接的值是否合法			
-		if(StringUtil.isBlank(menu.getMenuStyle())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.style")));
-			return;			
-		}
-		if(!StringUtil.checkLength(menu.getMenuStyle()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.style"), "1", "10"));
-			return;			
-		}
-		//验证授权数据编号的值是否合法			
-		if(StringUtil.isBlank(menu.getMenuOauthId())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.oauth.id")));
-			return;			
-		}
-		if(!StringUtil.checkLength(menu.getMenuOauthId()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.oauth.id"), "1", "10"));
-			return;			
-		}
-		//验证微信编号的值是否合法			
-		if(StringUtil.isBlank(menu.getMenuWeixinId())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.weixin.id")));
-			return;			
-		}
-		if(!StringUtil.checkLength(menu.getMenuWeixinId()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.weixin.id"), "1", "10"));
-			return;			
-		}
+		menu.setMenuWeixinId(weixin.getWeixinId()); 
+		menu.setMenuAppId(BasicUtil.getAppId());
 		menuBiz.saveEntity(menu);
-		this.outJson(response, JSONObject.toJSONString(menu));
+		this.outJson(response, null,true,JSONObject.toJSONString(menu));
 	}
 	
 	/**
@@ -335,15 +355,6 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	@ResponseBody	
 	public void update(@ModelAttribute MenuEntity menu, HttpServletResponse response,
 			HttpServletRequest request) {
-		//验证菜单所属商家编号的值是否合法			
-		if(StringUtil.isBlank(menu.getMenuAppId())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.app.id")));
-			return;			
-		}
-		if(!StringUtil.checkLength(menu.getMenuAppId()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.app.id"), "1", "10"));
-			return;			
-		}
 		//验证菜单名称的值是否合法			
 		if(StringUtil.isBlank(menu.getMenuTitle())){
 			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.title")));
@@ -351,15 +362,6 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 		}
 		if(!StringUtil.checkLength(menu.getMenuTitle()+"", 1, 15)){
 			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.title"), "1", "15"));
-			return;			
-		}
-		//验证菜单链接地址的值是否合法			
-		if(StringUtil.isBlank(menu.getMenuUrl())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.url")));
-			return;			
-		}
-		if(!StringUtil.checkLength(menu.getMenuUrl()+"", 1, 300)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.url"), "1", "300"));
 			return;			
 		}
 		//验证菜单状态 0：不启用 1：启用的值是否合法			
@@ -371,15 +373,6 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.status"), "1", "10"));
 			return;			
 		}
-		//验证父菜单编号的值是否合法			
-		if(StringUtil.isBlank(menu.getMenuMenuId())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.menu.id")));
-			return;			
-		}
-		if(!StringUtil.checkLength(menu.getMenuMenuId()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.menu.id"), "1", "10"));
-			return;			
-		}
 		//验证菜单属性 0:链接 1:回复的值是否合法			
 		if(StringUtil.isBlank(menu.getMenuType())){
 			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.type")));
@@ -389,44 +382,45 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.type"), "1", "10"));
 			return;			
 		}
-		//验证的值是否合法			
-		if(StringUtil.isBlank(menu.getMenuSort())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.sort")));
-			return;			
-		}
-		if(!StringUtil.checkLength(menu.getMenuSort()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.sort"), "1", "10"));
-			return;			
-		}
-		//验证类型：1文本 2图文 4外链接的值是否合法			
-		if(StringUtil.isBlank(menu.getMenuStyle())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.style")));
-			return;			
-		}
-		if(!StringUtil.checkLength(menu.getMenuStyle()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.style"), "1", "10"));
-			return;			
-		}
-		//验证授权数据编号的值是否合法			
-		if(StringUtil.isBlank(menu.getMenuOauthId())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.oauth.id")));
-			return;			
-		}
-		if(!StringUtil.checkLength(menu.getMenuOauthId()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.oauth.id"), "1", "10"));
-			return;			
-		}
-		//验证微信编号的值是否合法			
-		if(StringUtil.isBlank(menu.getMenuWeixinId())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("menu.weixin.id")));
-			return;			
-		}
-		if(!StringUtil.checkLength(menu.getMenuWeixinId()+"", 1, 10)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("menu.weixin.id"), "1", "10"));
-			return;			
-		}
 		menuBiz.updateEntity(menu);
 		this.outJson(response, JSONObject.toJSONString(menu));
 	}
-		
+	
+	/**
+	 * 检查的菜单的数量是否符合微信的
+	 * @param menu
+	 * @return
+	 */
+	@RequestMapping("/check")
+	@ResponseBody
+	public void check(@ModelAttribute MenuEntity menu, HttpServletResponse response,
+			HttpServletRequest request){
+		WeixinEntity weixin = this.getWeixinSession(request);
+		if(weixin == null || weixin.getWeixinId()<=0){
+			this.outJson(response, null, false);
+			return;
+		}
+		MenuEntity menuEntity = new MenuEntity();
+		menuEntity.setMenuAppId(BasicUtil.getAppId());
+		menuEntity.setMenuWeixinId(weixin.getWeixinId());
+		List<MenuEntity> menuList = menuBiz.query(menuEntity);
+		//计算一级菜单的总数
+		int i = 0;
+		for(MenuEntity _menuEntity : menuList){
+			if(_menuEntity.getMenuMenuId() == null){
+				i++;
+				if(i > 3){
+					this.outJson(response,null,false,this.getResString("menu.parent.max"));
+					return ;
+				}
+				MenuEntity subMenu = new MenuEntity();
+				subMenu.setMenuMenuId(_menuEntity.getMenuId());
+				if(menuBiz.query(subMenu).size() > 7){
+					this.outJson(response,null,false,this.getResString("menu.son.max"));
+					return ;
+				}
+			}
+		}
+		this.outJson(response, true);
+	}
 }

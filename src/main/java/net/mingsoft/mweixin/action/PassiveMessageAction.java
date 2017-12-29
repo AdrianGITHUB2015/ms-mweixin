@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
+import net.mingsoft.mweixin.entity.MenuEntity;
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
 import net.mingsoft.base.util.JSONObject;
 import com.mingsoft.util.PageUtil;
 import com.mingsoft.util.StringUtil;
+import com.mingsoft.weixin.entity.WeixinEntity;
 import com.mingsoft.base.entity.BaseEntity;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.basic.bean.ListBean;
@@ -92,6 +94,13 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 	@RequestMapping("/list")
 	@ResponseBody
 	public void list(@ModelAttribute PassiveMessageEntity passiveMessage,HttpServletResponse response, HttpServletRequest request,ModelMap model,BindingResult result) {
+		WeixinEntity weixin = this.getWeixinSession(request);
+		if(weixin == null || weixin.getWeixinId()<=0){
+			this.outJson(response, null, false);
+			return;
+		}
+		passiveMessage.setPmAppId(BasicUtil.getAppId());
+		passiveMessage.setPmWeixinId(weixin.getWeixinId());
 		BasicUtil.startPage();
 		List passiveMessageList = passiveMessageBiz.query(passiveMessage);
 		this.outJson(response, net.mingsoft.base.util.JSONArray.toJSONString(new EUListBean(passiveMessageList,(int)BasicUtil.endPage(passiveMessageList).getTotal()),new DoubleValueFilter(),new DateValueFilter()));
@@ -215,6 +224,13 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.tag"), "1", "30"));
 			return;			
 		}
+		WeixinEntity weixin = this.getWeixinSession(request);
+		if(weixin == null || weixin.getWeixinId()<=0){
+			this.outJson(response, null, false);
+			return;
+		}
+		passiveMessage.setPmAppId(BasicUtil.getAppId());
+		passiveMessage.setPmWeixinId(weixin.getWeixinId());
 		passiveMessageBiz.saveEntity(passiveMessage);
 		this.outJson(response, JSONObject.toJSONString(passiveMessage));
 	}
