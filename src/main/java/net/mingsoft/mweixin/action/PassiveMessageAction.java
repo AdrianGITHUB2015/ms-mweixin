@@ -327,8 +327,8 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 				if(ObjectUtil.isNull(_passiveMessage)){
 					flag = false;
 				//有结果再判断判断有无id，无id就重名，有id就说明是编辑的时候没有改名称，不算重名
-				}else if(Validator.isNotEmpty(passiveMessage.getId())){
-					if(_passiveMessage.getId().equals(passiveMessage.getId())){
+				}else if(Validator.isNotEmpty(passiveMessage.getPmId())){
+					if(_passiveMessage.getPmId().equals(passiveMessage.getPmId())){
 						flag = false;
 					}
 				}

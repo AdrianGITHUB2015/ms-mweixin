@@ -1,5 +1,5 @@
 <@ms.html5>
-	<@ms.nav title="微信被动消息回复管理"></@ms.nav>
+	<@ms.nav title="消息回复管理"></@ms.nav>
 	<@ms.searchForm name="searchForm" isvalidation=true>
 		<@ms.text label="关键字" maxlength="20" name="pmKey" value=""  width="170px;" placeholder="请输入关键字" />
 			<@ms.searchFormButton>
@@ -24,8 +24,8 @@
 		</table>
 	</@ms.panel>
 	
-	<@ms.modal  modalName="delPassiveMessage" title="微信被动消息回复数据删除" >
-		<@ms.modalBody>删除此微信被动消息回复
+	<@ms.modal  modalName="delPassiveMessage" title="消息回复数据删除" >
+		<@ms.modalBody>删除此消息回复
 			<@ms.modalButton>
 				<!--模态框按钮组-->
 				<@ms.button  value="确认" class="btn btn-danger rightDelete"  id="deletePassiveMessageBtn"  />
@@ -43,11 +43,6 @@
 			toolbar: "#toolbar",
 	    	columns: [{ checkbox: true},
 				    	{
-				        	field: 'pmId',
-				        	title: '编号',
-				        	width:'10',
-				        	align: 'center'
-				    	},{
 				        	field: 'pmKey',
 				        	title: '关键字',
 				        	width:'100',
@@ -61,6 +56,18 @@
 				        	title: '回复内容标签',
 				        	width:'200',
 				        	align: 'center'
+				    	},{
+				        	field: 'pmType',
+				        	title: '关键字类型',
+				        	width:'100',
+				        	align: 'center',
+				        	formatter:function(value,row,index) {
+				        		switch(value){
+				        			case 1: return "关键字回复";break;
+				        			case 2: return "关注回复";break;
+				        			case 3: return "被动回复";break;
+				        		}
+				        	}
 				    	}
 			]
 	    })

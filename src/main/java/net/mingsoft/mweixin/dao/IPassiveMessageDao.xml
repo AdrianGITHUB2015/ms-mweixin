@@ -11,7 +11,7 @@
 		<result column="PM_APP_ID" property="pmAppId" /><!--该回复所属的应用ID -->
 		<result column="PM_REPLY_NUM" property="pmReplyNum" /><!--被动回复的次数;为1时表示用户第一次被动响应消息,依次递增,当超出时取值为0的进行回复 -->
 		<result column="PM_KEY" property="pmKey" /><!--事件关键字 -->
-		<result column="PM_TYPE" property="pmType" /><!--回复属性:1.最终回复;达到迭代次数之后的回复消息,2.拓展回复迭代回复(优先迭代回复) -->
+		<result column="PM_TYPE" property="pmType" /><!--回复属性:1.关键字回复、2.关注回复、3.被动回复 -->
 		<result column="PM_TAG" property="pmTag" /><!-- -->
 		<result column="PM_CONTENT" property="pmContent" /><!--关注回复的内容-->
 	</resultMap>

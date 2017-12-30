@@ -43,6 +43,8 @@ public class MsgHandler extends AbstractHandler {
     //获取信息
     PassiveMessageEntity passiveMessage = new PassiveMessageEntity();
     passiveMessage.setPmKey(msg);
+    //需要对应上微信类型
+    
     //通过获取的信息，查询关键字表
     if(passiveMessageBiz.getEntity(passiveMessage) == null){
     	return null;
