@@ -69,6 +69,22 @@
 				        		}
 				        	}
 				    	}
+				    	,{
+				        	field: 'pmNewType',
+				        	title: '素材类型',
+				        	width:'100',
+				        	align: 'center',
+				        	formatter:function(value,row,index) {
+				        		switch(value){
+				        			case 1: return "文本";break;
+				        			case 2: return "图片";break;
+				        			case 3: return "语音";break;
+				        			case 4: return "视频";break;
+				        			case 5: return "音乐";break;
+				        			case 6: return "图文";break;
+				        		}
+				        	}
+				    	}
 			]
 	    })
 	})

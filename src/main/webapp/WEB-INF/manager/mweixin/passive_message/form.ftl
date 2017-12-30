@@ -31,12 +31,24 @@
 				    listValue="value"  
 				    validation={"required":"true", "data-bv-notempty-message":"必选项目"}
 				/>
+				<@ms.select 
+    				id="pmNewType"
+				    name="pmNewType" 
+				    label="素材类型" 
+				    width="240"  
+				    list=[{"id":1,"value":"文本"},{"id":2,"value":"图片"},{"id":3,"value":"语音"},{"id":4,"value":"视频"},{"id":5,"value":"音乐"},{"id":6,"value":"图文"}] 
+				    value="${(passiveMessageEntity.pmNewType)?default('')}"
+				    listKey="id" 
+				    listValue="value"  
+				    validation={"required":"true", "data-bv-notempty-message":"必选项目"}
+				/>
     			<@ms.textarea colSm="2" name="pmContent"  wrap="Soft" rows="3"  size=""  label="回复内容" value="${(passiveMessageEntity.pmContent)?default('')}" placeholder="请输入回复内容" validation={"required":"true","maxlength":"150","data-bv-stringlength-message":"回复内容长度不能超过150个字符长度!", "data-bv-notempty-message":"必填项目"}/>
     	</@ms.form>
     </@ms.panel>
 </@ms.html5>
 <script>
 	$("#pmType").select2({width: "210px"});
+	$("#pmNewType").select2({width: "210px"});
 	var url = "${managerPath}/mweixin/passiveMessage/save.do";
 	if($("input[name = 'pmId']").val() > 0){
 		url = "${managerPath}/mweixin/passiveMessage/update.do";
