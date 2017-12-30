@@ -12,6 +12,7 @@
 		<result column="PM_REPLY_NUM" property="pmReplyNum" /><!--被动回复的次数;为1时表示用户第一次被动响应消息,依次递增,当超出时取值为0的进行回复 -->
 		<result column="PM_KEY" property="pmKey" /><!--事件关键字 -->
 		<result column="PM_TYPE" property="pmType" /><!--回复属性:1.关键字回复、2.关注回复、3.被动回复 -->
+		<result column="PM_NEW_TYPE" property="pmNewType" /><!--1 回复文本消息、2 回复图片消息、3 回复语音消息、4 回复视频消息、5 回复音乐消息、6 回复图文消息 -->
 		<result column="PM_TAG" property="pmTag" /><!-- -->
 		<result column="PM_CONTENT" property="pmContent" /><!--关注回复的内容-->
 	</resultMap>
@@ -31,6 +32,7 @@
 			<if test="pmType &gt; 0">PM_TYPE,</if>
 			<if test="pmTag != null and pmTag != ''">PM_TAG,</if>
 			<if test="pmContent != null and pmContent != ''">PM_CONTENT,</if>
+			<if test="pmNewType != null and pmNewType != ''">PM_NEW_TYPE,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="pmWeixinId &gt; 0">#{pmWeixinId},</if>
@@ -43,6 +45,7 @@
 			<if test="pmType &gt; 0">#{pmType},</if>
 			<if test="pmTag != null and pmTag != ''">#{pmTag},</if>
 			<if test="pmContent != null and pmContent != ''">#{pmContent},</if>
+			<if test="pmNewType != null and pmNewType != ''">#{pmNewType},</if>
 		</trim>
 	</insert>
 	
@@ -59,7 +62,8 @@
 			<if test="pmKey != null and pmKey != ''">PM_KEY=#{pmKey},</if>			
 			<if test="pmType &gt; 0">PM_TYPE=#{pmType},</if>			
 			<if test="pmTag != null and pmTag != ''">PM_TAG=#{pmTag},</if>
-			<if test="pmContent != null and pmContent != ''">PM_CONTENT=#{pmContent},</if>			
+			<if test="pmContent != null and pmContent != ''">PM_CONTENT=#{pmContent},</if>	
+			<if test="pmNewType != null and pmNewType != ''">PM_NEW_TYPE=#{pmNewType},</if>			
 		</set>
 		where PM_ID = #{pmId}
 	</update>
@@ -82,7 +86,8 @@
 			<if test="pmKey != null and pmKey != ''"> and PM_KEY=#{pmKey} </if>				
 			<if test="pmType &gt; 0"> and PM_TYPE=#{pmType} </if>				
 			<if test="pmTag != null and pmTag != ''"> and PM_TAG=#{pmTag} </if>
-			<if test="pmContent != null and pmContent != ''"> and PM_CONTENT=#{pmContent} </if>				
+			<if test="pmContent != null and pmContent != ''"> and PM_CONTENT=#{pmContent} </if>
+			<if test="pmNewType != null and pmNewType != ''"> and PM_NEW_TYPE=#{pmNewType} </if>				
 		</where>
 		limit 0,1
 	</select>	
@@ -118,7 +123,8 @@
 				<if test="pmKey != null and pmKey != ''"> and PM_KEY=#{pmKey}</if>				
 				<if test="pmType &gt; 0"> and PM_TYPE=#{pmType} </if>				
 				<if test="pmTag != null and pmTag != ''"> and PM_TAG=#{pmTag} </if>	
-				<if test="pmContent != null and pmContent != ''"> and PM_CONTENT=#{pmContent} </if>				
+				<if test="pmContent != null and pmContent != ''"> and PM_CONTENT=#{pmContent} </if>
+				<if test="pmNewType != null and pmNewType != ''"> and PM_NEW_TYPE=#{pmNewType} </if>				
 		</where>		
 		order by PM_ID desc
 	</select>

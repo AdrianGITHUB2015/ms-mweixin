@@ -64,6 +64,27 @@ public class PassiveMessageEntity extends BaseEntity {
 	private String pmContent; 
 	
 	/**
+	 * 素材类型 1 回复文本消息、2 回复图片消息、3 回复语音消息、4 回复视频消息、5 回复音乐消息、6 回复图文消息
+	 */
+	private String pmNewType; 
+	
+	/**
+	 * 获取素材类型
+	 * @return
+	 */
+	public String getPmNewType() {
+		return pmNewType;
+	}
+
+	/**
+	 * 设置素材类型
+	 * @param pmNewType
+	 */
+	public void setPmNewType(String pmNewType) {
+		this.pmNewType = pmNewType;
+	}
+
+	/**
 	 * 获取消息回复内容
 	 * @return
 	 */

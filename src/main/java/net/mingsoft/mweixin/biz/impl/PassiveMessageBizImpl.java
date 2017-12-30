@@ -21,18 +21,19 @@ The MIT License (MIT) * Copyright (c) 2016 铭飞科技
 
 package net.mingsoft.mweixin.biz.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.mingsoft.base.biz.impl.BaseBizImpl;
-import com.mingsoft.base.dao.IBaseDao;
-import com.mingsoft.util.*;
-import java.util.*;
-
 import javax.annotation.Resource;
 
-import net.mingsoft.mweixin.entity.PassiveMessageEntity;
+import org.springframework.stereotype.Service;
+
+import com.mingsoft.base.biz.impl.BaseBizImpl;
+import com.mingsoft.base.dao.IBaseDao;
+import com.mingsoft.weixin.constant.SessionConst;
+import com.mingsoft.weixin.entity.WeixinEntity;
+
+import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
 import net.mingsoft.mweixin.dao.IPassiveMessageDao;
+import net.mingsoft.mweixin.entity.PassiveMessageEntity;
 
 /**
  * 微信被动消息回复管理持久化层
@@ -54,5 +55,19 @@ public class PassiveMessageBizImpl extends BaseBizImpl implements IPassiveMessag
 	protected IBaseDao getDao() {
 		// TODO Auto-generated method stub
 		return passiveMessageDao;
+	}
+
+
+	@Override
+	public PassiveMessageEntity getEntity(PassiveMessageEntity passiveMessage) {
+		// TODO Auto-generated method stub
+		WeixinEntity weixin = (WeixinEntity) BasicUtil.getSession(SessionConst.WEIXIN_SESSION);
+		if(weixin == null || weixin.getWeixinId()<=0){
+			return null;
+		}
+		passiveMessage.setPmWeixinId(weixin.getWeixinId()); 
+		passiveMessage.setPmAppId(BasicUtil.getAppId());
+		return (PassiveMessageEntity) passiveMessageDao.getByEntity(passiveMessage);
 	} 
+	
 }

@@ -15,4 +15,10 @@ import net.mingsoft.mweixin.entity.MenuEntity;
  */
 public interface IMenuBiz extends IBaseBiz {
 
+	/**
+	 * 获取微信菜单实体
+	 * @param menu
+	 * @return
+	 */
+	public MenuEntity getEntity(MenuEntity menu);
 }

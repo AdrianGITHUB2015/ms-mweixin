@@ -6,34 +6,28 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.validation.BindingResult;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.ui.ModelMap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
-import net.mingsoft.mweixin.entity.MenuEntity;
-import net.mingsoft.mweixin.entity.PassiveMessageEntity;
-import net.mingsoft.base.util.JSONObject;
+import com.mingsoft.base.entity.BaseEntity;
+import com.mingsoft.base.filter.DateValueFilter;
+import com.mingsoft.base.filter.DoubleValueFilter;
 import com.mingsoft.util.StringUtil;
 import com.mingsoft.weixin.entity.WeixinEntity;
 import com.xiaoleilu.hutool.lang.Validator;
 import com.xiaoleilu.hutool.util.ObjectUtil;
-import com.mingsoft.base.entity.BaseEntity;
-import net.mingsoft.basic.util.BasicUtil;
-import net.mingsoft.basic.bean.ListBean;
-import com.mingsoft.base.filter.DateValueFilter;
-import com.mingsoft.base.filter.DoubleValueFilter;
+
+import net.mingsoft.base.util.JSONObject;
 import net.mingsoft.basic.bean.EUListBean;
+import net.mingsoft.basic.util.BasicUtil;
+import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
+import net.mingsoft.mweixin.entity.PassiveMessageEntity;
 	
 /**
  * 微信被动消息回复管理控制层
@@ -149,11 +143,7 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 	@RequestMapping("/get")
 	@ResponseBody
 	public void get(@ModelAttribute PassiveMessageEntity passiveMessage,HttpServletResponse response, HttpServletRequest request,ModelMap model){
-		if(passiveMessage.getPmId()<=0) {
-			this.outJson(response, null, false, getResString("err.error", this.getResString("pm.id")));
-			return;
-		}
-		PassiveMessageEntity _passiveMessage = (PassiveMessageEntity)passiveMessageBiz.getEntity(passiveMessage.getPmId());
+		PassiveMessageEntity _passiveMessage = (PassiveMessageEntity)passiveMessageBiz.getEntity(passiveMessage);
 		this.outJson(response, _passiveMessage);
 	}
 	

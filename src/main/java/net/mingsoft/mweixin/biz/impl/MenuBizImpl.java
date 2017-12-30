@@ -26,11 +26,15 @@ import org.springframework.stereotype.Service;
 import com.mingsoft.base.biz.impl.BaseBizImpl;
 import com.mingsoft.base.dao.IBaseDao;
 import com.mingsoft.util.*;
+import com.mingsoft.weixin.constant.SessionConst;
+import com.mingsoft.weixin.entity.WeixinEntity;
+
 import java.util.*;
 
 import javax.annotation.Resource;
 
 import net.mingsoft.mweixin.entity.MenuEntity;
+import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.mweixin.biz.IMenuBiz;
 import net.mingsoft.mweixin.dao.IMenuDao;
 
@@ -54,5 +58,18 @@ public class MenuBizImpl extends BaseBizImpl implements IMenuBiz {
 	protected IBaseDao getDao() {
 		// TODO Auto-generated method stub
 		return menuDao;
+	}
+
+
+	@Override
+	public MenuEntity getEntity(MenuEntity menu) {
+		// TODO Auto-generated method stub
+		WeixinEntity weixin = (WeixinEntity) BasicUtil.getSession(SessionConst.WEIXIN_SESSION);
+		if(weixin == null || weixin.getWeixinId()<=0){
+			return null;
+		}
+		menu.setMenuWeixinId(weixin.getWeixinId()); 
+		menu.setMenuAppId(BasicUtil.getAppId());
+		return null;
 	} 
 }

@@ -1,8 +1,7 @@
 package net.mingsoft.mweixin.biz;
 
 import com.mingsoft.base.biz.IBaseBiz;
-import com.mingsoft.util.*;
-import java.util.*;
+
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
 
 /**
@@ -14,5 +13,12 @@ import net.mingsoft.mweixin.entity.PassiveMessageEntity;
  * 历史修订：<br/>
  */
 public interface IPassiveMessageBiz extends IBaseBiz {
+
+	/**
+	 * 获取回复消息实体
+	 * @param passiveMessage
+	 * @return
+	 */
+	public PassiveMessageEntity getEntity(PassiveMessageEntity passiveMessage);
 
 }
