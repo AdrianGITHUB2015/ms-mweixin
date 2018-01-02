@@ -13,6 +13,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
+import net.mingsoft.mweixin.entity.PassiveMessageEntity.TypeEnum;
 import net.mingsoft.weixin.builder.TextBuilder;
 import net.mingsoft.weixin.service.WeixinService;
 
@@ -42,12 +43,19 @@ public class MsgHandler extends AbstractHandler {
     //获取信息
     PassiveMessageEntity passiveMessage = new PassiveMessageEntity();
     passiveMessage.setPmKey(msg);
-    //需要对应上微信类型
     
     //通过获取的信息，查询关键字表
     passiveMessage = passiveMessageBiz.getEntity(passiveMessage);
     if(passiveMessage == null){
-    	return null;
+    	//被动回复
+    	passiveMessage = new PassiveMessageEntity();
+    	passiveMessage.setPmType(TypeEnum.TYPE_PASSIVE.toInt());
+    	passiveMessage = passiveMessageBiz.getEntity(passiveMessage);
+    	//没有设置被动回复返回null
+    	if(passiveMessage == null){
+    		return null;
+    	}
+    	return new TextBuilder().build(passiveMessage.getPmContent(), wxMessage, weixinService);
     }
     switch (passiveMessage.getPmNewType()){
 	    case 1: 

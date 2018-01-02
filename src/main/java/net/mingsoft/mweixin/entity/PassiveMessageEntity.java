@@ -52,7 +52,7 @@ public class PassiveMessageEntity extends BaseEntity {
 	 */
 	private String pmKey; 
 	/**
-	 * 回复属性:1.最终回复;达到迭代次数之后的回复消息,2.拓展回复迭代回复(优先迭代回复)
+	 * 回复属性:1,关键字回复，2,关注回复，3,被动回复
 	 */
 	private Integer pmType; 
 	/**
@@ -207,14 +207,14 @@ public class PassiveMessageEntity extends BaseEntity {
 		return this.pmKey;
 	}
 	/**
-	 * 设置回复属性:1.最终回复;达到迭代次数之后的回复消息,2.拓展回复迭代回复(优先迭代回复)
+	 * 设置回复属性:1,关键字回复，2,关注回复，3,被动回复
 	 */
 	public void setPmType(Integer pmType) {
 		this.pmType = pmType;
 	}
 
 	/**
-	 * 获取回复属性:1.最终回复;达到迭代次数之后的回复消息,2.拓展回复迭代回复(优先迭代回复)
+	 * 获取回复属性:1,关键字回复，2,关注回复，3,被动回复
 	 */
 	public Integer getPmType() {
 		return this.pmType;
@@ -263,8 +263,17 @@ public class PassiveMessageEntity extends BaseEntity {
 	}
 	
 	public enum TypeEnum implements BaseEnum{
+		/**
+		 * 关键字回复
+		 */
 		TYPE_KEYWORD(1,"关键字回复"),
+		/**
+		 * 关注回复
+		 */
 		TYPE_ATTENTION(2,"关注回复"),
+		/**
+		 * 被动回复
+		 */
 		TYPE_PASSIVE(3,"被动回复");
 
 		private int id;
