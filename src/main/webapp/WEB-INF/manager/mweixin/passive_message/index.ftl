@@ -37,7 +37,7 @@
 <script>
 	$(function(){
 		$("#passiveMessageList").bootstrapTable({
-			url:"${managerPath}/mweixin/passiveMessage/list.do",
+			url:"${managerPath}/mweixin/passiveMessage/list.do?pmType="+1,
 			contentType : "application/x-www-form-urlencoded",
 			queryParamsType : "undefined",
 			toolbar: "#toolbar",
@@ -90,7 +90,7 @@
 	})
 	//增加按钮
 	$("#addPassiveMessageBtn").click(function(){
-		location.href ="${managerPath}/mweixin/passiveMessage/form.do"; 
+		location.href ="${managerPath}/mweixin/passiveMessage/form.do?pmType="+1; 
 	})
 	//删除按钮
 	$("#delPassiveMessageBtn").click(function(){

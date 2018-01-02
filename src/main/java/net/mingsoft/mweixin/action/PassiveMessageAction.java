@@ -28,6 +28,7 @@ import net.mingsoft.basic.bean.EUListBean;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
+import net.mingsoft.mweixin.entity.PassiveMessageEntity.TypeEnum;
 	
 /**
  * 微信被动消息回复管理控制层
@@ -105,8 +106,16 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 	 */
 	@RequestMapping("/form")
 	public String form(@ModelAttribute PassiveMessageEntity passiveMessage,HttpServletResponse response,HttpServletRequest request,ModelMap model){
+		PassiveMessageEntity passiveMessageEntity = new PassiveMessageEntity();
 		if(passiveMessage.getPmId() != null){
-			BaseEntity passiveMessageEntity = passiveMessageBiz.getEntity(passiveMessage.getPmId());			
+			passiveMessageEntity = (PassiveMessageEntity) passiveMessageBiz.getEntity(passiveMessage.getPmId());			
+			model.addAttribute("passiveMessageEntity",passiveMessageEntity);
+		}else{
+			passiveMessageEntity = passiveMessageBiz.getEntity(passiveMessage);
+			if(passiveMessageEntity == null){
+				passiveMessageEntity = new PassiveMessageEntity();
+				passiveMessageEntity.setPmType(passiveMessage.getPmType());
+			}
 			model.addAttribute("passiveMessageEntity",passiveMessageEntity);
 		}
 		return view ("/mweixin/passive_message/form");
@@ -187,15 +196,6 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.content"), "1", "150"));
 			return;			
 		}
-		//验证事件关键字的值是否合法			
-		if(StringUtil.isBlank(passiveMessage.getPmKey())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("pm.key")));
-			return;			
-		}
-		if(!StringUtil.checkLength(passiveMessage.getPmKey()+"", 1, 300)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.key"), "1", "200"));
-			return;			
-		}
 		WeixinEntity weixin = this.getWeixinSession(request);
 		if(weixin == null || weixin.getWeixinId()<=0){
 			this.outJson(response, null, false);
@@ -203,9 +203,11 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 		}
 		passiveMessage.setPmAppId(BasicUtil.getAppId());
 		passiveMessage.setPmWeixinId(weixin.getWeixinId());
-		if(isRepeat(passiveMessage)){
-			this.outJson(response, null, false, this.getResString("pm.key.repeat"));
-			return;	
+		if(passiveMessage.getPmType() == TypeEnum.TYPE_KEYWORD.toInt()){
+			if(isRepeat(passiveMessage)){
+				this.outJson(response, null, false, this.getResString("pm.key.repeat"));
+				return;	
+			}
 		}
 		passiveMessageBiz.saveEntity(passiveMessage);
 		this.outJson(response, JSONObject.toJSONString(passiveMessage));
@@ -274,15 +276,6 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.content"), "1", "150"));
 			return;			
 		}
-		//验证事件关键字的值是否合法			
-		if(StringUtil.isBlank(passiveMessage.getPmKey())){
-			this.outJson(response, null,false,getResString("err.empty", this.getResString("pm.key")));
-			return;			
-		}
-		if(!StringUtil.checkLength(passiveMessage.getPmKey()+"", 1, 300)){
-			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.key"), "1", "200"));
-			return;			
-		}
 		WeixinEntity weixin = this.getWeixinSession(request);
 		if(weixin == null || weixin.getWeixinId()<=0){
 			this.outJson(response, null, false);
@@ -290,9 +283,11 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 		}
 		passiveMessage.setPmAppId(BasicUtil.getAppId());
 		passiveMessage.setPmWeixinId(weixin.getWeixinId());
-		if(isRepeat(passiveMessage)){
-			this.outJson(response, null, false, this.getResString("pm.key.repeat"));
-			return;	
+		if(passiveMessage.getPmType() == TypeEnum.TYPE_KEYWORD.toInt()){
+			if(isRepeat(passiveMessage)){
+				this.outJson(response, null, false, this.getResString("pm.key.repeat"));
+				return;	
+			}
 		}
 		passiveMessageBiz.updateEntity(passiveMessage);
 		this.outJson(response, JSONObject.toJSONString(passiveMessage));

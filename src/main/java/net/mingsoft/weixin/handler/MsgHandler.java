@@ -4,7 +4,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import me.chanjar.weixin.common.api.WxConsts;
@@ -46,12 +45,28 @@ public class MsgHandler extends AbstractHandler {
     //需要对应上微信类型
     
     //通过获取的信息，查询关键字表
-    if(passiveMessageBiz.getEntity(passiveMessage) == null){
+    passiveMessage = passiveMessageBiz.getEntity(passiveMessage);
+    if(passiveMessage == null){
     	return null;
     }
+    switch (passiveMessage.getPmNewType()){
+	    case 1: 
+	    	return new TextBuilder().build(passiveMessage.getPmContent(), wxMessage, weixinService);
+//	    case : 
+//	    	//图片消息的配置
+//	    case 3: 
+//	    	//语音消息的配置
+//	    case 4: 
+//	    	//视频消息的配置
+//	    case 5: 
+//	    	//音乐消息的配置
+//	    case 6: 
+//	    	//图文消息的配置
+    }
     //设置content
-    String content = passiveMessage.getPmContent();;
-    return new TextBuilder().build(content, wxMessage, weixinService);
+//    String content = passiveMessage.getPmContent();;
+//    return new TextBuilder().build(content, wxMessage, weixinService);
+	return null;
 
   }
 

@@ -2,6 +2,8 @@ package net.mingsoft.mweixin.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.mingsoft.base.constant.e.BaseEnum;
 import com.mingsoft.base.entity.BaseEntity;
 import java.util.Date;
 
@@ -229,5 +231,60 @@ public class PassiveMessageEntity extends BaseEntity {
 	 */
 	public String getPmTag() {
 		return this.pmTag;
+	}
+	
+	public enum NewTypeEnum implements BaseEnum{
+		NEW_TYPE_TEXT(1,"文本消息"),
+		NEW_TYPE_IMAGE(2,"图片消息"),
+		NEW_TYPE_VOICE(3,"语音消息"),
+		NEW_TYPE_MOVIE(4,"视频消息"),
+		NEW_TYPE_MUSIC(5,"音乐消息"),
+		NEW_TYPE_IMAGE_TEXT(6,"图文消息");
+
+		private int id;
+		
+		private String value;
+		
+		NewTypeEnum(int id , String value){
+			this.id = id;
+			this.value = value;
+		}
+		
+		@Override
+		public int toInt() {
+			// TODO Auto-generated method stub
+			return this.id;
+		}
+		@Override
+		public String toString(){
+			return this.value;
+		}
+		
+	}
+	
+	public enum TypeEnum implements BaseEnum{
+		TYPE_KEYWORD(1,"关键字回复"),
+		TYPE_ATTENTION(2,"关注回复"),
+		TYPE_PASSIVE(3,"被动回复");
+
+		private int id;
+		
+		private String value;
+		
+		TypeEnum(int id , String value){
+			this.id = id;
+			this.value = value;
+		}
+		
+		@Override
+		public int toInt() {
+			// TODO Auto-generated method stub
+			return this.id;
+		}
+		@Override
+		public String toString(){
+			return this.value;
+		}
+		
 	}
 }

@@ -19,18 +19,10 @@
     <@ms.panel>
     	<@ms.form name="passiveMessageForm" isvalidation=true>
     		<@ms.hidden name="pmId" value="${(passiveMessageEntity.pmId)?default('')}"/>
-    			<@ms.text label="事件关键字" name="pmKey" value="${(passiveMessageEntity.pmKey)?default('')}"  width="240px;" placeholder="请输入事件关键字" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"事件关键字长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
-    			<@ms.select 
-    				id="pmType"
-				    name="pmType" 
-				    label="关键字类型" 
-				    width="240"  
-				    list=[{"id":1,"value":"关键字回复"},{"id":2,"value":"关注回复"},{"id":3,"value":"被动回复"}] 
-				    value="${(passiveMessageEntity.pmType)?default('')}"
-				    listKey="id" 
-				    listValue="value"  
-				    validation={"required":"true", "data-bv-notempty-message":"必选项目"}
-				/>
+    			<#if passiveMessageEntity.pmType == 1>
+    				<@ms.text label="事件关键字" name="pmKey" value="${(passiveMessageEntity.pmKey)?default('')}"  width="240px;" placeholder="请输入事件关键字" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"事件关键字长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
+    			</#if>
+    			<@ms.hidden name="pmType" value="${(passiveMessageEntity.pmType)?default('')}"/>
 				<@ms.select 
     				id="pmNewType"
 				    name="pmNewType" 
@@ -73,7 +65,12 @@
 			success: function(status) {
 				if(status.pmWeixinId > 0) { 
 					<@ms.notify msg="保存或更新成功" type= "success" />
-					location.href = "${managerPath}/mweixin/passiveMessage/index.do";
+					if(status.pmType == 1){
+						location.href = "${managerPath}/mweixin/passiveMessage/index.do?pmType="+1;
+					}else{
+						$(".btn-success").text(btnWord);
+						$(".btn-success").removeAttr("disabled");
+					}
 				}
 				else{
 					$(".btn-success").text(btnWord);
