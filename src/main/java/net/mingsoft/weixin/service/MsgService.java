@@ -11,6 +11,7 @@ import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
 import net.mingsoft.weixin.builder.TextBuilder;
@@ -41,6 +42,8 @@ public class MsgService extends AbstractService {
     String msg = wxMessage.getContent();
     //获取信息
     PassiveMessageEntity passiveMessage = new PassiveMessageEntity();
+    passiveMessage.setPmWeixinId(weixinService.getWeixin().getWeixinId()); 
+    passiveMessage.setPmAppId(BasicUtil.getAppId());
     passiveMessage.setPmKey(msg);
     
     //通过获取的信息，查询关键字表

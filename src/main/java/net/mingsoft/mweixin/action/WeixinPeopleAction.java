@@ -64,7 +64,7 @@ public class WeixinPeopleAction extends BaseAction{
 	@Resource(name="netWeixinPeopleBiz")
 	private IWeixinPeopleBiz weixinPeopleBiz;
 	
-	@Resource(name="weixinService")
+	@Autowired
 	private PortalService weixinService;
 	
 	

@@ -19,6 +19,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
  * @author Binary Wang
  *
  */
+@Component
 public class LogService extends AbstractService {
   private static final ObjectMapper JSON = new ObjectMapper();
   static {
