@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import me.chanjar.weixin.common.bean.WxJsapiSignature;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import net.mingsoft.mweixin.action.BaseAction;
-import net.mingsoft.weixin.service.WeixinService;
+import net.mingsoft.weixin.service.PortalService;
 
 /**
  * 微信js-sdk接口
@@ -33,7 +33,7 @@ public class JsSdkAction extends BaseAction {
 	@ResponseBody
 	@PostMapping("/createJsapiSignature")
 	public WxJsapiSignature createJsapiSignature(String url,String weixinNo) {
-		WeixinService weixinService = super.builderWeixinService(weixinNo);
+		PortalService weixinService = super.builderWeixinService(weixinNo);
 		try {
 			WxJsapiSignature temp = weixinService.createJsapiSignature(url);
 			return temp;

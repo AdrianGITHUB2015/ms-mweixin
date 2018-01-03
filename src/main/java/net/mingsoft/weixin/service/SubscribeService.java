@@ -19,7 +19,7 @@ import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
 import net.mingsoft.weixin.builder.TextBuilder;
-import net.mingsoft.weixin.service.WeixinService;
+import net.mingsoft.weixin.service.PortalService;
 
 /**
  * 
@@ -27,7 +27,7 @@ import net.mingsoft.weixin.service.WeixinService;
  *
  */
 @Component
-public class SubscribeHandler extends AbstractHandler {
+public class SubscribeService extends AbstractService {
 
 	/**
 	 * 注入微信被动消息回复业务层
@@ -42,7 +42,7 @@ public class SubscribeHandler extends AbstractHandler {
 
     this.logger.info("新关注用户 OPENID: " + wxMessage.getFromUser());
 
-    WeixinService weixinService = (WeixinService) wxMpService;
+    PortalService weixinService = (PortalService) wxMpService;
 
     // 获取微信用户基本信息
     WxMpUser userWxInfo = weixinService.getUserService().userInfo(wxMessage.getFromUser(), null);

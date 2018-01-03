@@ -14,13 +14,13 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
 import net.mingsoft.weixin.builder.TextBuilder;
-import net.mingsoft.weixin.service.WeixinService;
+import net.mingsoft.weixin.service.PortalService;
 
 /**
  * @author Binary Wang
  */
 @Component
-public class MsgHandler extends AbstractHandler {
+public class MsgService extends AbstractService {
 	
 	/**
 	 * 注入微信被动消息回复业务层
@@ -33,7 +33,7 @@ public class MsgHandler extends AbstractHandler {
                                   Map<String, Object> context, WxMpService wxMpService,
                                   WxSessionManager sessionManager) {
 
-    WeixinService weixinService = (WeixinService) wxMpService;
+    PortalService weixinService = (PortalService) wxMpService;
 
     if (!wxMessage.getMsgType().equals(WxConsts.XmlMsgType.EVENT)) {
       //TODO 可以选择将消息保存到本地

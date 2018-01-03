@@ -15,12 +15,15 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
  *
  */
 @Component
-public class NullHandler extends AbstractHandler {
+public class UnsubscribeService extends AbstractService {
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
             Map<String, Object> context, WxMpService wxMpService,
             WxSessionManager sessionManager) {
+        String openId = wxMessage.getFromUser();
+        this.logger.info("取消关注用户 OPENID: " + openId);
+        // TODO 可以更新本地数据库为取消关注状态
         return null;
     }
 

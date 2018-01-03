@@ -26,7 +26,7 @@ import com.mingsoft.weixin.util.OauthUtils;
 
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.basic.util.SpringUtil;
-import net.mingsoft.weixin.service.WeixinService;
+import net.mingsoft.weixin.service.PortalService;
 
 /**
  * mweixin基础控制层
@@ -111,10 +111,10 @@ public class BaseAction extends com.mingsoft.basic.action.BaseAction{
 	 * @param weixinNo 微信号
 	 * @return WeixinService
 	 */
-	protected WeixinService builderWeixinService(String weixinNo) {
+	protected PortalService builderWeixinService(String weixinNo) {
 		IWeixinBiz weixinBiz = SpringUtil.getBean(IWeixinBiz.class);
 		WeixinEntity weixin = weixinBiz.getByWeixinNo(weixinNo);
-		WeixinService weixinService = SpringUtil.getBean(WeixinService.class);
+		PortalService weixinService = SpringUtil.getBean(PortalService.class);
 		return weixinService.build(weixin);
 	}
 	

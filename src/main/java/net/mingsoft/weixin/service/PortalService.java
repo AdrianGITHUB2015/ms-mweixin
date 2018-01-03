@@ -21,44 +21,44 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import static me.chanjar.weixin.common.api.WxConsts.*;
 
 @Service("weixinService")
-public class WeixinService extends WxMpServiceImpl {
+public class PortalService extends WxMpServiceImpl {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	protected LogHandler logHandler;
+	protected LogService logHandler;
 
 	@Autowired
-	protected NullHandler nullHandler;
+	protected NullService nullHandler;
 
 	@Autowired
-	protected KfSessionHandler kfSessionHandler;
+	protected KfSessionService kfSessionHandler;
 
 	@Autowired
-	protected StoreCheckNotifyHandler storeCheckNotifyHandler;
+	protected StoreCheckNotifyService storeCheckNotifyHandler;
 
 	@Autowired
-	private LocationHandler locationHandler;
+	private LocationService locationHandler;
 
 	@Autowired
-	private MenuHandler menuHandler;
+	private MenuService menuHandler;
 
 	@Autowired
-	private MsgHandler msgHandler;
+	private MsgService msgHandler;
 
 	@Autowired
-	private UnsubscribeHandler unsubscribeHandler;
+	private UnsubscribeService unsubscribeHandler;
 
 	@Autowired
-	private SubscribeHandler subscribeHandler;
+	private SubscribeService subscribeHandler;
 	
 	@Autowired
-	private ScanHandler scanHandler;
+	private ScanService scanHandler;
 	
 	private WxMpMessageRouter router;
 	private WeixinEntity weixin;
 	
 
-	public WeixinService build(WeixinEntity weixin) {
+	public PortalService build(WeixinEntity weixin) {
 		this.weixin = weixin;
 		final WxMpInMemoryConfigStorage config = new WxMpInMemoryConfigStorage();
 		config.setAppId(weixin.getWeixinAppId());// 设置微信公众号的appid

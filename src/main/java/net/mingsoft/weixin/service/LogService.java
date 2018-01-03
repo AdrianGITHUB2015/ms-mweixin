@@ -19,7 +19,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
  * @author Binary Wang
  *
  */
-public class LogHandler extends AbstractHandler {
+public class LogService extends AbstractService {
   private static final ObjectMapper JSON = new ObjectMapper();
   static {
     JSON.setSerializationInclusion(Include.NON_NULL);

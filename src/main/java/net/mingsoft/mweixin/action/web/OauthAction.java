@@ -32,7 +32,7 @@ import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.mweixin.biz.IOauthBiz;
 import net.mingsoft.mweixin.biz.IWeixinPeopleBiz;
-import net.mingsoft.weixin.service.WeixinService;
+import net.mingsoft.weixin.service.PortalService;
 	
 /**
  * 微信网页2.0授权表管理控制层
@@ -54,7 +54,7 @@ public class OauthAction extends com.mingsoft.weixin.action.BaseAction{
 	@Resource(name="netWeixinPeopleBiz")
 	private IWeixinPeopleBiz weixinPeopleBiz;
 	@Autowired
-	private WeixinService wxService;
+	private PortalService wxService;
 	@Autowired
 	private IWeixinBiz weixinBiz;
 	

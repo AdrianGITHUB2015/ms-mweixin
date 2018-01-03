@@ -10,18 +10,18 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 
 /**
+ * 门店审核事件处理
  * 
- * @author Binary Wang
- *
+ * @author 王彬 (Binary Wang)
  */
 @Component
-public class KfSessionHandler extends AbstractHandler{
+public class StoreCheckNotifyService extends AbstractService {
 
   @Override
   public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
       Map<String, Object> context, WxMpService wxMpService,
-            WxSessionManager sessionManager) {
-    //TODO 对会话做处理
+      WxSessionManager sessionManager) {
+    // TODO 处理门店审核事件
     return null;
   }
 

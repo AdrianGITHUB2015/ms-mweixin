@@ -17,7 +17,7 @@ import net.mingsoft.weixin.builder.TextBuilder;
  *
  */
 @Component
-public class LocationHandler extends AbstractHandler {
+public class LocationService extends AbstractService {
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,

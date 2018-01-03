@@ -14,7 +14,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import net.mingsoft.weixin.builder.AbstractBuilder;
 import net.mingsoft.weixin.builder.ImageBuilder;
 import net.mingsoft.weixin.builder.TextBuilder;
-import net.mingsoft.weixin.service.WeixinService;
+import net.mingsoft.weixin.service.PortalService;
 
 /**
  * 
@@ -22,13 +22,13 @@ import net.mingsoft.weixin.service.WeixinService;
  *
  */
 @Component
-public class MenuHandler extends AbstractHandler {
+public class MenuService extends AbstractService {
 
   @Override
   public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
       Map<String, Object> context, WxMpService wxMpService,
       WxSessionManager sessionManager) {
-    WeixinService weixinService = (WeixinService) wxMpService;
+    PortalService weixinService = (PortalService) wxMpService;
 
     String key = wxMessage.getEventKey();
     this.logger.debug("点击菜单类型："+key);

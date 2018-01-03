@@ -44,7 +44,7 @@ import me.chanjar.weixin.mp.bean.result.WxMpUserList;
 import net.mingsoft.basic.bean.EUListBean;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.mweixin.biz.IWeixinPeopleBiz;
-import net.mingsoft.weixin.service.WeixinService;
+import net.mingsoft.weixin.service.PortalService;
 
 /**
  * 微信基用户控制层
@@ -65,7 +65,7 @@ public class WeixinPeopleAction extends BaseAction{
 	private IWeixinPeopleBiz weixinPeopleBiz;
 	
 	@Resource(name="weixinService")
-	private WeixinService weixinService;
+	private PortalService weixinService;
 	
 	
 	/**

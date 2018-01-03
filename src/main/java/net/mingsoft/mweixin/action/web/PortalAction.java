@@ -20,7 +20,7 @@ import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import net.mingsoft.basic.util.BasicUtil;
-import net.mingsoft.weixin.service.WeixinService;
+import net.mingsoft.weixin.service.PortalService;
 
 /**
  * 微信入口
@@ -35,7 +35,7 @@ import net.mingsoft.weixin.service.WeixinService;
 public class PortalAction extends BaseAction {
 	
 	@Autowired
-	private WeixinService wxService;
+	private PortalService wxService;
 	@Autowired
 	private IWeixinBiz weixinBiz;
 
