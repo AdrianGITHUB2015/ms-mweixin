@@ -114,6 +114,8 @@ public class BaseAction extends com.mingsoft.basic.action.BaseAction{
 	protected WeixinService builderWeixinService(String weixinNo) {
 		IWeixinBiz weixinBiz = SpringUtil.getBean(IWeixinBiz.class);
 		WeixinEntity weixin = weixinBiz.getByWeixinNo(weixinNo);
-		return new WeixinService(weixin);
+		WeixinService weixinService = SpringUtil.getBean(WeixinService.class);
+		return weixinService.build(weixin);
 	}
+	
 }

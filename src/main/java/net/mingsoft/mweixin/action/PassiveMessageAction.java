@@ -28,7 +28,6 @@ import net.mingsoft.basic.bean.EUListBean;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
-import net.mingsoft.mweixin.entity.PassiveMessageEntity.TypeEnum;
 	
 /**
  * 微信被动消息回复管理控制层
@@ -203,7 +202,7 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 		}
 		passiveMessage.setPmAppId(BasicUtil.getAppId());
 		passiveMessage.setPmWeixinId(weixin.getWeixinId());
-		if(passiveMessage.getPmType() == TypeEnum.TYPE_KEYWORD.toInt()){
+		if(passiveMessage.getPmType() == PassiveMessageEntity.Type.TYPE_KEYWORD){
 			if(isRepeat(passiveMessage)){
 				this.outJson(response, null, false, this.getResString("pm.key.repeat"));
 				return;	
@@ -283,7 +282,7 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 		}
 		passiveMessage.setPmAppId(BasicUtil.getAppId());
 		passiveMessage.setPmWeixinId(weixin.getWeixinId());
-		if(passiveMessage.getPmType() == TypeEnum.TYPE_KEYWORD.toInt()){
+		if(passiveMessage.getPmType() == PassiveMessageEntity.Type.TYPE_KEYWORD){
 			if(isRepeat(passiveMessage)){
 				this.outJson(response, null, false, this.getResString("pm.key.repeat"));
 				return;	

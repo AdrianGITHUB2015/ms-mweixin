@@ -262,38 +262,9 @@ public class PassiveMessageEntity extends BaseEntity {
 		
 	}
 	
-	public enum TypeEnum implements BaseEnum{
-		/**
-		 * 关键字回复
-		 */
-		TYPE_KEYWORD(1,"关键字回复"),
-		/**
-		 * 关注回复
-		 */
-		TYPE_ATTENTION(2,"关注回复"),
-		/**
-		 * 被动回复
-		 */
-		TYPE_PASSIVE(3,"被动回复");
-
-		private int id;
-		
-		private String value;
-		
-		TypeEnum(int id , String value){
-			this.id = id;
-			this.value = value;
-		}
-		
-		@Override
-		public int toInt() {
-			// TODO Auto-generated method stub
-			return this.id;
-		}
-		@Override
-		public String toString(){
-			return this.value;
-		}
-		
+	public static class Type{
+		public static final int TYPE_KEYWORD = 1,//关键字回复
+				TYPE_ATTENTION=2,//关注回复
+				TYPE_PASSIVE=3;//被动回复
 	}
 }

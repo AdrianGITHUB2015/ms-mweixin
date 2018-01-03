@@ -1,4 +1,4 @@
-package net.mingsoft.weixin.handler;
+package net.mingsoft.weixin.service;
 
 import java.util.Map;
 
@@ -13,7 +13,6 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
-import net.mingsoft.mweixin.entity.PassiveMessageEntity.TypeEnum;
 import net.mingsoft.weixin.builder.TextBuilder;
 import net.mingsoft.weixin.service.WeixinService;
 
@@ -49,7 +48,7 @@ public class MsgHandler extends AbstractHandler {
     if(passiveMessage == null){
     	//被动回复
     	passiveMessage = new PassiveMessageEntity();
-    	passiveMessage.setPmType(TypeEnum.TYPE_PASSIVE.toInt());
+    	passiveMessage.setPmType(PassiveMessageEntity.Type.TYPE_PASSIVE);
     	passiveMessage = passiveMessageBiz.getEntity(passiveMessage);
     	//没有设置被动回复返回null
     	if(passiveMessage == null){

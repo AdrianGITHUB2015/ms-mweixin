@@ -1,9 +1,8 @@
 package net.mingsoft.weixin.service;
 
-import javax.annotation.PostConstruct;
 
 import me.chanjar.weixin.mp.constant.WxMpEventConstants;
-import net.mingsoft.weixin.handler.*;
+import net.mingsoft.weixin.service.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,31 +20,46 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 
 import static me.chanjar.weixin.common.api.WxConsts.*;
 
+@Service("weixinService")
 public class WeixinService extends WxMpServiceImpl {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	protected LogHandler logHandler = new LogHandler();
+	@Autowired
+	protected LogHandler logHandler;
 
-	protected NullHandler nullHandler = new NullHandler();
+	@Autowired
+	protected NullHandler nullHandler;
 
-	protected KfSessionHandler kfSessionHandler = new KfSessionHandler();
+	@Autowired
+	protected KfSessionHandler kfSessionHandler;
 
-	protected StoreCheckNotifyHandler storeCheckNotifyHandler = new StoreCheckNotifyHandler();
+	@Autowired
+	protected StoreCheckNotifyHandler storeCheckNotifyHandler;
 
-	private LocationHandler locationHandler = new LocationHandler();
+	@Autowired
+	private LocationHandler locationHandler;
 
-	private MenuHandler menuHandler = new MenuHandler();
+	@Autowired
+	private MenuHandler menuHandler;
 
-	private MsgHandler msgHandler = new MsgHandler();
+	@Autowired
+	private MsgHandler msgHandler;
 
-	private UnsubscribeHandler unsubscribeHandler = new UnsubscribeHandler();
+	@Autowired
+	private UnsubscribeHandler unsubscribeHandler;
 
-	private SubscribeHandler subscribeHandler = new SubscribeHandler();
-
-	private WxMpMessageRouter router;
+	@Autowired
+	private SubscribeHandler subscribeHandler;
+	
+	@Autowired
 	private ScanHandler scanHandler;
+	
+	private WxMpMessageRouter router;
+	private WeixinEntity weixin;
+	
 
-	public WeixinService(WeixinEntity weixin) {
+	public WeixinService build(WeixinEntity weixin) {
+		this.weixin = weixin;
 		final WxMpInMemoryConfigStorage config = new WxMpInMemoryConfigStorage();
 		config.setAppId(weixin.getWeixinAppId());// 设置微信公众号的appid
 		config.setSecret(weixin.getWeixinAppSecret());// 设置微信公众号的app corpSecret
@@ -97,9 +111,11 @@ public class WeixinService extends WxMpServiceImpl {
 		newRouter.rule().async(false).msgType(XmlMsgType.EVENT).event(EventType.SCAN).handler(this.scanHandler).end();
 
 		// 默认
+		//this.msgHandler = SpringUtil.getBean(MsgHandler.class);
 		newRouter.rule().async(false).handler(this.msgHandler).end();
 
 		this.router = newRouter;
+		return this;
 	}
 
 	public WxMpXmlOutMessage route(WxMpXmlMessage message) {
@@ -122,4 +138,14 @@ public class WeixinService extends WxMpServiceImpl {
 
 		return false;
 	}
+
+	public WeixinEntity getWeixin() {
+		return weixin;
+	}
+
+	public void setWeixin(WeixinEntity weixin) {
+		this.weixin = weixin;
+	}
+	
+	
 }

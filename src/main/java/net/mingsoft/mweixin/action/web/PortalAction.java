@@ -34,6 +34,7 @@ import net.mingsoft.weixin.service.WeixinService;
 @RequestMapping("/mweixin/portal")
 public class PortalAction extends BaseAction {
 	
+	@Autowired
 	private WeixinService wxService;
 	@Autowired
 	private IWeixinBiz weixinBiz;
@@ -49,7 +50,7 @@ public class PortalAction extends BaseAction {
 		String weixinNo = BasicUtil.getString("weixinNo");
 		//获取微信实体，构建服务
 		WeixinEntity weixin = weixinBiz.getByWeixinNo(weixinNo);
-		wxService = new WeixinService(weixin);
+		wxService = wxService.build(weixin);
 		
 		this.logger.debug("\n接收到来自微信服务器的认证消息：[{}, {}, {}, {}]", new String[] { signature, timestamp, nonce, echostr });
 		if (StringUtils.isAnyBlank(signature, timestamp, nonce, echostr)) {
@@ -69,11 +70,16 @@ public class PortalAction extends BaseAction {
 			@RequestParam(name = "encrypt_type", required = false) String encType,
 			@RequestParam(name = "msg_signature", required = false) String msgSignature,
 			@RequestParam("timestamp") String timestamp, @RequestParam("nonce") String nonce) {
+		
+		String weixinNo = BasicUtil.getString("weixinNo");
 		this.logger.debug(
-				"\n接收微信请求：[signature=[{}], encType=[{}], msgSignature=[{}],"
+				"\n接收微信请求：[weixinNo＝[{}]signature=[{}], encType=[{}], msgSignature=[{}],"
 						+ " timestamp=[{}], nonce=[{}], requestBody=[\n{}\n] ",
-				new String[] { signature, encType, msgSignature, timestamp, nonce, requestBody });
+				new String[] { weixinNo,signature, encType, msgSignature, timestamp, nonce, requestBody });
 
+		//获取微信实体，构建服务
+		WeixinEntity weixin = weixinBiz.getByWeixinNo(weixinNo);
+		wxService = wxService.build(weixin);
 		if (!this.wxService.checkSignature(timestamp, nonce, signature)) {
 			throw new IllegalArgumentException("非法请求，可能属于伪造的请求！");
 		}

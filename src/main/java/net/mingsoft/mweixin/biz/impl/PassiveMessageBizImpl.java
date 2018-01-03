@@ -23,51 +23,43 @@ package net.mingsoft.mweixin.biz.impl;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mingsoft.base.biz.impl.BaseBizImpl;
 import com.mingsoft.base.dao.IBaseDao;
-import com.mingsoft.weixin.constant.SessionConst;
-import com.mingsoft.weixin.entity.WeixinEntity;
-
-import net.mingsoft.basic.util.BasicUtil;
+import com.mingsoft.weixin.biz.IWeixinBiz;
 import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
 import net.mingsoft.mweixin.dao.IPassiveMessageDao;
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
 
 /**
  * 微信被动消息回复管理持久化层
+ * 
  * @author 铭飞
- * @version 
- * 版本号：100<br/>
- * 创建日期：2017-12-22 9:43:04<br/>
- * 历史修订：<br/>
+ * @version 版本号：100<br/>
+ *          创建日期：2017-12-22 9:43:04<br/>
+ *          历史修订：<br/>
  */
- @Service("netPassiveMessageBizImpl")
+@Service("netPassiveMessageBizImpl")
 public class PassiveMessageBizImpl extends BaseBizImpl implements IPassiveMessageBiz {
 
-	
-	@Resource(name="netPassiveMessageDao")
+	@Resource(name = "netPassiveMessageDao")
 	private IPassiveMessageDao passiveMessageDao;
-	
-	
-		@Override
+
+	@Autowired
+	private IWeixinBiz weixinBiz;
+
+	@Override
 	protected IBaseDao getDao() {
 		// TODO Auto-generated method stub
 		return passiveMessageDao;
 	}
 
-
 	@Override
 	public PassiveMessageEntity getEntity(PassiveMessageEntity passiveMessage) {
 		// TODO Auto-generated method stub
-		WeixinEntity weixin = (WeixinEntity) BasicUtil.getSession(SessionConst.WEIXIN_SESSION);
-		if(weixin == null || weixin.getWeixinId()<=0){
-			return null;
-		}
-		passiveMessage.setPmWeixinId(weixin.getWeixinId()); 
-		passiveMessage.setPmAppId(BasicUtil.getAppId());
 		return (PassiveMessageEntity) passiveMessageDao.getByEntity(passiveMessage);
-	} 
-	
+	}
+
 }

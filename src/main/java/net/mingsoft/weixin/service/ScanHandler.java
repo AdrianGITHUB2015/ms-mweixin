@@ -1,4 +1,4 @@
-package net.mingsoft.weixin.handler;
+package net.mingsoft.weixin.service;
 
 /**
  * 

@@ -53,6 +53,7 @@ public class OauthAction extends com.mingsoft.weixin.action.BaseAction{
 	private IOauthBiz oauthBiz;
 	@Resource(name="netWeixinPeopleBiz")
 	private IWeixinPeopleBiz weixinPeopleBiz;
+	@Autowired
 	private WeixinService wxService;
 	@Autowired
 	private IWeixinBiz weixinBiz;
@@ -73,7 +74,7 @@ public class OauthAction extends com.mingsoft.weixin.action.BaseAction{
 		}
 		//获取微信服务
 		WeixinEntity weixin = weixinBiz.getByWeixinNo(weixinNo);
-		wxService = new WeixinService(weixin);
+		wxService = wxService.build(weixin);
 		//组织重定向链接，通过链接进行授权
 		String oauthUrl = BasicUtil.getUrl()+"/mweixin/oauth.do?weixinNo="+weixinNo+"&url="+url;
 		return "redirect:"+wxService.oauth2buildAuthorizationUrl(oauthUrl, "snsapi_userinfo" , null);
@@ -88,7 +89,7 @@ public class OauthAction extends com.mingsoft.weixin.action.BaseAction{
 	public void login(HttpServletResponse response,HttpServletRequest request)throws ServletException, IOException {
 		String weixinNo = request.getParameter("weixinNo"); //获取token
 		WeixinEntity weixin = weixinBiz.getByWeixinNo(weixinNo);
-		wxService = new WeixinService(weixin);
+		wxService = wxService.build(weixin);
 		String code = request.getParameter("code"); //用户同意授权就可以获得
 		String url = BasicUtil.getString("url");
 		

@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.mingsoft.weixin.action.BaseAction;
 import com.mingsoft.weixin.biz.IWeixinBiz;
 import com.mingsoft.weixin.entity.WeixinEntity;
 import com.mingsoft.weixin.entity.WeixinPeopleEntity;
@@ -64,12 +63,10 @@ public class WeixinPeopleAction extends BaseAction{
 	 */
 	@Resource(name="netWeixinPeopleBiz")
 	private IWeixinPeopleBiz weixinPeopleBiz;
-	@Autowired
-	private IWeixinBiz weixinBiz;
 	
-	private WeixinService wxService;
+	@Resource(name="weixinService")
+	private WeixinService weixinService;
 	
-	private static final int PEOPLE_NUM = 200;
 	
 	/**
 	 * 微信用户管理主界面
@@ -126,15 +123,15 @@ public class WeixinPeopleAction extends BaseAction{
 	 */
 	private boolean getWeixinPeople(WeixinEntity weixin,String nextOpenId){
 		//拿到微信工具类服务
-		wxService = new WeixinService(weixin);
+		weixinService = weixinService.build(weixin);
 		//获取用户数据
 		try {
-			WxMpUserList wxUsers = wxService.getUserService().userList(nextOpenId);
+			WxMpUserList wxUsers = weixinService.getUserService().userList(nextOpenId);
 			//储蓄转化后的用户信息
 			List<String> openIds = wxUsers.getOpenids();
 			for(String openid : openIds){
 				//通过openId拿到用户信息
-				WxMpUser user = wxService.getUserService().userInfo(openid,"zh_CN");
+				WxMpUser user = weixinService.getUserService().userInfo(openid,"zh_CN");
 				weixinPeopleBiz.saveOrUpdate(user,weixin.getWeixinId());
 			}
 			//如果没有下一个，那么返回成功信息
