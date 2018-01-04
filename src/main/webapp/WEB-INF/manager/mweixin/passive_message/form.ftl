@@ -13,7 +13,7 @@
     		color: rgb(85, 85, 85);
 		}
 	</style>
-	 <@ms.nav title="微信被动消息回复编辑" back=true>
+	 <@ms.nav title="微信消息回复编辑" back=true>
     	<@ms.saveButton  onclick="save()"/>
     </@ms.nav>
     <@ms.panel>

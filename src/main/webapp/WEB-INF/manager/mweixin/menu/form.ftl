@@ -19,7 +19,7 @@
     <@ms.panel>
     	<@ms.form name="menuForm" isvalidation=true>
     		<@ms.hidden name="menuId" value="${(menuEntity.menuId)?default('')}"/>
-    			<@ms.number label="父菜单编号" name="menuMenuId" value="${(menuEntity.menuMenuId)?default('')}" width="240px;" placeholder="请输入父菜单编号" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"父菜单编号长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
+    			<@ms.number label="父菜单编号" min=0 max=9999 maxlength="4" name="menuMenuId" value="${(menuEntity.menuMenuId)?default('')}" width="240px;" placeholder="请输入父菜单编号" validation={"required":"true", "data-bv-notempty-message":"必填项目"}/>
     			<@ms.text label="菜单名称" name="menuTitle" value="${(menuEntity.menuTitle)?default('')}"  width="240px;" placeholder="请输入菜单名称" validation={"required":"true","maxlength":"7","data-bv-stringlength-message":"菜单名称长度不能超过七个字符长度!", "data-bv-notempty-message":"必填项目"}/>
     			<@ms.select 
     				id="menuType"
@@ -93,7 +93,7 @@
 						data:menuData,
 						url:url,
 						success: function(data) {
-							if(data.result > 0) { 
+							if(data.menuId > 0) { 
 								<@ms.notify msg="保存或更新成功" type= "success" />
 								location.href = "${managerPath}/mweixin/menu/index.do";
 							}
@@ -102,7 +102,7 @@
 								$(".btn-success").removeAttr("disabled");
 								$('.ms-notifications').offset({top:43}).notify({
 								   type:'fail',
-								   message: { text:data.resultMsg }
+								   message: { text:"更新或保存失败" }
 								}).show();
 							}
 						}

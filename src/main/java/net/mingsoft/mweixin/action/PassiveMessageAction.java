@@ -28,6 +28,7 @@ import net.mingsoft.basic.bean.EUListBean;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
+import net.mingsoft.mweixin.entity.PassiveMessageEntity.Type;
 	
 /**
  * 微信被动消息回复管理控制层
@@ -110,12 +111,14 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 			passiveMessageEntity = (PassiveMessageEntity) passiveMessageBiz.getEntity(passiveMessage.getPmId());			
 			model.addAttribute("passiveMessageEntity",passiveMessageEntity);
 		}else{
-			passiveMessageEntity = passiveMessageBiz.getEntity(passiveMessage);
-			if(passiveMessageEntity == null){
-				passiveMessageEntity = new PassiveMessageEntity();
-				passiveMessageEntity.setPmType(passiveMessage.getPmType());
+			if(passiveMessage.getPmType() != Type.TYPE_KEYWORD){
+				passiveMessageEntity = passiveMessageBiz.getEntity(passiveMessage);
+				if(passiveMessageEntity == null){
+					passiveMessageEntity = new PassiveMessageEntity();
+					passiveMessageEntity.setPmType(passiveMessage.getPmType());
+				}
+				model.addAttribute("passiveMessageEntity",passiveMessageEntity);
 			}
-			model.addAttribute("passiveMessageEntity",passiveMessageEntity);
 		}
 		return view ("/mweixin/passive_message/form");
 	}
@@ -271,7 +274,7 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 			this.outJson(response, null,false,getResString("err.empty", this.getResString("pm.content")));
 			return;			
 		}
-		if(!StringUtil.checkLength(passiveMessage.getPmContent()+"", 1, 10)){
+		if(!StringUtil.checkLength(passiveMessage.getPmContent()+"", 1, 150)){
 			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.content"), "1", "150"));
 			return;			
 		}

@@ -90,16 +90,18 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 			        //查询该按钮下的子按钮
 			        menuList = menuBiz.query(parenMenutEntity);
 			        for(MenuEntity menuSubEntity : menuList){
-			        	WxMenuButton subButton = new WxMenuButton();
-			        	switch (_menuEntity.getMenuType()){
-							case 2: subButton.setType(MenuButtonType.CLICK);
-							break;
-							case 1: subButton.setType(MenuButtonType.VIEW);
-							subButton.setUrl(menuSubEntity.getMenuUrl());
-							break;
-						}
-			        	subButton.setName(menuSubEntity.getMenuTitle());
-			        	parentButton.getSubButtons().add(subButton);
+			        	if(menuSubEntity.getMenuStatus() == 1){
+				        	WxMenuButton subButton = new WxMenuButton();
+				        	switch (_menuEntity.getMenuType()){
+								case 2: subButton.setType(MenuButtonType.CLICK);
+								break;
+								case 1: subButton.setType(MenuButtonType.VIEW);
+								subButton.setUrl(menuSubEntity.getMenuUrl());
+								break;
+							}
+				        	subButton.setName(menuSubEntity.getMenuTitle());
+				        	parentButton.getSubButtons().add(subButton);
+			        	}
 			        }
 			        //第三步将WxMenuButton赋值WxMenu
 			        menu.getButtons().add(parentButton);
