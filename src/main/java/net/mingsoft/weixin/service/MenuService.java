@@ -16,6 +16,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import net.mingsoft.mweixin.biz.IMenuBiz;
 import net.mingsoft.mweixin.entity.MenuEntity;
+import net.mingsoft.mweixin.entity.MenuEntity.Type;
 import net.mingsoft.weixin.builder.AbstractBuilder;
 import net.mingsoft.weixin.builder.ImageBuilder;
 import net.mingsoft.weixin.builder.TextBuilder;
@@ -45,22 +46,31 @@ public class MenuService extends AbstractService {
 
 		WxMpXmlOutMessage outMessage = null;
 		switch (wxMessage.getEvent()) {
-		case MenuButtonType.CLICK:
+			case MenuButtonType.CLICK:
 			MenuEntity menu = (MenuEntity) menuBiz.getEntity(Integer.parseInt(key));
 			if (menu != null) {
 				break;
 			}
 			switch (menu.getMenuStyle()) {
-
-			case 1:
+				//文本
+			case Type.TEXT:
 				AbstractBuilder builder = new TextBuilder();
 				outMessage = builder.build(menu.getMenuContent(), wxMessage, weixinService);
 				break;
-				
+				//图片
+			case Type.IMAGE:
+				AbstractBuilder imageBuilder = new ImageBuilder();
+				outMessage = imageBuilder.build(menu.getMenuContent(), wxMessage, weixinService);
+				break;
+				//图文
+			case Type.IMAGE_TEXT:
+				break;
+				//卡券
+			case Type.CARD:
+				break;
 			default:
 
 			}
-
 			break;
 		default:
 			break;

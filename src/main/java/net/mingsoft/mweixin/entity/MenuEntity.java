@@ -219,9 +219,9 @@ public class MenuEntity extends BaseEntity {
 	}
 	
 	public static class Type{
-		public static final int TYPE_TEXT = 1,//文本
-				TYPE_IMAGE=2,//图片
-				TYPE_IMAGE_TEXT=3,//图文
-				TYPE_VARD=3;//卡券
+		public static final int TEXT = 1,//文本
+				IMAGE=2,//图片
+				IMAGE_TEXT=3,//图文
+				CARD=4;//卡券
 	}
 }
