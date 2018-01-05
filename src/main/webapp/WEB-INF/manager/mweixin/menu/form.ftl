@@ -21,8 +21,7 @@
     		<@ms.hidden name="menuId" value="${(menuEntity.menuId)?default('')}"/>
     			<@ms.number label="父菜单编号" min=0 max=9999 maxlength="4" name="menuMenuId" value="${(menuEntity.menuMenuId)?default('')}" width="240px;" placeholder="请输入父菜单编号" validation={"required":"true", "data-bv-notempty-message":"必填项目"}/>
     			<@ms.text label="菜单名称" name="menuTitle" value="${(menuEntity.menuTitle)?default('')}"  width="240px;" placeholder="请输入菜单名称" validation={"required":"true","maxlength":"7","data-bv-stringlength-message":"菜单名称长度不能超过七个字符长度!", "data-bv-notempty-message":"必填项目"}/>
-    			<@ms.hidden name="menuType" value="1"/>
-    			<!--<@ms.select 
+    			<@ms.select 
     				id="menuType"
 				    name="menuType" 
 				    label="菜单属性" 
@@ -32,10 +31,8 @@
 				    listKey="id" 
 				    listValue="value"  
 				    validation={"required":"true", "data-bv-notempty-message":"必选项目"}
-				/>-->
-				<div class="menuUrl">
-					<@ms.text label="菜单链接地址" name="menuUrl" value="${(menuEntity.menuUrl)?default('')}"  width="400px;" placeholder="请输入菜单链接地址" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"菜单链接地址长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
-				</div>
+				/>
+				<@ms.textarea colSm="2" name="menuContent" label="菜单内容" wrap="Soft" rows="3"  size=""  value="${(menuEntity.menuContent)?default('')}" placeholder="请输入菜单内容" validation={"required":"true","maxlength":"200","data-bv-stringlength-message":"菜单内容长度不能超过两百个字符长度!", "data-bv-notempty-message":"必填项目"}/>
 				<@ms.hidden name="menuStatus" value="1"/>
 				<!--<@ms.select 
     				id="menuStatus"
@@ -52,16 +49,6 @@
     </@ms.panel>
 </@ms.html5>
 <script>
-	$('#menuType').on('select2:select', function (e) {
-		if(e.params.data.id == 2){
-			$(".menuUrl").hide();
-		}else{
-			$(".menuUrl").show();
-		}
-	});
-	if(${(menuEntity.menuType)?default(0)} == 2){
-		$(".menuUrl").hide();
-	}
 	$("#menuStyle").select2({width: "210px"});
 	$("#menuType").select2({width: "210px"});
 	$("#menuStatus").select2({width: "210px"});

@@ -63,10 +63,16 @@
 				        	align: 'center',
 				        	width:'15'
 				    	},{
-				        	field: 'menuUrl',
-				        	title: '菜单链接',
+				        	field: 'menuType',
+				        	title: '菜单属性',
 				        	width:'10',
-				        	align: 'center'
+				        	align: 'center',
+				        	formatter:function(value,row,index) {
+				        		switch(value){
+				        			case 1: return "链接";break;
+				        			case 2: return "回复";break;
+				        		}
+				        	}
 				    	}
 			]
 	    })

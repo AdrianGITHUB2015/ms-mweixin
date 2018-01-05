@@ -79,9 +79,10 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 					//获取一级按钮
 					switch (_menuEntity.getMenuType()){
 						case 2: parentButton.setType(MenuButtonType.CLICK);
+						parentButton.setKey(_menuEntity.getMenuId()+"");
 						break;
 						case 1: parentButton.setType(MenuButtonType.VIEW);
-						parentButton.setUrl(_menuEntity.getMenuUrl());
+						parentButton.setUrl(_menuEntity.getMenuId()+"");
 						break;
 					}	
 					parentButton.setName(_menuEntity.getMenuTitle());
@@ -92,11 +93,12 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 			        for(MenuEntity menuSubEntity : menuList){
 			        	if(menuSubEntity.getMenuStatus() == 1){
 				        	WxMenuButton subButton = new WxMenuButton();
-				        	switch (_menuEntity.getMenuType()){
+				        	switch (menuSubEntity.getMenuType()){
 								case 2: subButton.setType(MenuButtonType.CLICK);
+								subButton.setKey(menuSubEntity.getMenuId()+"");
 								break;
 								case 1: subButton.setType(MenuButtonType.VIEW);
-								subButton.setUrl(menuSubEntity.getMenuUrl());
+								subButton.setUrl(menuSubEntity.getMenuId()+"");
 								break;
 							}
 				        	subButton.setName(menuSubEntity.getMenuTitle());

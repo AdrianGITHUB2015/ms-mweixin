@@ -14,6 +14,7 @@
 		<result column="MENU_STYLE" property="menuStyle" /><!--类型：1文本 2图文 4外链接 -->
 		<result column="MENU_OAUTH_ID" property="menuOauthId" /><!--授权数据编号 -->
 		<result column="MENU_WEIXIN_ID" property="menuWeixinId" /><!--微信编号 -->
+		<result column="MENU_CONTENT" property="menuContent" /><!--微信菜单内容 -->
 	</resultMap>
 	
 	<!--保存-->	
@@ -31,6 +32,7 @@
 			<if test="menuStyle &gt; 0">MENU_STYLE,</if>
 			<if test="menuOauthId &gt; 0">MENU_OAUTH_ID,</if>
 			<if test="menuWeixinId &gt; 0">MENU_WEIXIN_ID,</if>
+			<if test="menuContent != null and menuContent != ''">MENU_CONTENT,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="menuAppId &gt; 0">#{menuAppId},</if>
@@ -43,6 +45,7 @@
 			<if test="menuStyle &gt; 0">#{menuStyle},</if>
 			<if test="menuOauthId &gt; 0">#{menuOauthId},</if>
 			<if test="menuWeixinId &gt; 0">#{menuWeixinId},</if>
+			<if test="menuContent != null and menuContent != ''">#{menuContent},</if>
 		</trim>
 	</insert>
 	
@@ -59,7 +62,8 @@
 			<if test="menuSort &gt; 0">MENU_SORT=#{menuSort},</if>			
 			<if test="menuStyle &gt; 0">MENU_STYLE=#{menuStyle},</if>			
 			<if test="menuOauthId &gt; 0">MENU_OAUTH_ID=#{menuOauthId},</if>			
-			<if test="menuWeixinId &gt; 0">MENU_WEIXIN_ID=#{menuWeixinId},</if>			
+			<if test="menuWeixinId &gt; 0">MENU_WEIXIN_ID=#{menuWeixinId},</if>		
+			<if test="menuContent != null and menuContent != ''">MENU_CONTENT=#{menuContent},</if>	
 		</set>
 		where MENU_ID = #{menuId}
 	</update>
@@ -82,7 +86,8 @@
 			<if test="menuSort &gt; 0"> and MENU_SORT=#{menuSort} </if>				
 			<if test="menuStyle &gt; 0"> and MENU_STYLE=#{menuStyle} </if>				
 			<if test="menuOauthId &gt; 0"> and MENU_OAUTH_ID=#{menuOauthId} </if>				
-			<if test="menuWeixinId &gt; 0"> and MENU_WEIXIN_ID=#{menuWeixinId} </if>				
+			<if test="menuWeixinId &gt; 0"> and MENU_WEIXIN_ID=#{menuWeixinId} </if>
+			<if test="menuContent != null and menuContent != ''"> and MENU_CONTENT=#{menuContent} </if>				
 		</where>
 		limit 0,1
 	</select>	
@@ -118,7 +123,8 @@
 				<if test="menuSort &gt; 0"> and MENU_SORT=#{menuSort} </if>				
 				<if test="menuStyle &gt; 0"> and MENU_STYLE=#{menuStyle} </if>				
 				<if test="menuOauthId &gt; 0"> and MENU_OAUTH_ID=#{menuOauthId} </if>				
-				<if test="menuWeixinId &gt; 0"> and MENU_WEIXIN_ID=#{menuWeixinId} </if>				
+				<if test="menuWeixinId &gt; 0"> and MENU_WEIXIN_ID=#{menuWeixinId} </if>
+				<if test="menuContent != null and menuContent != ''"> and MENU_CONTENT=#{menuContent} </if>				
 		</where>		
 		order by MENU_ID desc
 	</select>

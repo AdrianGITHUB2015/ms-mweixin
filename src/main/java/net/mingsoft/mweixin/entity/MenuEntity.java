@@ -60,9 +60,20 @@ public class MenuEntity extends BaseEntity {
 	/**
 	 * 微信编号
 	 */
-	private Integer menuWeixinId; 
+	private Integer menuWeixinId;
+	/**
+	 * 微信菜单内容
+	 */
+	private String menuContent;
 	
-		
+	public String getMenuContent() {
+		return menuContent;
+	}
+
+	public void setMenuContent(String menuContent) {
+		this.menuContent = menuContent;
+	}
+
 	/**
 	 * 设置菜单自增长编号
 	 */
