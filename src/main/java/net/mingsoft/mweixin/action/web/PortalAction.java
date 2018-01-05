@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mingsoft.base.action.BaseAction;
 import com.mingsoft.weixin.biz.IWeixinBiz;
 import com.mingsoft.weixin.entity.WeixinEntity;
 
-import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import net.mingsoft.basic.util.BasicUtil;
+import net.mingsoft.mweixin.action.BaseAction;
 import net.mingsoft.weixin.service.PortalService;
 
 /**
@@ -92,7 +91,8 @@ public class PortalAction extends BaseAction {
 			if (outMessage == null) {
 				return "";
 			}
-
+			//需要设置用户session
+			this.setWeixinPeopleSession(inMessage.getFromUser());
 			out = outMessage.toXml();
 		} else if ("aes".equals(encType)) {
 			// aes加密的消息
@@ -103,7 +103,8 @@ public class PortalAction extends BaseAction {
 			if (outMessage == null) {
 				return "";
 			}
-
+			//需要设置用户session
+			this.setWeixinPeopleSession(inMessage.getFromUser());
 			out = outMessage.toEncryptedXml(wxService.getWxMpConfigStorage());
 		}
 

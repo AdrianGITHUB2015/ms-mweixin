@@ -1,42 +1,28 @@
 package net.mingsoft.mweixin.action;
 
 import java.util.MissingResourceException;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.mingsoft.base.constant.Const;
-import com.mingsoft.base.constant.e.BaseEnum;
-import com.mingsoft.base.entity.SessionEntity;
-import com.mingsoft.basic.biz.IModelBiz;
 import com.mingsoft.basic.entity.AppEntity;
-import com.mingsoft.basic.entity.ModelEntity;
 import com.mingsoft.util.StringUtil;
 import com.mingsoft.weixin.biz.IWeixinBiz;
 import com.mingsoft.weixin.entity.WeixinEntity;
+import com.mingsoft.weixin.entity.WeixinPeopleEntity;
 import com.mingsoft.weixin.util.OauthUtils;
 
-import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.basic.util.SpringUtil;
 import net.mingsoft.weixin.service.PortalService;
 
 /**
  * mweixin基础控制层
+ * 
  * @author 铭飞
- * @version 
- * 版本号：100<br/>
- * 创建日期：2017-12-22 9:43:04<br/>
- * 历史修订：<br/>
+ * @version 版本号：100<br/>
+ *          创建日期：2017-12-22 9:43:04<br/>
+ *          历史修订：<br/>
  */
-public class BaseAction extends com.mingsoft.basic.action.BaseAction{
+public class BaseAction extends com.mingsoft.basic.action.BaseAction {
 
 	@Override
 	protected String getResString(String key) {
@@ -96,7 +82,7 @@ public class BaseAction extends com.mingsoft.basic.action.BaseAction{
 			link = app.getAppHostUrl() + "/" + link;
 		}
 		WeixinEntity weixin = this.getWeixinSession(request);
-		if(weixin==null) {
+		if (weixin == null) {
 			LOG.error("非微信环境下调用");
 			return "";
 		}
@@ -105,10 +91,11 @@ public class BaseAction extends com.mingsoft.basic.action.BaseAction{
 		return url;
 	}
 
-	
 	/**
 	 * 构建微信的服务工具，
-	 * @param weixinNo 微信号
+	 * 
+	 * @param weixinNo
+	 *            微信号
 	 * @return WeixinService
 	 */
 	protected PortalService builderWeixinService(String weixinNo) {
@@ -117,5 +104,26 @@ public class BaseAction extends com.mingsoft.basic.action.BaseAction{
 		PortalService weixinService = SpringUtil.getBean(PortalService.class);
 		return weixinService.build(weixin);
 	}
-	
+
+	/**
+	 * 设置用户信息
+	 * 
+	 * @param weixinPeople
+	 */
+	protected void setWeixinPeopleSession(WeixinPeopleEntity weixinPeople) {
+
+	}
+
+	/**
+	 * 根据用户openI设置用户session
+	 * 
+	 * @param openId
+	 */
+	protected void setWeixinPeopleSession(String openId) {
+		// 1根据openid去查询用户是否存在
+		// 2存在就设置session
+		WeixinPeopleEntity wp = new WeixinPeopleEntity();
+		setWeixinPeopleSession(wp);
+	}
+
 }
