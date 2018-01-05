@@ -82,7 +82,7 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 						parentButton.setKey(_menuEntity.getMenuId()+"");
 						break;
 						case 1: parentButton.setType(MenuButtonType.VIEW);
-						parentButton.setUrl(_menuEntity.getMenuId()+"");
+						parentButton.setUrl(_menuEntity.getMenuContent());
 						break;
 					}	
 					parentButton.setName(_menuEntity.getMenuTitle());
@@ -98,7 +98,7 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 								subButton.setKey(menuSubEntity.getMenuId()+"");
 								break;
 								case 1: subButton.setType(MenuButtonType.VIEW);
-								subButton.setUrl(menuSubEntity.getMenuId()+"");
+								subButton.setUrl(menuSubEntity.getMenuContent());
 								break;
 							}
 				        	subButton.setName(menuSubEntity.getMenuTitle());
