@@ -42,38 +42,35 @@ public class MenuService extends AbstractService {
 
 		PortalService weixinService = (PortalService) wxMpService;
 		String key = wxMessage.getEventKey();
-		this.logger.debug("点击菜单类型：" + key);
 
 		WxMpXmlOutMessage outMessage = null;
-		switch (wxMessage.getEvent()) {
-			case MenuButtonType.CLICK:
+
+		String event = wxMessage.getEvent();
+		if (event.equalsIgnoreCase(MenuButtonType.CLICK)) {
 			MenuEntity menu = (MenuEntity) menuBiz.getEntity(Integer.parseInt(key));
-			if (menu != null) {
-				break;
+			if (menu == null) {
+				return null;
 			}
 			switch (menu.getMenuStyle()) {
-				//文本
+			// 文本
 			case Type.TEXT:
 				AbstractBuilder builder = new TextBuilder();
 				outMessage = builder.build(menu.getMenuContent(), wxMessage, weixinService);
 				break;
-				//图片
+			// 图片
 			case Type.IMAGE:
 				AbstractBuilder imageBuilder = new ImageBuilder();
 				outMessage = imageBuilder.build(menu.getMenuContent(), wxMessage, weixinService);
 				break;
-				//图文
+			// 图文
 			case Type.IMAGE_TEXT:
 				break;
-				//卡券
+			// 卡券
 			case Type.CARD:
 				break;
 			default:
 
 			}
-			break;
-		default:
-			break;
 		}
 
 		if (outMessage != null) {

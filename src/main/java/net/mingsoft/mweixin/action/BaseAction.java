@@ -5,6 +5,7 @@ import java.util.MissingResourceException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.mingsoft.basic.entity.AppEntity;
+import com.mingsoft.people.constant.e.SessionConstEnum;
 import com.mingsoft.util.StringUtil;
 import com.mingsoft.weixin.biz.IWeixinBiz;
 import com.mingsoft.weixin.constant.SessionConst;
@@ -114,8 +115,8 @@ public class BaseAction extends com.mingsoft.basic.action.BaseAction {
 	 * @param weixinPeople
 	 */
 	protected void setWeixinPeopleSession(WeixinPeopleEntity weixinPeople) {
-		
-		BasicUtil.setSession(SessionConst.WEIXIN_PEOPLE_SESSION,weixinPeople);
+		BasicUtil.setSession(SessionConstEnum.PEOPLE_SESSION,weixinPeople); 
+		BasicUtil.setSession("abc", "ddd");
 	}
 
 	/**
@@ -129,7 +130,7 @@ public class BaseAction extends com.mingsoft.basic.action.BaseAction {
 		IWeixinPeopleBiz weixinPeopleBiz = SpringUtil.getBean(IWeixinPeopleBiz.class);
 		WeixinPeopleEntity weixinPeople = weixinPeopleBiz.getEntityByOpenIdAndAppIdAndWeixinId(openId, BasicUtil.getAppId(),0);
 		if(weixinPeople != null){
-			LOG.debug("设置weixin用户session:"+weixinPeople.getPuNickname()+"-"+weixinPeople.getWeixinPeopleOpenId());
+			LOG.debug("设置用户session:"+weixinPeople.getPuNickname()+"-"+weixinPeople.getWeixinPeopleOpenId());
 			setWeixinPeopleSession(weixinPeople);
 		}
 	}
