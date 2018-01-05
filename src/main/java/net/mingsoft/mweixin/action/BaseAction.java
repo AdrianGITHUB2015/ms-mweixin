@@ -129,6 +129,7 @@ public class BaseAction extends com.mingsoft.basic.action.BaseAction {
 		IWeixinPeopleBiz weixinPeopleBiz = SpringUtil.getBean(IWeixinPeopleBiz.class);
 		WeixinPeopleEntity weixinPeople = weixinPeopleBiz.getEntityByOpenIdAndAppIdAndWeixinId(openId, BasicUtil.getAppId(),0);
 		if(weixinPeople != null){
+			LOG.debug("设置weixin用户session:"+weixinPeople.getPuNickname()+"-"+weixinPeople.getWeixinPeopleOpenId());
 			setWeixinPeopleSession(weixinPeople);
 		}
 	}
