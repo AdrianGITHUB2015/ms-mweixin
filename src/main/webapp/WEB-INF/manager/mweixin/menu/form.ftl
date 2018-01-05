@@ -21,7 +21,8 @@
     		<@ms.hidden name="menuId" value="${(menuEntity.menuId)?default('')}"/>
     			<@ms.number label="父菜单编号" min=0 max=9999 maxlength="4" name="menuMenuId" value="${(menuEntity.menuMenuId)?default('')}" width="240px;" placeholder="请输入父菜单编号" validation={"required":"true", "data-bv-notempty-message":"必填项目"}/>
     			<@ms.text label="菜单名称" name="menuTitle" value="${(menuEntity.menuTitle)?default('')}"  width="240px;" placeholder="请输入菜单名称" validation={"required":"true","maxlength":"7","data-bv-stringlength-message":"菜单名称长度不能超过七个字符长度!", "data-bv-notempty-message":"必填项目"}/>
-    			<@ms.select 
+    			<@ms.hidden name="menuType" value="1"/>
+    			<!--<@ms.select 
     				id="menuType"
 				    name="menuType" 
 				    label="菜单属性" 
@@ -31,11 +32,12 @@
 				    listKey="id" 
 				    listValue="value"  
 				    validation={"required":"true", "data-bv-notempty-message":"必选项目"}
-				/>
+				/>-->
 				<div class="menuUrl">
-					<@ms.text label="菜单链接地址" name="menuUrl" value="${(menuEntity.menuUrl)?default('')}"  width="240px;" placeholder="请输入菜单链接地址" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"菜单链接地址长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
+					<@ms.text label="菜单链接地址" name="menuUrl" value="${(menuEntity.menuUrl)?default('')}"  width="400px;" placeholder="请输入菜单链接地址" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"菜单链接地址长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
 				</div>
-				<@ms.select 
+				<@ms.hidden name="menuStatus" value="1"/>
+				<!--<@ms.select 
     				id="menuStatus"
 				    name="menuStatus" 
 				    label="菜单状态" 
@@ -45,7 +47,7 @@
 				    listKey="id" 
 				    listValue="value"  
 				    validation={"required":"true", "data-bv-notempty-message":"必选项目"}
-				/>
+				/>-->
     	</@ms.form>
     </@ms.panel>
 </@ms.html5>

@@ -23,7 +23,8 @@
     				<@ms.text label="事件关键字" name="pmKey" value="${(passiveMessageEntity.pmKey)?default('')}"  width="240px;" placeholder="请输入事件关键字" validation={"required":"true","maxlength":"50","data-bv-stringlength-message":"事件关键字长度不能超过五十个字符长度!", "data-bv-notempty-message":"必填项目"}/>
     			</#if>
     			<@ms.hidden name="pmType" value="${(passiveMessageEntity.pmType)?default('')}"/>
-				<@ms.select 
+				<@ms.hidden name="pmNewType" value="1"/>
+				<!--<@ms.select 
     				id="pmNewType"
 				    name="pmNewType" 
 				    label="素材类型" 
@@ -33,7 +34,7 @@
 				    listKey="id" 
 				    listValue="value"  
 				    validation={"required":"true", "data-bv-notempty-message":"必选项目"}
-				/>
+				/>-->
     			<@ms.textarea colSm="2" name="pmContent"  wrap="Soft" rows="3"  size=""  label="回复内容" value="${(passiveMessageEntity.pmContent)?default('')}" placeholder="请输入回复内容" validation={"required":"true","maxlength":"150","data-bv-stringlength-message":"回复内容长度不能超过150个字符长度!", "data-bv-notempty-message":"必填项目"}/>
     	</@ms.form>
     </@ms.panel>

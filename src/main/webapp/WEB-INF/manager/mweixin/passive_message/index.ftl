@@ -56,34 +56,6 @@
 				        	title: '回复内容标签',
 				        	width:'200',
 				        	align: 'center'
-				    	},{
-				        	field: 'pmType',
-				        	title: '关键字类型',
-				        	width:'100',
-				        	align: 'center',
-				        	formatter:function(value,row,index) {
-				        		switch(value){
-				        			case 1: return "关键字回复";break;
-				        			case 2: return "关注回复";break;
-				        			case 3: return "被动回复";break;
-				        		}
-				        	}
-				    	}
-				    	,{
-				        	field: 'pmNewType',
-				        	title: '素材类型',
-				        	width:'100',
-				        	align: 'center',
-				        	formatter:function(value,row,index) {
-				        		switch(value){
-				        			case 1: return "文本";break;
-				        			case 2: return "图片";break;
-				        			case 3: return "语音";break;
-				        			case 4: return "视频";break;
-				        			case 5: return "音乐";break;
-				        			case 6: return "图文";break;
-				        		}
-				        	}
 				    	}
 			]
 	    })

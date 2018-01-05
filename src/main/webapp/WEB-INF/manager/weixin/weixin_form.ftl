@@ -15,8 +15,6 @@
 		    <@ms.text  name="weixinPayKey"  label="微信支付key:" value="${weixin.weixinPayKey?default('')}" title="微信支付key" placeholder="请输入微信支付key"  validation={"maxlength":"255","data-bv-stringlength-message":"支付key在255个字符以内!"}/>
 		    <@ms.text  name="weixinPayMchId"  label="微信支付mchid:" value="${weixin.weixinPayMchId?default('')}" title="微信支付mchid" placeholder="请输入微信支付mchid" validation={"maxlength":"255","data-bv-stringlength-message":"支付mchid在255个字符以内!"}/>
 		    		-->
-		    <@ms.text  name="weixinProxyUrl"  label="映射内网测试网地址:" value="${weixin.weixinProxyUrl?default('')}" title="映射内网测试网地址" placeholder="请输入映射内网测试网地址(必须以http开头)" validation={"maxlength":"500","data-bv-stringlength-message":"测试网地址500个字符以内!"}/>
-		    <@ms.text  name="weixinOauthUrl"  label="网页2.0授权跳转地址:" value="${weixin.weixinOauthUrl?default('')}" title="网页2.0授权跳转地址" placeholder="请输入网页2.0授权跳转地址(必须以http开头)" validation={"maxlength":"200","data-bv-stringlength-message":"跳转地址在200个字符以内!"}/>
 		    <@ms.formRow label="头像：">
             	<#if weixin?has_content>
         			<@ms.uploadImg path="upload/weixin/${appId?c?default(0)}/" inputName="weixinHeadImg" size="1" filetype="" msg="头像缩略图"  maxSize="1" imgs="${weixin.weixinHeadImg?default('')}" />
