@@ -12,7 +12,6 @@ import com.mingsoft.weixin.entity.WeixinEntity;
 import com.mingsoft.weixin.entity.WeixinPeopleEntity;
 import com.mingsoft.weixin.util.OauthUtils;
 
-import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.basic.util.SpringUtil;
 import net.mingsoft.weixin.service.PortalService;
 
@@ -113,7 +112,8 @@ public class BaseAction extends com.mingsoft.basic.action.BaseAction {
 	 * @param weixinPeople
 	 */
 	protected void setWeixinPeopleSession(WeixinPeopleEntity weixinPeople) {
-		  BasicUtil.setSession(SessionConst.WEIXIN_PEOPLE_SESSION, weixinPeople);
+		HttpServletRequest request = SpringUtil.getRequest();
+		this.setSession(request, SessionConst.WEIXIN_PEOPLE_SESSION, weixinPeople);
 	}
 
 	/**
