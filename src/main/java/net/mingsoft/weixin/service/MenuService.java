@@ -31,71 +31,47 @@ public class MenuService extends AbstractService {
 
 	/**
 	 * 注入微信菜单业务层
-	 */	
-	@Resource(name="netMenuBizImpl")
+	 */
+	@Resource(name = "netMenuBizImpl")
 	private IMenuBiz menuBiz;
-	
+
 	@Override
-	public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
-    Map<String, Object> context, WxMpService wxMpService,
-    WxSessionManager sessionManager) {
-		
-    PortalService weixinService = (PortalService) wxMpService;
-    String key = wxMessage.getEventKey();
-    this.logger.debug("点击菜单类型："+key);
-    MenuEntity menu = (MenuEntity) menuBiz.getEntity(Integer.parseInt(key));
-    if(menu != null){
-    	return null;
-    }
-    AbstractBuilder builder = null;
-    switch ( wxMessage.getEvent()) {
-	    case MenuButtonType.CLICK:
-	    builder = new TextBuilder();
-	    break;
-	//  case XmlMsgType.IMAGE:
-	//    builder = new ImageBuilder();
-	//    break;
-	//  case XmlMsgType.VOICE:
-	//    break;
-	//  case XmlMsgType.VIDEO:
-	//    break;
-	//  case XmlMsgType.NEWS:
-	//    break;
-	  	default:
-	  		break;
-    }
-    try {
-    	 return builder.build(menu.getMenuContent(), wxMessage, weixinService);
-    } catch (Exception e) {
-    	this.logger.error(e.getMessage(), e);
-    }
-//    switch (menuKey.getType()) {
-//    case XmlMsgType.TEXT:
-//      builder = new TextBuilder();
-//      break;
-//    case XmlMsgType.IMAGE:
-//      builder = new ImageBuilder();
-//      break;
-//    case XmlMsgType.VOICE:
-//      break;
-//    case XmlMsgType.VIDEO:
-//      break;
-//    case XmlMsgType.NEWS:
-//      break;
-//    default:
-//      break;
-//    }
+	public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService wxMpService,
+			WxSessionManager sessionManager) {
 
-//    if (builder != null) {
-//      try {
-//        return builder.build(menuKey.getContent(), wxMessage, weixinService);
-//      } catch (Exception e) {
-//        this.logger.error(e.getMessage(), e);
-//      }
-//    }
+		PortalService weixinService = (PortalService) wxMpService;
+		String key = wxMessage.getEventKey();
+		this.logger.debug("点击菜单类型：" + key);
 
-    return null;
+		WxMpXmlOutMessage outMessage = null;
+		switch (wxMessage.getEvent()) {
+		case MenuButtonType.CLICK:
+			MenuEntity menu = (MenuEntity) menuBiz.getEntity(Integer.parseInt(key));
+			if (menu != null) {
+				break;
+			}
+			switch (menu.getMenuStyle()) {
 
-  }
+			case 1:
+				AbstractBuilder builder = new TextBuilder();
+				outMessage = builder.build(menu.getMenuContent(), wxMessage, weixinService);
+				break;
+				
+			default:
+
+			}
+
+			break;
+		default:
+			break;
+		}
+
+		if (outMessage != null) {
+			return outMessage;
+		}
+
+		return null;
+
+	}
 
 }
