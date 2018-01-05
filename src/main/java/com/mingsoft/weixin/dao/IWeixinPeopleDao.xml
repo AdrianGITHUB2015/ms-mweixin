@@ -126,8 +126,7 @@
 		left join  people p on wp.PW_PEOPLE_ID=p.people_id
 		left join people_user pu on pu.pu_people_id=wp.PW_PEOPLE_ID
 		<where>
-			wp.PW_APP_ID = #{appId} 
-			<if test="weixinId &gt; 0">and  wp.PW_WEIXIN_ID = #{weixinId}</if>
+			wp.PW_APP_ID = #{appId} and  wp.PW_WEIXIN_ID = #{weixinId}
 		</where>
 	</select>
 	<!-- 根据应用ID和微信ID查询微信用户列表，不参与分页和排序,结束-->
@@ -165,7 +164,7 @@
 		<where>
 			<if test="peopleId != null">and wp.PW_PEOPLE_ID = #{peopleId}</if>			
 			<if test="appId != null">and wp.PW_APP_ID = #{appId}</if>
-			<if test="weixinId != null">and wp.pw_weixin_id = #{weixinId}</if>
+			<if test="weixinId &gt; 0">and wp.pw_weixin_id = #{weixinId}</if>
 			<if test="openId != null">and wp.PW_OPEN_ID = #{openId}</if>		
 		</where>
 	</select>
