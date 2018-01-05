@@ -108,7 +108,8 @@
 				}else {
 					<@ms.notify msg= "发布失败" type= "fail" />
 				}
-				location.reload();
+				$(".btn-success").text(btnWord);
+				$(".btn-success").removeAttr("disabled");
 			}
 		})
 	});
@@ -128,8 +129,7 @@
 				}else {
 					<@ms.notify msg= "删除失败" type= "fail" />
 				}
-				$(".btn-success").text(btnWord);
-				$(".btn-success").removeAttr("disabled");
+				location.reload();
 			}
 		})
 	});

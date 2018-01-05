@@ -34,6 +34,7 @@
 				/>
 				<@ms.textarea colSm="2" name="menuContent" label="菜单内容" wrap="Soft" rows="3"  size=""  value="${(menuEntity.menuContent)?default('')}" placeholder="请输入菜单内容" validation={"required":"true","maxlength":"200","data-bv-stringlength-message":"菜单内容长度不能超过两百个字符长度!", "data-bv-notempty-message":"必填项目"}/>
 				<@ms.hidden name="menuStatus" value="1"/>
+				<@ms.hidden name="menuStyle" value="1"/>
 				<!--<@ms.select 
     				id="menuStatus"
 				    name="menuStatus" 

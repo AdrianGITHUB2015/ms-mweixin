@@ -300,7 +300,7 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 		menu.setMenuWeixinId(weixin.getWeixinId()); 
 		menu.setMenuAppId(BasicUtil.getAppId());
 		menuBiz.saveEntity(menu);
-		this.outJson(response, null,true,JSONObject.toJSONString(menu));
+		this.outJson(response,JSONObject.toJSONString(menu));
 	}
 	
 	/**
