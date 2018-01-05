@@ -87,8 +87,6 @@ public class PortalAction extends BaseAction {
 		if (encType == null) {
 			// 明文传输的消息
 			WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(requestBody);
-			//需要设置用户session
-			this.setWeixinPeopleSession(inMessage.getFromUser());
 
 			WxMpXmlOutMessage outMessage = wxService.route(inMessage);
 			if (outMessage == null) {
@@ -99,8 +97,6 @@ public class PortalAction extends BaseAction {
 			// aes加密的消息
 			WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(requestBody, wxService.getWxMpConfigStorage(),
 					timestamp, nonce, msgSignature);
-			//需要设置用户session
-			this.setWeixinPeopleSession(inMessage.getFromUser());
 
 			this.logger.debug("\n消息解密后内容为：\n{} ", inMessage.toString());
 			WxMpXmlOutMessage outMessage = wxService.route(inMessage);
