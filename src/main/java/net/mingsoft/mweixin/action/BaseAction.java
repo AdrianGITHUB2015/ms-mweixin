@@ -12,7 +12,9 @@ import com.mingsoft.weixin.entity.WeixinEntity;
 import com.mingsoft.weixin.entity.WeixinPeopleEntity;
 import com.mingsoft.weixin.util.OauthUtils;
 
+import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.basic.util.SpringUtil;
+import net.mingsoft.mweixin.biz.IWeixinPeopleBiz;
 import net.mingsoft.weixin.service.PortalService;
 
 /**
@@ -112,8 +114,8 @@ public class BaseAction extends com.mingsoft.basic.action.BaseAction {
 	 * @param weixinPeople
 	 */
 	protected void setWeixinPeopleSession(WeixinPeopleEntity weixinPeople) {
-		HttpServletRequest request = SpringUtil.getRequest();
-		this.setSession(request, SessionConst.WEIXIN_PEOPLE_SESSION, weixinPeople);
+		
+		BasicUtil.setSession(SessionConst.WEIXIN_PEOPLE_SESSION,weixinPeople);
 	}
 
 	/**
@@ -124,14 +126,12 @@ public class BaseAction extends com.mingsoft.basic.action.BaseAction {
 	protected void setWeixinPeopleSession(String openId) {
 		// 1根据openid去查询用户是否存在
 		// 2存在就设置session
-		WeixinPeopleEntity weixinPeopleEntity = new WeixinPeopleEntity();
-		weixinPeopleEntity.setWeixinPeopleOpenId(openId);
-		IWeixinBiz weixinBiz = SpringUtil.getBean(IWeixinBiz.class);
-		weixinPeopleEntity = (WeixinPeopleEntity) weixinBiz.getEntity(weixinPeopleEntity);
-		if(weixinPeopleEntity != null){
+		IWeixinPeopleBiz weixinPeopleBiz = SpringUtil.getBean(IWeixinPeopleBiz.class);
+		WeixinPeopleEntity weixinPeople = weixinPeopleBiz.getEntityByOpenIdAndAppIdAndWeixinId(openId, BasicUtil.getAppId(),0);
+		if(weixinPeople != null){
 			return ;
 		}
-		setWeixinPeopleSession(weixinPeopleEntity);
+		setWeixinPeopleSession(weixinPeople);
 	}
 
 }

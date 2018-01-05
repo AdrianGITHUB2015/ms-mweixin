@@ -125,7 +125,10 @@
 		from wx_people wp 
 		left join  people p on wp.PW_PEOPLE_ID=p.people_id
 		left join people_user pu on pu.pu_people_id=wp.PW_PEOPLE_ID
-		where wp.PW_APP_ID = #{appId} and wp.PW_WEIXIN_ID = #{weixinId}
+		<where>
+			wp.PW_APP_ID = #{appId} 
+			<if test="weixinId &gt; 0">and  wp.PW_WEIXIN_ID = #{weixinId}</if>
+		</where>
 	</select>
 	<!-- 根据应用ID和微信ID查询微信用户列表，不参与分页和排序,结束-->
 	
