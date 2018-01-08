@@ -32,7 +32,12 @@
 				    listValue="value"  
 				    validation={"required":"true", "data-bv-notempty-message":"必选项目"}
 				/>
-				<@ms.textarea colSm="2" name="menuContent" label="菜单内容" wrap="Soft" rows="3"  size=""  value="${(menuEntity.menuContent)?default('')}" placeholder="请输入菜单内容" validation={"required":"true","maxlength":"200","data-bv-stringlength-message":"菜单内容长度不能超过两百个字符长度!", "data-bv-notempty-message":"必填项目"}/>
+				<div id="content">
+					<@ms.textarea colSm="2" name="menuContent" label="菜单内容" wrap="Soft" rows="3"  size=""  value="${(menuEntity.menuContent)?default('')}" placeholder="请输入菜单内容" validation={"required":"true","maxlength":"200","data-bv-stringlength-message":"菜单内容长度不能超过两百个字符长度!", "data-bv-notempty-message":"必填项目"}/>
+				</div>
+				<div id="url">
+					<@ms.text label="菜单链接" name="menuContent" value="${(menuEntity.menuContent)?default('')}"  width="500px;" placeholder="请输入菜单链接" validation={"required":"true","maxlength":"100","data-bv-stringlength-message":"菜单链接长度不能超过一百个字符长度!", "data-bv-notempty-message":"必填项目"}/>
+				</div>
 				<@ms.hidden name="menuStatus" value="1"/>
 				<@ms.hidden name="menuStyle" value="1"/>
 				<!--<@ms.select 
@@ -50,6 +55,22 @@
     </@ms.panel>
 </@ms.html5>
 <script>
+	$('#menuType').on('select2:select', function (e) {
+		if(e.params.data.id == 2){
+			$("#content").show();
+			$("#url").hide();
+		}else{
+			$("#content").hide();
+			$("#url").show();
+		}
+	});
+	if(${(menuEntity.menuType)?default(1)} == 1){
+		$("#content").hide();
+		$("#url").show();
+	}else{
+		$("#content").show();
+		$("#url").hide();
+	}
 	$("#menuStyle").select2({width: "210px"});
 	$("#menuType").select2({width: "210px"});
 	$("#menuStatus").select2({width: "210px"});

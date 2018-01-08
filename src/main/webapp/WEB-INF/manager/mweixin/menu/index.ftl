@@ -105,11 +105,12 @@
 			success:function(msg) {
 				if(msg.result == true) {
 					<@ms.notify msg= "发布成功" type= "success" />
+					$("#create").text("发布");
+					$("#create").removeAttr("disabled");
 				}else {
 					<@ms.notify msg= "发布失败" type= "fail" />
 				}
-				$(".btn-success").text(btnWord);
-				$(".btn-success").removeAttr("disabled");
+				
 			}
 		})
 	});
