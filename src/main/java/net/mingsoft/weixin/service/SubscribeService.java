@@ -6,9 +6,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import com.mingsoft.weixin.constant.SessionConst;
-import com.mingsoft.weixin.entity.WeixinEntity;
-
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -17,9 +14,9 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
+import net.mingsoft.mweixin.biz.IWeixinPeopleBiz;
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
 import net.mingsoft.weixin.builder.TextBuilder;
-import net.mingsoft.weixin.service.PortalService;
 
 /**
  * 
@@ -29,6 +26,8 @@ import net.mingsoft.weixin.service.PortalService;
 @Component
 public class SubscribeService extends AbstractService {
 
+	@Resource(name="netWeixinPeopleBiz")
+	private IWeixinPeopleBiz weixinPeopleBiz;
 	/**
 	 * 注入微信被动消息回复业务层
 	 */	
@@ -49,7 +48,9 @@ public class SubscribeService extends AbstractService {
 
     if (userWxInfo != null) {
       // TODO 可以添加关注用户到本地
-    	
+    	this.logger.debug("保存用户信息");
+    	int weixinId = weixinService.getWeixin().getWeixinId();
+    	weixinPeopleBiz.saveOrUpdate(userWxInfo, weixinId);
     }
 
     WxMpXmlOutMessage responseResult = null;
