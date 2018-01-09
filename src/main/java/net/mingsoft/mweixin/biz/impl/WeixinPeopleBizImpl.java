@@ -92,10 +92,7 @@ public class WeixinPeopleBizImpl  extends PeopleUserBizImpl implements IWeixinPe
 		weixinPeople.setWeixinPeopleState(WeixinPeopleEntity.WEIXIN_PEOPLE_WATCH);//微信用户所在市
 		weixinPeople.setPeopleAppId(BasicUtil.getAppId());//people表单用户应用ID
 		weixinPeople.setPuIcon(user.getHeadImgUrl());
-		if(user.getSubscribeTime() != null){
-			weixinPeople.setPeopleDateTime(new Date(user.getSubscribeTime()));	//用户注册时间
-		}
-		
+		weixinPeople.setPeopleDateTime(new Date());	//用户注册时间
 		//查询数据库中是否已经存在该用户数据
 		WeixinPeopleEntity _weixin = weixinPeopleDao.getWeixinPeopleEntity(null,BasicUtil.getAppId(),weixinId, user.getOpenId());
 		//当不存在该用户信息时则执行新增
