@@ -30,6 +30,7 @@
 	<select id="getByEntity" parameterType="com.mingsoft.weixin.entity.WeixinEntity" resultMap="resultMap">
 		select * from wx_weixin
 		<where>
+			<if test="weixinNo != null and weixinNo != '' ">and WEIXIN_NO=#{weixinNo} </if>
 			<if test="weixinAppId != null">and WEIXIN_APPID = #{weixinAppId}</if>
 			<if test="weixinOriginId != null">and weixin_origin_id = #{weixinOriginId}</if>
 			<if test="weixinToken != null">and WEIXIN_TOKEN = #{weixinToken}</if>
