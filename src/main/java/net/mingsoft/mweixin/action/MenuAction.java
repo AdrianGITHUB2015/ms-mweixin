@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONArray;
 import com.mingsoft.base.entity.BaseEntity;
 import com.mingsoft.base.filter.DateValueFilter;
 import com.mingsoft.base.filter.DoubleValueFilter;
 import com.mingsoft.util.StringUtil;
 import com.mingsoft.weixin.entity.WeixinEntity;
+import com.xiaoleilu.hutool.util.ObjectUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 
 import me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
@@ -184,10 +186,30 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	 */
 	@RequestMapping("/form")
 	public String form(@ModelAttribute MenuEntity menu,HttpServletResponse response,HttpServletRequest request,ModelMap model){
+		MenuEntity menuSuper = new MenuEntity();
 		if(menu.getMenuId() != null){
-			BaseEntity menuEntity = menuBiz.getEntity(menu.getMenuId());			
+			MenuEntity menuEntity = (MenuEntity) menuBiz.getEntity(menu.getMenuId());
+			if(ObjectUtil.isNotNull(menuEntity)){
+				if(menuEntity.getMenuMenuId() != null){
+					//获取微信菜单的父级菜单
+					menuSuper = (MenuEntity) menuBiz.getEntity(menuEntity.getMenuMenuId());
+				}
+			}
 			model.addAttribute("menuEntity",menuEntity);
 		}
+		//获取微信实体
+		WeixinEntity weixin = this.getWeixinSession(request);
+		if(weixin == null || weixin.getWeixinId()<=0){
+			this.outJson(response, null, false);
+			return null;
+		}
+		MenuEntity _menu = new MenuEntity();
+		_menu.setMenuWeixinId(weixin.getWeixinId());
+		_menu.setMenuAppId(BasicUtil.getAppId());
+		_menu.setMenuMenuId(null);
+		List<MenuEntity> listMenu = menuBiz.query(_menu);
+		model.addAttribute("listMenu",JSONArray.toJSONString(listMenu));
+		model.addAttribute("menuSuper", menuSuper);
 		return view ("/mweixin/menu/form");
 	}
 	
