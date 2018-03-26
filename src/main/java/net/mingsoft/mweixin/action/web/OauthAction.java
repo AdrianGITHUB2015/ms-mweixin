@@ -1,6 +1,7 @@
 package net.mingsoft.mweixin.action.web;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
+import com.mingsoft.base.entity.ResultJson;
 import com.mingsoft.people.constant.e.SessionConstEnum;
 import com.mingsoft.people.entity.PeopleEntity;
 import com.mingsoft.util.StringUtil;
@@ -29,6 +33,7 @@ import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
+import net.mingsoft.base.exception.BusinessException;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.mweixin.biz.IOauthBiz;
 import net.mingsoft.mweixin.biz.IWeixinPeopleBiz;
@@ -72,6 +77,24 @@ public class OauthAction extends com.mingsoft.weixin.action.BaseAction{
 				e.printStackTrace();
 			}
 		}
+		if ((request.getHeader("accept").indexOf("application/json") > -1
+				|| (request.getHeader("X-Requested-With") != null
+						&& request.getHeader("X-Requested-With").indexOf("XMLHttpRequest") > -1))) {
+			LOG.debug("ajax login request out err json");
+			try {
+				PrintWriter writer = response.getWriter();
+				ResultJson result = new ResultJson();
+				result.setResult(false);
+				result.setResultMsg("login err");
+				writer.write(JSONObject.toJSONString(result));
+				writer.flush();
+				writer.close();
+				return null;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
 		//获取微信服务
 		WeixinEntity weixin = weixinBiz.getByWeixinNo(weixinNo);
 		wxService = wxService.build(weixin);
@@ -101,8 +124,9 @@ public class OauthAction extends com.mingsoft.weixin.action.BaseAction{
 			weixinPeopleBiz.saveOrUpdate(user, weixin.getWeixinId());
 			
 			//将用户压入session:weixn_people_session
-			this.setPeopleBySession(request, weixinPeopleBiz.getEntityByOpenIdAndAppIdAndWeixinId(user.getOpenId(), BasicUtil.getAppId(), weixin.getWeixinId()));
-			
+			WeixinPeopleEntity wpe = weixinPeopleBiz.getEntityByOpenIdAndAppIdAndWeixinId(user.getOpenId(), BasicUtil.getAppId(), weixin.getWeixinId());
+			LOG.debug("微信授权设置用户session：" + wpe);
+			BasicUtil.setSession(SessionConstEnum.PEOPLE_SESSION,wpe);
 			//将微信实体压入session:weinxin_session
 			this.setWeixinSession(request,com.mingsoft.weixin.constant.SessionConst.WEIXIN_SESSION,weixin);
 			//重定向

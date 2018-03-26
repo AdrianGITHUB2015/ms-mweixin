@@ -63,6 +63,11 @@
 			    field: 'peoplePhone',
 			    title: '用户电话',
 			    width:'200'
+			}, {
+			    align:'center',
+			    field: 'weixinPeopleOpenId',
+			    title: 'openId',
+			    width:'200'
 			},{
 			    align:'center',
 			    field: 'weixinPeopleCity',

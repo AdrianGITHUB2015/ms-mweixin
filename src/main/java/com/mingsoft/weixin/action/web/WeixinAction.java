@@ -41,7 +41,6 @@ import com.mingsoft.weixin.biz.IWeixinPeopleBiz;
 import com.mingsoft.weixin.constant.SessionConst;
 import com.mingsoft.weixin.entity.WeixinEntity;
 import com.mingsoft.weixin.entity.WeixinPeopleEntity;
-import com.mingsoft.weixin.util.WeixinOpenLoginUtil;
 import com.mingsoft.weixin.util.WeixinUtil;
 import com.mingsoft.weixin.util.bean.WeixinPeopleEntityUtils;
 
