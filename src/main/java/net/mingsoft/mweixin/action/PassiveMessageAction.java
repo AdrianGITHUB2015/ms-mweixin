@@ -194,7 +194,7 @@ public class PassiveMessageAction extends net.mingsoft.mweixin.action.BaseAction
 			this.outJson(response, null,false,getResString("err.empty", this.getResString("pm.content")));
 			return;			
 		}
-		if(!StringUtil.checkLength(passiveMessage.getPmContent()+"", 1, 10)){
+		if(!StringUtil.checkLength(passiveMessage.getPmContent()+"", 1, 150)){
 			this.outJson(response, null, false, getResString("err.length", this.getResString("pm.content"), "1", "150"));
 			return;			
 		}
