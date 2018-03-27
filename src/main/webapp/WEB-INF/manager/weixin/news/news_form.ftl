@@ -229,24 +229,24 @@
 			<#if news?has_content>
 				<#if news.newsType == 0>
 					<@ms.contentNav title="编辑单图文">
-						<@ms.button class="btn btn-success"  id="saveOrUpdateNews"  value="更新"/>
+						<@ms.updateButton class="btn btn-success"  id="saveOrUpdateNews"  value="更新"/>
 						<@ms.contentNavBack onclick="javascript:history.go(-1)"  class="btn btn-default" value="返回" />
 					</@ms.contentNav >
 				<#elseif news.newsType == 1>
 					<@ms.contentNav title="编辑多图文">
-						<@ms.button class="btn btn-success"  id="saveOrUpdateNews"  value="更新"/>
+						<@ms.updateButton class="btn btn-success"  id="saveOrUpdateNews"  value="更新"/>
 						<@ms.contentNavBack onclick="javascript:history.go(-1)"  class="btn btn-default" value="返回" />
 					</@ms.contentNav >
 				</#if>
 			<#else>
 				<#if newsType == 0>
 					<@ms.contentNav title="新增单图文">
-						<@ms.button class="btn btn-success"  id="saveOrUpdateNews"  value="保存"/>
+						<@ms.saveButton class="btn btn-success"  id="saveOrUpdateNews"  value="保存"/>
 						<@ms.contentNavBack onclick="javascript:history.go(-1)"  class="btn btn-default" value="返回" />
 					</@ms.contentNav >
 				<#else>
 					<@ms.contentNav title="新增多图文">
-						<@ms.button class="btn btn-success"  id="saveOrUpdateNews"  value="保存"/>
+						<@ms.saveButton class="btn btn-success"  id="saveOrUpdateNews"  value="保存"/>
 						<@ms.contentNavBack onclick="javascript:history.go(-1)"  class="btn btn-default" value="返回" />
 					</@ms.contentNav >
 				</#if>

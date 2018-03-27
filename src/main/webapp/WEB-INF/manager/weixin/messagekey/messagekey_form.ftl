@@ -184,12 +184,12 @@
 		<@ms.contentBody>
 			<#if news?has_content>
 				<@ms.contentNav title="编辑关键字回复">
-					<@ms.button class="btn btn-success"  id="saveOrUpdateMessage"  value="更新"/>
+					<@ms.updateButton class="btn btn-success"  id="saveOrUpdateMessage"  value="更新"/>
 					<@ms.contentNavBack onclick="javascript:history.go(-1)"  class="btn btn-default" value="返回" />
 				</@ms.contentNav>
 			<#else>
 				<@ms.contentNav title="新增关键字回复">
-					<@ms.button class="btn btn-success" id="saveOrUpdateMessage"  value="保存"/>
+					<@ms.saveButton class="btn btn-success" id="saveOrUpdateMessage"  value="保存"/>
 					<@ms.contentNavBack onclick="javascript:history.go(-1)"  class="btn btn-default" value="返回" />
 				</@ms.contentNav>
 			</#if>

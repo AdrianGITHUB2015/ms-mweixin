@@ -162,9 +162,9 @@
 		<@ms.contentBody>
 			<@ms.contentNav title="关注回复">
 				<#if news?has_content>
-					<@ms.button class="btn btn-success"  id="saveOrUpdateMessage"  value="更新"/>
+					<@ms.updateButton class="btn btn-success" id="saveOrUpdateMessage"  value="更新"/>
 				<#else>
-					<@ms.button class="btn btn-success" id="saveOrUpdateMessage"  value="保存"/>
+					<@ms.saveButton class="btn btn-success"  id="saveOrUpdateMessage"  value="保存"/>
 				</#if>
 			</@ms.contentNav>
 			<@ms.contentPanel> 			  		
