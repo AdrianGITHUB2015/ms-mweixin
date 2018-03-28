@@ -131,10 +131,9 @@
 	<!-- 根据微信素材id查找素材结束 -->
 
 	<!-- 查询图文素材开始(视图使用) -->
-	<select id="queryList" resultMap="resultMap">
+	<select id="query" resultMap="resultMap">
 		select * from
-		wx_news where news_app_id=#{appId} and news_weixin_id=#{weixinId} order by news_id desc limit
-		${page.pageNo*page.pageSize},#{page.pageSize}
+		wx_news where news_app_id=#{newsAppId} and news_weixin_id=#{newsWeixinId} order by news_id desc 
 	</select>	
 	<!--查询取图文素材结束(视图使用) -->
 	

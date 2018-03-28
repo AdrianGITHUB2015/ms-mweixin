@@ -71,15 +71,6 @@ public interface INewsDao extends IBaseDao {
 	public NewsEntity getNewsByNewsId(@Param("newsId") int newsId);	
 
 	/**
-	 * 通过应用编号和微信ID获取素材列表(带分页)
-	 * @param appId 应用编号
-	 * @param weixinId　微信ID
-	 * @param page　分页
-	 * @return　素材列表
-	 */
-	public List<NewsEntity> queryList(@Param("appId")int appId,@Param("weixinId")int weixinId,@Param("page")PageUtil page);	
-
-	/**
 	 * 通过应用编号和微信ID获取素材总数
 	 * @param appId 应用编号
 	 * @param weixinId 微信ID

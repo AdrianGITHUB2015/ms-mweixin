@@ -144,15 +144,13 @@ public class NewsBizImpl extends BaseBizImpl implements INewsBiz {
 
 	/**
 	 * 根据素材应用ID查询素材</br>
-	 * 分页查询</br>
 	 * 根据自增长ID排序</br>
 	 * @param newsWeixinId 素材微信ID
-	 * @param page 分页
 	 * @return 素材列表
 	 */
 	@Override
-	public List<NewsEntity> queryList(int appId,int weixinId,PageUtil page){
-		List<NewsEntity> newsList = newsDao.queryList(appId,weixinId, page);
+	public List<NewsEntity> query(NewsEntity news){
+		List<NewsEntity> newsList = newsDao.query(news);
 		//重新组装图文
 		if(newsList != null){
 			return setNewsAction(newsList);

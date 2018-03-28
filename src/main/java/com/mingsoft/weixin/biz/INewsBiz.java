@@ -67,10 +67,9 @@ public interface INewsBiz extends IBaseBiz {
 	 * 根据应用编号和微信编号查询所有素材列表
 	 * @param appId 应用编号
 	 * @param weixinId 微信编号
-	 * @param page 分页
 	 * @return 素材列表
 	 */
-	public List<NewsEntity> queryList(int appId,int weixinId,PageUtil page);
+	public List<NewsEntity> query(NewsEntity news);
 
 	/**
 	 * 通过应用编号和微信Id获取所有素材总数

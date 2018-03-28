@@ -109,20 +109,13 @@ public class NewsAction extends BaseAction {
 		//取出微信实体
 		WeixinEntity weixin = this.getWeixinSession(request);
 		//获取微信ID
-		int weixinId = weixin.getWeixinId();
-		//获取appId
-		int appId = this.getAppId(request);
-		//获取当前页码
-		int pageNo= this.getPageNo(request);
-		//图文素材总数
-		int recordCount = newsBiz.queryCount(appId,weixinId);
-		//分页通用
-		PageUtil page = new PageUtil(pageNo,recordCount,"list.do?");
+		NewsEntity news = new NewsEntity();
+		news.setNewsAppId(BasicUtil.getAppId());
+		news.setNewsWeixinId(weixin.getWeixinId());
 		//查询图文素材
-		List<NewsEntity> newsList = newsBiz.queryList(appId,weixinId,page);
+		List<NewsEntity> newsList = newsBiz.query(news);
 		//压入url地址
-		this.setCookie(request, response, CookieConstEnum.BACK_COOKIE,"list.do?&pageNo="+pageNo);
-		model.addAttribute("page",page);
+		this.setCookie(request, response, CookieConstEnum.BACK_COOKIE,"list.do");
 		model.addAttribute("newsList", newsList);
 		return Const.VIEW+"/weixin/news/news_list";
 	}

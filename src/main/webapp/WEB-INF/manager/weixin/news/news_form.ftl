@@ -451,13 +451,13 @@
 		   	},
 		   	success: function(data){
 		   		$("#articleList").html("");
-		   		if (data.length==0) {
+		   		if (data.rows.length==0) {
 		   			$("#articleList").html("<tr><td colspan='3'><center>"+$("#noRecord").html()+"</td></tr>");
 		   		}
 		   		flag = true;
 		   		$(".loadPage").hide();
 		   		$(".searchPage").show();
-		   		articleCount = data.count;
+		   		articleCount = data.total;
 				//计算总页数
 				if (articleCount==0) {
 					pageCount = 0;
@@ -469,7 +469,7 @@
 						pageCount = parseInt(articleCount / pageSize )+ 1;
 					}
 				}			   				   		
-		   		$('#articleListTmpl').tmpl(data).appendTo('#articleList');
+		   		$('#articleListTmpl').tmpl(data.rows).appendTo('#articleList');
 		   	}			   
 		});
 	}
@@ -491,11 +491,11 @@
 		   	},
 		   	success: function(data){
 		   		$("#articleList").html("");
-		   		if (data.length==0) {
+		   		if (data.rows.length==0) {
 		   			$("#articleList").html("<tr><td colspan='3'><center>"+$("#noRecord").html()+"</td></tr>");
 		 		}	
 		   		flag = false;	   		
-		   		articleCount = data.count;
+		   		articleCount = data.total;
 				//计算总页数
 				if (articleCount==0) {
 					pageCount = 0;
@@ -507,7 +507,7 @@
 						pageCount = parseInt(articleCount / pageSize )+ 1;
 					}
 				}			   				   		
-		   		$('#articleListTmpl').tmpl(data).appendTo('#articleList');
+		   		$('#articleListTmpl').tmpl(data.rows).appendTo('#articleList');
 		   	}			   
 		});
 	}
