@@ -1,6 +1,8 @@
 package net.mingsoft.mweixin.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import org.springframework.data.annotation.Transient;
 import org.springframework.format.annotation.DateTimeFormat;
 import com.mingsoft.base.entity.BaseEntity;
 import java.util.Date;

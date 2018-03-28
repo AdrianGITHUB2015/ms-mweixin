@@ -57,7 +57,6 @@
     </@ms.panel>
 </@ms.html5>
 <script>
-	zNodesinputTree[0] = {menuTitle:"顶级菜单",menuId:"",menuMenuId:""};
 	//加载树形
 	$.fn.zTree.init($("#treeDomeinputTree"),settinginputTree,zNodesinputTree);
 	$('#menuType').on('select2:select', function (e) {

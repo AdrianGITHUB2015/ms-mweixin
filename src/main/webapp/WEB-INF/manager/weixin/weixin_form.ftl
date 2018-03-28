@@ -1,6 +1,11 @@
 <@ms.html5>
 	<@ms.nav title="微信设置" back=true>
-		<@ms.button class="btn btn-success"  id="saveOrUpdateWeixin"  value="编辑微信设置"/>
+		
+		<#if weixin.weixinId!=0>
+			<@ms.updateButton class="btn btn-success"  id="saveOrUpdateWeixin"  value="更新"/>
+		<#else>
+			 <@ms.updateButton class="btn btn-success"  id="saveOrUpdateWeixin"  value="保存"/>
+		</#if>
 	</@ms.nav>
 	<@ms.panel>
 		<@ms.form isvalidation=true name="weixinForm" action="${managerPath}/weixin/save.do">
@@ -68,17 +73,20 @@
 				$(this).postForm("#weixinForm",{func:function(msg) {
 					if (msg.result == true) {
 			     		<#if weixin.weixinId!=0>
-			 				<@ms.notify msg="保存成功" type="success"/>
+			 				<@ms.notify msg="更新成功" type="success"/>
 		     			<#else>
-			 				<@ms.notify msg="保存失败" type="fail"/>
-			     			location.href = "${managerPath}/weixin/index.do"; 	
+			 				<@ms.notify msg="保存成功" type="success"/>
 			     		</#if>		     					    		
 			    	}else{
-			 			<@ms.notify msg="提交失败" type="fail"/>
-			    		$("#saveOrUpdateWeixin").text(btnWord);	
+			    		<#if weixin.weixinId!=0>
+			 				<@ms.notify msg="更新失败" type="warning"/>
+						<#else>
+			 				<@ms.notify msg="保存失败" type="warning"/>
+			     		</#if>				 				
 			    	}
 				}});
 			}
+			location.reload();
 		});
 	});
 </script>
