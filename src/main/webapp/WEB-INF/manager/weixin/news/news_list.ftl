@@ -174,28 +174,32 @@
     		position: fixed;
     		right: 0px;
     		top: 45px;
-   			text-align: right;
+   		text-align: right;
     		border-bottom: 1px solid rgb(211, 215, 219);
     		background: rgb(255, 255, 255);
     		padding: 0px 10px;
 		}
 	</style>
+	<link href='/static/plugins/puBuLiu/css/style.css' rel='stylesheet'>
+	<script src='/static/plugins/puBuLiu/js/velocity.js'></script>
+	<script src='/static/plugins/puBuLiu/js/stackgrid.adem.js'></script>
+	<script src='/static/plugins/puBuLiu/js/website.js'></script>
 	<@ms.content>
         <@ms.contentBody>
             <!--title对应板块名称-->
             <@ms.contentNav title="素材管理">
-            	<button type="button" class="btn btn-success col-md" id="addSingleNews" >新增单图文&nbsp;<span class="glyphicon glyphicon-file"></span></button>
+            <button type="button" class="btn btn-success col-md" id="addSingleNews" >新增单图文&nbsp;<span class="glyphicon glyphicon-file"></span></button>
 				<button type="button" class="btn btn-success col-md" id="addManyNews" >新增多图文&nbsp;<span class="glyphicon glyphicon-th-list"></span></button>
 				<button type="button" class="btn btn-success col-md" id="addTextNews">新增文本&nbsp;<span class="glyphicon glyphicon-list-alt"></span></button>
             </@ms.contentNav>
             <@ms.contentPanel>
 				<!--列表开始-->
-				<div class="row" id="newsListContainer">	
+				<div class="row grid-wrapper" id="newsListContainer">	
 		   			<#if newsList?has_content>
-		   				<#list newsList as list>		
+		   				<#list newsList as list>
 		   					<#if list.newsType==0>
 								<!--单图文开始-->
-								<div class="newsList">
+								<div class="newsList grid-item">
 									<div class="appmsg ">
 							    		<div class="appmsg_content">
 							       			<h4 class="appmsg_title"><#if list.newsMasterArticle?has_content>${list.newsMasterArticle.basicTitle?default('')}</#if></h4>
@@ -220,7 +224,7 @@
 								<!--单图文结束-->
 							<#elseif list.newsType==1>	
 								<!--多图文开始-->
-								<div  class="newsList">
+								<div  class="newsList grid-item">
 									<div class="appmsg multi">
 									    <div class="appmsg_content">							        
 								            <div class="appmsg_info">
@@ -254,7 +258,7 @@
 								<!--多图文结束-->
 							<#elseif list.newsType==2>
 								<!--文本开始-->
-								<div  class="newsList">
+								<div  class="newsList grid-item">
 									<div class="appmsg ">
 									    <div class="appmsg_content">
 								            <div class="appmsg_info">
@@ -283,9 +287,6 @@
 				</div>			    
 				<!--列表结束--> 
                 <!--列表分页-->
-                <#if page?has_content>
-                  
-                </#if>                                  
             </@ms.contentPanel>
         </@ms.contentBody>
     </@ms.content>
@@ -313,7 +314,7 @@
 			<@ms.button  value=""  id="saveOrUpdateButton"  />
 		</@ms.modalButton>
 	</@ms.modal>
-</@ms.html5>	
+</@ms.html5>
 <script>
 	$(function(){	
 		var newsTextId = 0;
