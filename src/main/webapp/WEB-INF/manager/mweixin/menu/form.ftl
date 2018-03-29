@@ -35,10 +35,10 @@
 				    validation={"required":"true", "data-bv-notempty-message":"必选项目"}
 				/>
 				<div id="content">
-					<@ms.textarea colSm="2" name="menuContent" label="菜单内容" wrap="Soft" rows="3"  size=""  value="${(menuEntity.menuContent)?default('')}" placeholder="请输入菜单内容" validation={"required":"true","maxlength":"200","data-bv-stringlength-message":"菜单内容长度不能超过两百个字符长度!", "data-bv-notempty-message":"必填项目"}/>
+					<@ms.textarea id="textContent" colSm="2" name="menuContent" label="菜单内容" wrap="Soft" rows="3"  size=""  value="${(menuEntity.menuContent)?default('')}" placeholder="请输入菜单内容" validation={"required":"true","maxlength":"200","data-bv-stringlength-message":"菜单内容长度不能超过两百个字符长度!", "data-bv-notempty-message":"必填项目"}/>
 				</div>
 				<div id="url">
-					<@ms.text label="菜单链接" name="menuContent" value="${(menuEntity.menuContent)?default('')}"  width="500px;" placeholder="请输入菜单链接" validation={"required":"true","maxlength":"100","data-bv-stringlength-message":"菜单链接长度不能超过一百个字符长度!", "data-bv-notempty-message":"必填项目"}/>
+					<@ms.text id="textUrl" label="菜单链接" name="menuContent" value="${(menuEntity.menuContent)?default('')}"  width="500px;" placeholder="请输入菜单链接地址(必须以http开头)" validation={"maxlength":"100","data-bv-stringlength":"true","data-bv-stringlength-max":"100","data-bv-stringlength-message":"菜单链接长度不能超过100个字符","data-bv-regexp":"true", "data-bv-regexp-regexp":'^[1][1-8][0-9]{9}',"data-bv-regexp-message":"菜单地址格式错误"}/>
 				</div>
 				<@ms.hidden name="menuStatus" value="1"/>
 				<@ms.hidden name="menuStyle" value="1"/>
@@ -59,25 +59,46 @@
 <script>
 	//加载树形
 	$.fn.zTree.init($("#treeDomeinputTree"),settinginputTree,zNodesinputTree);
+	var textContent = $("#textContent");   //获取菜单内容对象
+	var textUrl = $("#textUrl");		//获取链接对象
+	textContent.prop("disabled",true);   //默认禁用菜单内容
+	textContent.removeProp("name");
 	$('#menuType').on('select2:select', function (e) {
 		if(e.params.data.id == 2){
 			$("#content").show();
 			$("#url").hide();
+			textUrl.prop("disabled",true);
+  			textContent.prop("disabled",false);
+  			textUrl.removeProp("name");
+  			textContent.prop("name","menuContent");
 		}else{
 			$("#content").hide();
 			$("#url").show();
+			textContent.prop("disabled",true);
+  			textUrl.prop("disabled",false);
+  			textContent.removeProp("name");
+  			textUrl.prop("name","menuContent");
 		}
 	});
 	if(${(menuEntity.menuType)?default(1)} == 1){
 		$("#content").hide();
 		$("#url").show();
+		textContent.prop("disabled",true);
+  		textUrl.prop("disabled",false);
+  		textContent.removeProp("name");
+  		textUrl.prop("name","menuContent");
 	}else{
 		$("#content").show();
 		$("#url").hide();
+		textUrl.prop("disabled",true);
+  		textContent.prop("disabled",false);
+  		textUrl.removeProp("name");
+  		textContent.prop("name","menuContent");
 	}
 	$("#menuStyle").select2({width: "210px"});
 	$("#menuType").select2({width: "210px"});
-	$("#menuStatus").select2({width: "210px"});
+	$("#menuStatus").select2({width: "210px"});	
+	//保存链接
 	var url = "${managerPath}/mweixin/menu/save.do";
 	if($("input[name = 'menuId']").val() > 0){
 		url = "${managerPath}/mweixin/menu/update.do";
@@ -95,14 +116,14 @@
 			<@ms.notify msg= "微信菜单只能存在两级,不能选择二级菜单为父级" type= "warning" />
 			return false;
 		}
-		
-		
 	} 
+	
 	//编辑按钮onclick
 	function save() {
 		$("#menuForm").data("bootstrapValidator").validate();
-			var isValid = $("#menuForm").data("bootstrapValidator").isValid();
-			if(!isValid) {
+		var isValid = $("#menuForm").data("bootstrapValidator").isValid();
+		
+		if(!isValid) {
 				<@ms.notify msg= "数据提交失败，请检查数据格式！" type= "warning" />
 				return;
 		}
