@@ -89,11 +89,11 @@
 		if(treeNode.check_Child_State == 0)
 			if(treeNode.children.length == 7){
 				<@ms.notify msg= "二级菜单对多只能存在7个" type= "warning" />
-				return;
+				return false;
 			}
 		}else if(treeNode.level == 1){
 			<@ms.notify msg= "微信菜单只能存在两级,不能选择二级菜单为父级" type= "warning" />
-			return;
+			return false;
 		}
 		
 		
@@ -142,7 +142,7 @@
 					$(".btn-success").text(btnWord);
 					$(".btn-success").removeAttr("disabled");
 					$('.ms-notifications').offset({top:43}).notify({
-					   type:'fail',
+					   type:'warning',
 					   message: { text:data.resultMsg }
 					}).show();
 				}
