@@ -131,9 +131,8 @@ body {
   width: 100%; }
 
 .grid-wrapper {
-  margin: 0 auto;
-  position: relative; 
-  width: 100% !important;}
+  margin: 0 auto !important;
+  position: relative; }
 
 .grid-item {
   display: block;

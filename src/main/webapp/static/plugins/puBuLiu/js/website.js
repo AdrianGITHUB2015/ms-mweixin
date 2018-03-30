@@ -43,19 +43,6 @@
 				})
 			}
 		})
+		//			$.stackgrid.config.column_width = 200, $.stackgrid.reset(), $.stackgrid.restack()
 	})
 }).call(this);
-
-if($(".ms-content-body-panel").width() < 1380) {
-	$.stackgrid.config.column_width = ($(".ms-content-body-panel").width() - 80) / 3
-} else {
-	$.stackgrid.config.column_width = ($(".ms-content-body-panel").width() - 100) / 4
-}
-
-$(window).resize(function() {
-	if($(".ms-content-body-panel").width() < 1380) {
-		$.stackgrid.config.column_width = ($(".ms-content-body-panel").width() - 80) / 3, $.stackgrid.reset(), $.stackgrid.restack()
-	} else {
-		$.stackgrid.config.column_width = ($(".ms-content-body-panel").width() - 100) / 4, $.stackgrid.reset(), $.stackgrid.restack()
-	}
-})
