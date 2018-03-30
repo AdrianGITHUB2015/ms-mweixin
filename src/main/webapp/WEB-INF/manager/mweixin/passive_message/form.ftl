@@ -43,7 +43,9 @@
 	$("#pmType").select2({width: "210px"});
 	$("#pmNewType").select2({width: "210px"});
 	var url = "${managerPath}/mweixin/passiveMessage/save.do";
-	if($("input[name = 'pmId']").val() > 0){
+	var pmId = $("input[name = 'pmId']").val();
+	var pmType = $("input[name = 'pmType']").val()
+	if(pmId > 0){
 		url = "${managerPath}/mweixin/passiveMessage/update.do";
 		$(".btn-success").text("更新");
 	}
@@ -79,7 +81,8 @@
 					<@ms.notify msg="保存或更新失败" type= "warning" />
 					$(".btn-success").text(btnWord);
 				}
+				location.href="${managerPath}/mweixin/passiveMessage/form.do?pmID="+pmId+"&pmType="+pmType;
 			}
 		})
-	}	
+	}
 </script>

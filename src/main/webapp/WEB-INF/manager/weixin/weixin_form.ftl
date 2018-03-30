@@ -1,6 +1,5 @@
 <@ms.html5>
 	<@ms.nav title="微信设置" back=true>
-		
 		<#if weixin.weixinId!=0>
 			<@ms.updateButton class="btn btn-success"  id="saveOrUpdateWeixin"  value="更新"/>
 		<#else>
@@ -66,27 +65,34 @@
 					}
 				}
 				<#if weixin.weixinId!=0>
+					$("#saveOrUpdateWeixin").prop("disabled",true);
 	     			$("#saveOrUpdateWeixin").text("更新中");	
      			<#else>
+     				$("#saveOrUpdateWeixin").prop("disabled",true);
 	     			$("#saveOrUpdateWeixin").text("保存中");		
 	     		</#if>		     							
 				$(this).postForm("#weixinForm",{func:function(msg) {
 					if (msg.result == true) {
 			     		<#if weixin.weixinId!=0>
 			 				<@ms.notify msg="更新成功" type="success"/>
+			 				$("#saveOrUpdateWeixin").prop("disabled",false);
+			 				location.reload();
 		     			<#else>
 			 				<@ms.notify msg="保存成功" type="success"/>
+			 				$("#saveOrUpdateWeixin").prop("disabled",false);
+			 				location.href="${managerPath}/weixin/index.do";
 			     		</#if>		     					    		
 			    	}else{
 			    		<#if weixin.weixinId!=0>
 			 				<@ms.notify msg="更新失败" type="warning"/>
+			 				$("#saveOrUpdateWeixin").prop("disabled",false);
 						<#else>
 			 				<@ms.notify msg="保存失败" type="warning"/>
+			 				$("#saveOrUpdateWeixin").prop("disabled",false);
 			     		</#if>				 				
 			    	}
 				}});
 			}
-			location.reload();
 		});
 	});
 </script>
