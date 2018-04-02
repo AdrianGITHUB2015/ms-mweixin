@@ -430,8 +430,6 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 		menuEntity.setMenuAppId(BasicUtil.getAppId());
 		menuEntity.setMenuWeixinId(weixin.getWeixinId());
 		List<MenuEntity> menuList = menuBiz.query(menuEntity);
-		//更新则不进行判断
-		if(!StringUtil.isInteger(menu.getMenuId())){
 			//计算一级菜单的总数
 			int i = 0;
 			for(MenuEntity _menuEntity : menuList){
@@ -452,7 +450,6 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 					return ;
 				}
 			}
-		}
 		this.outJson(response, true);
 	}
 }
