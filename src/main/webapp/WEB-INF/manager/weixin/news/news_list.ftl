@@ -180,10 +180,10 @@
     		padding: 0px 10px;
 		}
 	</style>
-	<link href='/static/plugins/puBuLiu/css/style.css' rel='stylesheet'>
-	<script src='/static/plugins/puBuLiu/js/velocity.js'></script>
-	<script src='/static/plugins/puBuLiu/js/stackgrid.adem.js'></script>
-	<script src='/static/plugins/puBuLiu/js/website.js'></script>
+	<link href='/static/plugins/stackgrid/css/style.css' rel='stylesheet'>
+	<script src='/static/plugins/stackgrid/js/velocity.js'></script>
+	<script src='/static/plugins/stackgrid/js/stackgrid.adem.js'></script>
+	<script src='/static/plugins/stackgrid/js/website.js'></script>
 	<@ms.content>
         <@ms.contentBody>
             <!--title对应板块名称-->
@@ -206,7 +206,7 @@
 								            <div class="appmsg_info">
 								                <em class="appmsg_date">${list.newsDateTime?string('MM月dd日')}</em>
 								            </div>
-							            	<div class="appmsg_thumb_wrp"><img src="<#if list.newsMasterArticle?has_content>${base}/${list.newsMasterArticle.basicThumbnails?default('')}</#if>" alt="" class="appmsg_thumb"></div>
+							            	<div class="appmsg_thumb_wrp"><img src="<#if list.newsMasterArticle?has_content>${basePath}/${list.newsMasterArticle.basicThumbnails?default('')}</#if>" alt="" class="appmsg_thumb"></div>
 							            	<p class="appmsg_desc"><#if list.newsMasterArticle?has_content>${list.newsMasterArticle.basicDescription?default('')}</#if></p>
 							        	</div>				    
 									    <div class="appmsg_opr">
@@ -232,12 +232,12 @@
 								            </div>
 								            <div class="cover_appmsg_item">
 								                <h4 class="appmsg_title">${list.newsMasterArticle.basicTitle?default('')}</h4>
-								                <div class="appmsg_thumb_wrp"><img src="${base}/${list.newsMasterArticle.basicThumbnails?default('')}" alt="" class="appmsg_thumb"></div>
+								                <div class="appmsg_thumb_wrp"><img src="${basePath}/${list.newsMasterArticle.basicThumbnails?default('')}" alt="" class="appmsg_thumb"></div>
 								            </div>
 					       					<#if list.childs?has_content>
 					       						<#list list.childs as listChild>
 										            <div class="appmsg_item">
-										                <img src="${base}/${listChild.basicThumbnails?default('')}" alt="" class="appmsg_thumb">
+										                <img src="${basePath}/${listChild.basicThumbnails?default('')}" alt="" class="appmsg_thumb">
 										                <h4 class="appmsg_title">${listChild.basicTitle?default('')}</h4>
 										            </div>		       							
 					       						</#list>
