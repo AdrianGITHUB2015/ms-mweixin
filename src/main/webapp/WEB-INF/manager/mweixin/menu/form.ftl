@@ -38,7 +38,7 @@
 					<@ms.textarea id="textContent" colSm="2" name="menuContent" label="菜单内容" wrap="Soft" rows="3"  size=""  value="${(menuEntity.menuContent)?default('')}" placeholder="请输入菜单内容" validation={"required":"true","maxlength":"200","data-bv-stringlength-message":"菜单内容长度不能超过两百个字符长度!", "data-bv-notempty-message":"必填项目"}/>
 				</div>
 				<div id="url">
-					<@ms.text id="textUrl" label="菜单链接" name="menuContent" value="${(menuEntity.menuContent)?default('')}"  width="500px;" placeholder="请输入菜单链接地址(必须以http://或ftp或https开头)" validation={"maxlength":"100","data-bv-stringlength":"true","data-bv-stringlength-max":"100","data-bv-stringlength-message":"菜单链接长度不能超过100个字符","data-bv-regexp":"true", "data-bv-regexp-regexp":'(http|ftp|https):\\/\\/([\\w.]+\\/?)\\S*',"data-bv-regexp-message":"菜单地址格式错误","data-bv-notempty-message":"必填项目"}/>
+					<@ms.text id="textUrl" label="菜单链接" name="menuContent" value="${(menuEntity.menuContent)?default('')}"  width="500px;" placeholder="请输入菜单链接地址(必须以http://或ftp或https开头)" validation={"required":"true","maxlength":"100","data-bv-stringlength":"true","data-bv-stringlength-max":"100","data-bv-stringlength-message":"菜单链接长度不能超过100个字符","data-bv-regexp":"true", "data-bv-regexp-regexp":'(http|ftp|https):\\/\\/([\\w.]+\\/?)\\S*',"data-bv-regexp-message":"菜单地址格式错误","data-bv-notempty-message":"必填项目"}/>
 				</div>
 				<@ms.hidden name="menuStatus" value="1"/>
 				<@ms.hidden name="menuStyle" value="1"/>
@@ -152,7 +152,7 @@
 								$(".btn-success").text(btnWord);
 								$(".btn-success").removeAttr("disabled");
 								$('.ms-notifications').offset({top:43}).notify({
-								   type:'fail',
+								   type:'waring',
 								   message: { text:"更新或保存失败" }
 								}).show();
 							}

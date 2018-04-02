@@ -71,7 +71,6 @@
 		{ "id":1, "name":"素材列表", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/weixin/news/list.do')"},
 		{ "id":1, "name":"微信用户", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/weixin/weixinPeople/index.do')"},
 		{ "id":1, "name":"群发消息", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/weixin/message/index.do')"},
-		//{ "id":1, "name":"关注回复", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/weixin/subscribe/subscribe.do')"},
 		{ "id":1, "name":"关注回复", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/mweixin/passiveMessage/form.do?pmType='+2)"},
 		{ "id":1, "name":"被动回复", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/mweixin/passiveMessage/form.do?pmType='+3)"},
 		{ "id":1, "name":"关键字回复", "url":"", "click":"$('#listFrame').attr('src','${managerPath}/mweixin/passiveMessage/index.do')"},

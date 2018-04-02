@@ -430,24 +430,27 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 		menuEntity.setMenuAppId(BasicUtil.getAppId());
 		menuEntity.setMenuWeixinId(weixin.getWeixinId());
 		List<MenuEntity> menuList = menuBiz.query(menuEntity);
-		//计算一级菜单的总数
-		int i = 0;
-		for(MenuEntity _menuEntity : menuList){
-			//判断是否是添加一级菜单
-			if(menu.getMenuMenuId() == 0){
-				if(_menuEntity.getMenuMenuId() == null){
-					i++;
-					if(i >= 3){
-						this.outJson(response,null,false,this.getResString("menu.parent.max"));
-						return ;
+		//更新则不进行判断
+		if(!StringUtil.isInteger(menu.getMenuId())){
+			//计算一级菜单的总数
+			int i = 0;
+			for(MenuEntity _menuEntity : menuList){
+				//判断是否是添加一级菜单
+				if(menu.getMenuMenuId() == 0){
+					if(_menuEntity.getMenuMenuId() == null){
+						i++;
+						if(i >= 3){
+							this.outJson(response,null,false,this.getResString("menu.parent.max"));
+							return ;
+						}
 					}
 				}
-			}
-			MenuEntity subMenu = new MenuEntity();
-			subMenu.setMenuMenuId(_menuEntity.getMenuId());
-			if(menuBiz.query(subMenu).size() > 7){
-				this.outJson(response,null,false,this.getResString("menu.son.max"));
-				return ;
+				MenuEntity subMenu = new MenuEntity();
+				subMenu.setMenuMenuId(_menuEntity.getMenuId());
+				if(menuBiz.query(subMenu).size() > 7){
+					this.outJson(response,null,false,this.getResString("menu.son.max"));
+					return ;
+				}
 			}
 		}
 		this.outJson(response, true);

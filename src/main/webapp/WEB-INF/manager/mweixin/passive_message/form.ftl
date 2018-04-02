@@ -14,7 +14,7 @@
 		}
 	</style>
 	 <@ms.nav title="微信消息回复编辑" back=true>
-			 <@ms.button class="btn btn-success" onclick="save()" value="保存"/>
+		<@ms.button class="btn btn-success" onclick="save()" value="保存"/>
     </@ms.nav>
     <@ms.panel>
     	<@ms.form name="passiveMessageForm" isvalidation=true>
@@ -74,6 +74,9 @@
 						$(".btn-success").text("更新");
 						$(".btn-success").removeAttr("disabled");
 					}
+					if(status.pmType != 1){
+						location.href="${managerPath}/mweixin/passiveMessage/form.do?pmID="+pmId+"&pmType="+pmType;
+					}
 				}
 				else{
 					$(".btn-success").text(btnWord);
@@ -81,7 +84,6 @@
 					<@ms.notify msg="保存或更新失败" type= "warning" />
 					$(".btn-success").text(btnWord);
 				}
-				location.href="${managerPath}/mweixin/passiveMessage/form.do?pmID="+pmId+"&pmType="+pmType;
 			}
 		})
 	}
