@@ -14,14 +14,13 @@
 		}
 	</style> 
 	 <@ms.nav title="微信菜单编辑" back=true>
-    		<@ms.button  onclick="save()" value="保存"/>
+    		<@ms.saveButton  onclick="save()"/>
     </@ms.nav>
     <@ms.panel>
     	<@ms.form name="menuForm" isvalidation=true>
     		<@ms.hidden name="menuId" value="${(menuEntity.menuId)?default('')}"/>
-    		<@ms.hidden id="a" name="menuMenuId" value="${(menu.menuMenuId)?default(0)}"/>
     			<@ms.formRow label="所属菜单" width="240">
-					<@ms.treeInput  treeId="inputTree"  json="${listMenu?default('')}"  jsonId="menuId" jsonPid="menuMenuId" jsonName="menuTitle"  inputName="menuMenuId" inputValue="${(menu.menuMenuId)?default(0)}" buttonText="${(menuSuper.menuTitle)?default('顶级菜单')}" clickZtreeId="clickZtreeId(event,treeId,treeNode);"  expandAll="true" showIcon="true"/>
+					<@ms.treeInput  treeId="inputTree"  json="${listMenu?default('')}"  jsonId="menuId" jsonPid="menuMenuId" jsonName="menuTitle"  inputName="menuMenuId" inputValue="${(menuMenuId)?default(0)}" buttonText="${(menuSuper.menuTitle)?default('顶级菜单')}" clickZtreeId="clickZtreeId(event,treeId,treeNode);"  expandAll="true" showIcon="true"/>
 				</@ms.formRow>
     			<@ms.text label="菜单名称" name="menuTitle" value="${(menuEntity.menuTitle)?default('')}"  width="240px;" placeholder="请输入菜单名称" validation={"required":"true","maxlength":"7","data-bv-stringlength-message":"菜单名称长度不能超过七个字符长度!", "data-bv-notempty-message":"必填项目"}/>
     			<@ms.select 
@@ -58,7 +57,6 @@
     </@ms.panel>
 </@ms.html5>
 <script>
-	alert($("#a").val());
 	//加载树形
 	$.fn.zTree.init($("#treeDomeinputTree"),settinginputTree,zNodesinputTree);
 	var textContent = $("#textContent");   //获取菜单内容对象
