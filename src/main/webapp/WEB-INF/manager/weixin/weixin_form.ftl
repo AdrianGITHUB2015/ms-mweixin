@@ -3,7 +3,7 @@
 		<#if weixin.weixinId!=0>
 			<@ms.updateButton class="btn btn-success"  id="saveOrUpdateWeixin"  value="更新"/>
 		<#else>
-			 <@ms.updateButton class="btn btn-success"  id="saveOrUpdateWeixin"  value="保存"/>
+			 <@ms.saveButton class="btn btn-success"  id="saveOrUpdateWeixin"  value="保存"/>
 		</#if>
 	</@ms.nav>
 	<@ms.panel>
