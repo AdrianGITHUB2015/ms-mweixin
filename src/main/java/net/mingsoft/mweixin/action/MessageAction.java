@@ -20,12 +20,13 @@ The MIT License (MIT) * Copyright (c) 2017 铭飞科技
  */
 package net.mingsoft.mweixin.action;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.POST;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,8 +37,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonObject;
 import com.mingsoft.basic.constant.Const;
+import com.mingsoft.cms.entity.ArticleEntity;
 import com.mingsoft.util.StringUtil;
 import com.mingsoft.weixin.bean.NewsBean;
 import com.mingsoft.weixin.biz.INewsBiz;
@@ -50,11 +51,18 @@ import com.mingsoft.weixin.entity.WeixinPeopleEntity;
 import com.mingsoft.weixin.util.MessageUtils;
 import com.mingsoft.weixin.util.bean.NewsEntityUtils;
 
+import cn.hutool.core.io.FileUtil;
 import me.chanjar.weixin.common.api.WxConsts;
+import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
 import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.bean.WxMpMassNews;
+import me.chanjar.weixin.mp.bean.WxMpMassOpenIdsMessage;
 import me.chanjar.weixin.mp.bean.WxMpMassTagMessage;
 import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpMassSendResult;
+import me.chanjar.weixin.mp.bean.result.WxMpMassUploadResult;
+import net.mingsoft.basic.util.BasicUtil;
+import net.mingsoft.weixin.service.PortalService;
 
 /**
  * 
@@ -80,6 +88,9 @@ public class MessageAction extends BaseAction {
 	 */
 	@Autowired
 	private IWeixinPeopleBiz weixinPeopleBiz;
+	
+	@Autowired
+	private PortalService weixinService;
 
 	/**
 	 * 遍历openId伪群发文本消息
@@ -145,37 +156,79 @@ public class MessageAction extends BaseAction {
 	 * @param request
 	 * @param model
 	 * @return
+	 * @throws WxErrorException 
+	 * @throws IOException 
+	 * @throws IORuntimeException 
 	 */
 	@RequestMapping("/sendAll")
 	@ResponseBody
 	public void sendAll( ModelMap model, HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws WxErrorException, IOException {
 
-		WxMpMassTagMessage massMessage = new WxMpMassTagMessage();
-		//判断群发消息的类型
-//		if(){
-//			
-//		}
-		massMessage.setMsgType(WxConsts.MassMsgType.TEXT);
-		massMessage.setContent("");
-		massMessage.setSendAll(true);
-		// 获取微信
+		//获取微信对象
 		WeixinEntity weixin = this.getWeixinSession(request);
-		// 若微信不存在
+		//若微信不存在
 		if (weixin == null || StringUtil.isBlank(weixin.getWeixinAppSecret())
 				|| StringUtil.isBlank(weixin.getWeixinAppId())) {
 			this.outJson(response, ModelCode.WEIXIN_MESSAGE, false, this.getResString("weixin.not.found"));
 			return;
 		}
-		try {
-			WxMpMassSendResult result = this.builderWeixinService(weixin.getWeixinNo()).getMassMessageService()
-					.massGroupMessageSend(massMessage);
-			LOG.debug("群发返回日志:" + JSONObject.toJSONString(result));
-		} catch (WxErrorException e) {
-			LOG.error("发送失败:异常");
-			e.printStackTrace();
-		}
+		//获取图文素材ID
+		String contentStr = BasicUtil.getString("content");
+		String type = BasicUtil.getString("type");
+		String gourpId = BasicUtil.getString("gourpId",null);
+		WxMpMassTagMessage massMessage = new WxMpMassTagMessage();
+		WxMpMassOpenIdsMessage message = new WxMpMassOpenIdsMessage();
+		//判断群发消息的类型
+		if(type.equals(WxConsts.MassMsgType.TEXT)){
+			//发送文本消息
+			massMessage.setMsgType(WxConsts.MassMsgType.TEXT);
+			massMessage.setContent(contentStr);
+			massMessage.setSendAll(true);
+		}else if(type.equals(WxConsts.MassMsgType.IMAGE)){
+			//发送图文消息
+			//将素材ID转整形
+			int contentInt = Integer.valueOf(contentStr);
+			//获取选取的素材实体
+			NewsEntity _news = newsBiz.getNewsByNewsId(contentInt);	
+			if(_news == null){
+				this.outJson(response, null, false);
+				return;
+			}
+			//组织数据上传
+			try (InputStream inputStream = FileUtil.getInputStream(BasicUtil.getRealPath(_news.getNewsMasterArticle().getBasicThumbnails()))) {
+				 // 上传照片到媒体库
+	            WxMediaUploadResult uploadMediaRes = weixinService.getMaterialService()
+	              .mediaUpload(WxConsts.MediaFileType.IMAGE, "jpg", inputStream);
 
+	            // 上传图文消息
+	            WxMpMassNews news = new WxMpMassNews();
+	            if(_news.getChilds().size() > 0){
+	            	for(ArticleEntity _article : _news.getChilds()){
+	            		WxMpMassNews.WxMpMassNewsArticle article = new WxMpMassNews.WxMpMassNewsArticle();
+	            		article.setTitle(_article.getBasicTitle());
+	     	            article.setContent(_article.getArticleContent());
+	     	            article.setThumbMediaId(uploadMediaRes.getMediaId());
+	     	            news.addArticle(article);
+	            	}
+	            }
+	            WxMpMassUploadResult massUploadResult = weixinService.getMassMessageService()
+	                    .massNewsUpload(news);
+		    	message.setMsgType(WxConsts.KefuMsgType.NEWS);
+		    	message.setMediaId(massUploadResult.getMediaId());
+		    	message.getToUsers().add("oI3eS1C62AxTegL3_KiQugZvI-Ck");
+		    	message.getToUsers().add("oI3eS1BUsYUpe1otVBQnWmHbxh7o");
+		    	//WxMpMassSendResult massResult = weixinService.getMassMessageService().massOpenIdsMessageSend(message);
+			}
+			try {
+				WxMpMassSendResult result = this.builderWeixinService(weixin.getWeixinNo()).getMassMessageService()
+						.massOpenIdsMessageSend(message);
+				LOG.debug("群发返回日志:" + JSONObject.toJSONString(result));
+			} catch (WxErrorException e) {
+				LOG.error("发送失败:异常");
+				e.printStackTrace();
+			}
+		}
 	}
 
 	
