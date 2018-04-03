@@ -151,15 +151,19 @@
 		//默认是输入框里的文本内容
 		var content;
 		var url;
+		//发送类型
+		var type;
 		//若为图文，取msgType值为0.content取素材ID
 		if ($(".bar li.sel").hasClass("news")) {
 			content = $(".content>div").attr("data-id");
+			type = "image";
 			if(content == undefined || content == ""){
 			 	<@ms.notify msg="请选择素材！" type="warning"/>
 				return;
 			}
 			url = base+"${baseManager}/weixin/message/guiseSendAllNews.do";
 		}else{
+			type = "text";
 			content = $.trim($(".content").text());
 			if(content == undefined || content == ""){
 			 	<@ms.notify msg="请输入内容！" type="warning"/>
@@ -172,7 +176,7 @@
 		}
 		$.ajax({
 		   	type: "POST",
-		   	data:"content="+content,
+		   	data:"content="+content+"&type="+type,
 		   	dataType:"json",
 		   	url: url,
 			beforeSend:function() {
@@ -206,15 +210,16 @@
 		//若为图文，取msgType值为0.content取素材ID
 		if ($(".bar li.sel").hasClass("news")) {
 			var content = $(".content>div").attr("data-id");
+			type = "image";
 			if(content == undefined || content == ""){
 			 	<@ms.notify msg="素材不能为空！" type="warning"/>
 				return;
 			}
 			$.ajax({
 			   	type: "POST",
-			   	data:"groupId="+$(groupId).val()+"&content="+content,
+			   	data:"groupId="+$(groupId).val()+"&content="+content+"&type="+type,
 			   	dataType:"json",
-			   	url: base+"${baseManager}/weixin/messageMass/sendToAll.do",
+			   	url: base+"${baseManager}/mweixin/message/sendAll.do",
 				beforeSend:function() {
 			   		$("#sendMessageMassBtn").text("发送中");
 			   		$("#sendMessageMassBtn").attr("disabled","disabled");
