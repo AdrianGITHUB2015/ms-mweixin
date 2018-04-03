@@ -123,7 +123,7 @@
 	        $.ajax({
 	        	type: "post",
 	            dataType: "json",
-	            url:  "${base}${baseManager}/weixin/message/"+$(".sendMessage").attr("data-id")+"/sendText.do",
+	            url:  "${base}${baseManager}/mweixin/message/"+$(".sendMessage").attr("data-id")+"/sendText.do",
 	            data: "content=" + content,
 	            beforeSend:function(){
 	            	$("#sendMessageButton").text("发送中..");

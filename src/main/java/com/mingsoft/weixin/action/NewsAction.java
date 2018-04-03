@@ -84,11 +84,6 @@ public class NewsAction extends BaseAction {
 	@Autowired
 	private IColumnBiz columnBiz;	
 	
-	/**
-	 * 注入关注回复业务层
-	 */
-	@Autowired
-	private IPassiveMessageBiz passiveMessageBiz;
 	
 	/**
 	 * 图文素材列表
@@ -335,20 +330,20 @@ public class NewsAction extends BaseAction {
 		int weixinId = weixin.getWeixinId(); 
 		//获取appId
 		int appId = this.getAppId(request);
-		//由于被动回复要调用素材，且素材与被动回复属于多对一的关系，若该关系存在，则素材不可直接删除，需先删除被哦的那个回复
-		List<PassiveMessageEntity> passiveMessageList =  this.passiveMessageBiz.queryListByNewsIdAndWeixinId(newsId, weixin.getWeixinId());
-		//若该素材关联被动回复
-		if(passiveMessageList.size()!= 0){
-			this.outJson(response, ModelCode.WEIXIN_NEWS, false,null);
-			return;
-		}
-		//获取newsId所对应的菜单列表中是否有实体存在与该newsId相等的menuUul
-		List<MenuEntity> menuList = this.menuBiz.queryListByMenuUrl(String.valueOf(newsId),appId,weixinId);
-		//若该素材关联菜单
-		if(menuList.size() != 0){
-			this.outJson(response, ModelCode.WEIXIN_NEWS, false,null);
-			return;
-		}
+//		//由于被动回复要调用素材，且素材与被动回复属于多对一的关系，若该关系存在，则素材不可直接删除，需先删除被哦的那个回复
+//		List<PassiveMessageEntity> passiveMessageList =  this.passiveMessageBiz.queryListByNewsIdAndWeixinId(newsId, weixin.getWeixinId());
+//		//若该素材关联被动回复
+//		if(passiveMessageList.size()!= 0){
+//			this.outJson(response, ModelCode.WEIXIN_NEWS, false,null);
+//			return;
+//		}
+//		//获取newsId所对应的菜单列表中是否有实体存在与该newsId相等的menuUul
+//		List<MenuEntity> menuList = this.menuBiz.queryListByMenuUrl(String.valueOf(newsId),appId,weixinId);
+//		//若该素材关联菜单
+//		if(menuList.size() != 0){
+//			this.outJson(response, ModelCode.WEIXIN_NEWS, false,null);
+//			return;
+//		}
 		//删除指定素材
 		newsBiz.deleteEntity(newsId);
 		this.outJson(response, ModelCode.WEIXIN_NEWS, true,null);
