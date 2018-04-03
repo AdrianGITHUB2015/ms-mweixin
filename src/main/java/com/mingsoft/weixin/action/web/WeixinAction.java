@@ -52,6 +52,7 @@ import net.mingsoft.basic.util.SpringUtil;
  * @author Administrator
  *
  */
+@Deprecated
 @Controller("webWeixinAction")
 @RequestMapping("/mweixin/weixin")
 public class WeixinAction extends BaseAction{

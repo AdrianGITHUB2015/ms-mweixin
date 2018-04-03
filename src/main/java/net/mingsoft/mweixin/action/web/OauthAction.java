@@ -35,7 +35,6 @@ import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import net.mingsoft.base.exception.BusinessException;
 import net.mingsoft.basic.util.BasicUtil;
-import net.mingsoft.mweixin.biz.IOauthBiz;
 import net.mingsoft.mweixin.biz.IWeixinPeopleBiz;
 import net.mingsoft.weixin.service.PortalService;
 	
@@ -50,12 +49,6 @@ import net.mingsoft.weixin.service.PortalService;
 @Controller("netOauthActionWeb")
 @RequestMapping("/mweixin/oauth")
 public class OauthAction extends com.mingsoft.weixin.action.BaseAction{
-	
-	/**
-	 * 注入微信网页2.0授权表业务层
-	 */	
-	@Resource(name="netOauthBizImpl")
-	private IOauthBiz oauthBiz;
 	@Resource(name="netWeixinPeopleBiz")
 	private IWeixinPeopleBiz weixinPeopleBiz;
 	@Autowired

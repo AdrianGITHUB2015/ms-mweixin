@@ -39,14 +39,16 @@ import com.mingsoft.weixin.util.bean.NewsEntityUtils;
 
 import net.mingsoft.basic.util.BasicUtil;
 
-/** 
- * 微信群发消息控制层
- * @author  付琛  QQ:1658879747 
- * @version 1.0 
- * 创建时间：2015年11月21日 下午6:49:16  
- * 版本号：100-000-000<br/>
- * 历史修订<br/>
+/**
+ * 
+ * @ClassName:  MessageMassAction   
+ * @Description:TODO(微信群发消息控制层)   
+ * @author: 铭飞开发团队
+ * @date:   2018年4月3日 上午9:11:32   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
+@Deprecated
 @Controller
 @RequestMapping("/${managerPath}/weixin/messageMass")
 public class MessageMassAction extends BaseAction{

@@ -49,6 +49,7 @@ import com.mingsoft.weixin.entity.NewsEntity;
  * Create Date:2014-9-25
  * Modification history:
  */
+@Deprecated
 @Controller("webWeixin")
 @RequestMapping("/weixin/news")
 public class NewsAction extends BaseAction {

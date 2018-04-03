@@ -70,31 +70,7 @@ public class BaseAction extends com.mingsoft.basic.action.BaseAction {
 				.getAttribute(com.mingsoft.weixin.constant.SessionConst.WEIXIN_SESSION.toString());
 	}
 
-	/**
-	 * 组装授权地址
-	 * 
-	 * @param link授权后跳转地址
-	 * @param state扩展参数最长128字节
-	 * @param isUserInfo
-	 *            true用户详细信息，false:openid详细见微信接口
-	 * @param request当前请求对象
-	 * @return 返回组织后的请求地址
-	 */
-	public String builderOauthUrl(String link, String state, boolean isUserInfo, HttpServletRequest request) {
-		AppEntity app = this.getApp(request);
-		if (link.toLowerCase().indexOf("http://") < 0) {
-			link = app.getAppHostUrl() + "/" + link;
-		}
-		WeixinEntity weixin = this.getWeixinSession(request);
-		if (weixin == null) {
-			LOG.error("非微信环境下调用");
-			return "";
-		}
-		String url = OauthUtils.builderOauthUrl(link, state, isUserInfo, weixin.getWeixinAppId());
-		LOG.debug("oauthUrl:" + url);
-		return url;
-	}
-
+	
 	/**
 	 * 构建微信的服务工具，
 	 * 

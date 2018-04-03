@@ -40,22 +40,18 @@ import com.mingsoft.util.MD5Util;
 import com.mingsoft.util.StringUtil;
 import com.mingsoft.weixin.bean.NewsBean;
 import com.mingsoft.weixin.bean.UploadNewsBean;
-import com.mingsoft.weixin.bean.WeixinPayOrderBean;
-import com.mingsoft.weixin.bean.WeixinRedPackBean;
 import com.mingsoft.weixin.entity.NewsEntity;
 
 
 
 /**
- * mswx-铭飞微信酒店预订平台
- * Copyright: Copyright (c) 2014 - 2015
- * Company:景德镇铭飞科技有限公司
- * @author wangtp
- * @version 300-001-001
- * 版权所有 铭飞科技
- * Comments: 微信接口消息(XML)通过处理方法，只是对一些字符串的处理，str2xml,xml2str
- * Create Date:2013-12-23
- * Modification history:
+ * 
+ * @ClassName:  XmlUtils   
+ * @Description:TODO(微信接口消息(XML)通过处理方法，只是对一些字符串的处理，str2xml,xml2str)   
+ * @author: 铭飞开发团队
+ * @date:   2018年4月3日 上午9:34:35   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 public class XmlUtils {
 	
@@ -654,128 +650,5 @@ public class XmlUtils {
 		sign = sign.toUpperCase();
 		return sign;
 	} 
-	
-	/**
-	 * 微支付发起的提交订单的xml数据
-	 * @param appId 微信分配的公众账号 ID
-	 * @param orderNo 订单编号
-	 * @param openid 用户openid(调用JSAPI时openId是必须的)
-	 * @param attach 附加数据，原样返回
-	 * @param body 商品描述
-	 * @param deviceInfo 微信支付分配的终端设备号
-	 * @param mchId 微信支付分配的商户号
-	 * @param nonce 随机字符串，不长于 32 位
-	 * @param notifyUrl 接收微信支付成功通知
-	 * @param spbillCreateIp 订单生成的机器 IP
-	 * @param totalFee 订单总金额，单位为分，不能带小数点
-	 * @param tradeType JSAPI、NATIVE、APP
-	 * @param sign 签名
-	 * @param key 支付的Key值
-	 * @return
-	 */
-	public static String buildXmlPayUnifiedOrder(WeixinPayOrderBean wp,String key) {
-		if(wp == null || StringUtil.isBlank(key)){//判断传入参数
-			return null;
-		}
-		//加载需要签名的参数
-		Map<String,String> params = new HashMap<String,String>();
-		params.put("appid",wp.getAppId());//公众号appId
-		params.put("mch_id",wp.getMchId());//微信支付分配的商户号
-		params.put("nonce_str",wp.getNonce());//随机字符串
-		params.put("body", wp.getBody());//订单描述
-		params.put("out_trade_no", wp.getOutTradeNo());//商户订单号
-		params.put("total_fee",Integer.toString(wp.getTotalFee()));//支付金额
-		params.put("spbill_create_ip",wp.getSpbillCreateIp());//终端IP
-		params.put("time_start", wp.getTimeStart());//订单生成时间
-		params.put("notify_url",wp.getNotifyUrl());//接收支付通知的异步同步地址
-		params.put("trade_type",wp.getTradeType());//交易类型
-		if(!StringUtil.isBlank(wp.getOpenId())){
-			params.put("openid", wp.getOpenId());
-		}
-		
-		//生成签名
-		String sign = getPaySign(params, key);
-		
-		LOG.debug("支付sign:"+sign);
-		wp.setSign(sign);
-		StringBuffer sb = new StringBuffer();
-		sb.append("<xml>");
-		sb.append("<appid>").append(wp.getAppId()).append("</appid>");//公众号appId
-		if (wp.getAttach()!=null) {
-			sb.append("<attach>").append(wp.getAttach()).append("</attach>");
-		}
-		sb.append("<body>").append(wp.getBody()).append("</body>");
-		if (wp.getDeviceInfo() != null) {
-			sb.append("<device_info>").append(wp.getDeviceInfo()).append("</device_info>");
-		}
-		sb.append("<mch_id>").append(wp.getMchId()).append("</mch_id>");
-		sb.append("<nonce_str>").append(wp.getNonce()).append("</nonce_str>");
-		sb.append("<notify_url>").append(wp.getNotifyUrl()).append("</notify_url>");
-		if (!StringUtil.isBlank(wp.getOpenId())) { //jsapi提交支付时为必须
-			sb.append("<openid>").append(wp.getOpenId()).append("</openid>");
-		}		
-		sb.append("<out_trade_no>").append(wp.getOutTradeNo()).append("</out_trade_no>");
-		sb.append("<spbill_create_ip>").append(wp.getSpbillCreateIp()).append("</spbill_create_ip>");
-		sb.append("<time_start>").append(wp.getTimeStart()).append("</time_start>");
-		sb.append("<total_fee>").append(wp.getTotalFee()).append("</total_fee>");
-		sb.append("<trade_type>").append(wp.getTradeType()).append("</trade_type>");
-		sb.append("<sign>").append(wp.getSign()).append("</sign>");
-		sb.append("</xml>");
-		LOG.debug("支付xml:"+sb.toString());
-		return sb.toString();
-	}
-	
-	/**
-	 * 组织红包发送的xml
-	 * @param weixinRedPack  发送红包所需的参数bean类
-	 * @return 组织好的xml字符串
-	 */
-	public static String buildXmlRedPack(WeixinRedPackBean weixinRedPack){
-		//生成签名
-		String sign = "act_name="+weixinRedPack.getRedPackTitle()//红包活动名称
-				+ "&client_ip="+weixinRedPack.getHostIp()//主机ip地址
-				+ "&mch_billno="+weixinRedPack.getOrderNo()//商户订单号（每个订单号必须唯一）
-				+ "&mch_id="+weixinRedPack.getBusinessNo()//商户号()
-				+ "&nonce_str="+weixinRedPack.getRandString()//随机字符串
-				+ "&re_openid="+weixinRedPack.getOpenId()//用户openId
-				+ "&remark="+weixinRedPack.getRedPackRemark()//红包活动备注
-				+ "&send_name="+weixinRedPack.getRedPackSendName()//红包发送者
-				+ "&total_amount="+weixinRedPack.getRedPackMoney()//红包金额
-				+ "&total_num="+weixinRedPack.getRedPackNum()//红包数量
-				+ "&wishing="+weixinRedPack.getRedPackBlessing()//红包祝福语
-				+ "&wxappid="+weixinRedPack.getAppId()//红包活动所属微信的微信应用id
-				+ "&key="+weixinRedPack.getKey();
-		sign = MD5Util.MD5Encode(sign,"UTF-8").toUpperCase();
-		StringBuffer sb = new StringBuffer();
-		sb.append("<xml>");
-		//红包活动名称
-		sb.append("<act_name>").append(weixinRedPack.getRedPackTitle()).append("</act_name>");
-		//服务器ip地址
-		sb.append("<client_ip>").append(weixinRedPack.getHostIp()).append("</client_ip>");
-		//商户订单号
-		sb.append("<mch_billno>").append(weixinRedPack.getOrderNo()).append("</mch_billno>");
-		//商户号
-		sb.append("<mch_id>").append(weixinRedPack.getBusinessNo()).append("</mch_id>");
-		//红包随机字符串
-		sb.append("<nonce_str>").append(weixinRedPack.getRandString()).append("</nonce_str>");
-		//用户openId
-		sb.append("<re_openid>").append(weixinRedPack.getOpenId()).append("</re_openid>");
-		//红包活动备注
-		sb.append("<remark>").append(weixinRedPack.getRedPackRemark()).append("</remark>");
-		//红包发送者
-		sb.append("<send_name>").append(weixinRedPack.getRedPackSendName()).append("</send_name>");
-		//红包金额
-		sb.append("<total_amount>").append(weixinRedPack.getRedPackMoney()).append("</total_amount>");
-		//红包数量
-		sb.append("<total_num>").append(weixinRedPack.getRedPackNum()).append("</total_num>");
-		//红包祝福语
-		sb.append("<wishing>").append(weixinRedPack.getRedPackBlessing()).append("</wishing>");
-		//红包活动所属微信的微信应用id
-		sb.append("<wxappid>").append(weixinRedPack.getAppId()).append("</wxappid>");
-		//红包签名加密
-		sb.append("<sign>").append(sign).append("</sign>");
-		sb.append("</xml>");
-		return sb.toString();		
-	}
 	
 }

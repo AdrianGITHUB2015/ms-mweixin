@@ -43,25 +43,22 @@ import com.mingsoft.cms.biz.IArticleBiz;
 import com.mingsoft.cms.entity.ArticleEntity;
 import com.mingsoft.util.PageUtil;
 import com.mingsoft.util.StringUtil;
-import com.mingsoft.weixin.biz.IMenuBiz;
 import com.mingsoft.weixin.biz.INewsBiz;
-import com.mingsoft.weixin.biz.IPassiveMessageBiz;
 import com.mingsoft.weixin.constant.ModelCode;
 import com.mingsoft.weixin.constant.e.NewsTypeEnum;
-import com.mingsoft.weixin.entity.MenuEntity;
 import com.mingsoft.weixin.entity.NewsEntity;
-import com.mingsoft.weixin.entity.PassiveMessageEntity;
 import com.mingsoft.weixin.entity.WeixinEntity;
 
 import net.mingsoft.basic.util.BasicUtil;
+
 /**
  * 
- * 微信素材控制层
- * @author 付琛  QQ1658879747
- * @version 
- * 版本号：100-000-000<br/>
- * 创建日期：2015年12月4日
- * 历史修订：<br/>
+ * @ClassName:  NewsAction   
+ * @Description:TODO(微信素材控制层)   
+ * @author: 铭飞开发团队
+ * @date:   2018年4月3日 上午9:29:10   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 @Controller
 @RequestMapping("/${managerPath}/weixin/news")
@@ -74,11 +71,6 @@ public class NewsAction extends BaseAction {
 	@Autowired
 	private INewsBiz newsBiz;
 	
-	/**
-	 * 注入菜单业务层
-	 */
-	@Autowired
-	private IMenuBiz menuBiz;
 	
 	/**
 	 * 文章业务层注入
