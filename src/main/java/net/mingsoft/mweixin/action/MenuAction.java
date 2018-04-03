@@ -176,9 +176,8 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 			return;
 		}
 		menu.setMenuWeixinId(weixin.getWeixinId());
-		BasicUtil.startPage();
 		List menuList = menuBiz.query(menu);
-		this.outJson(response, net.mingsoft.base.util.JSONArray.toJSONString(new EUListBean(menuList,(int)BasicUtil.endPage(menuList).getTotal()),new DoubleValueFilter(),new DateValueFilter()));
+		this.outJson(response, net.mingsoft.base.util.JSONArray.toJSONString(new EUListBean(menuList,0),new DoubleValueFilter(),new DateValueFilter()));
 	}
 	
 	/**
@@ -437,9 +436,17 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 				if(menu.getMenuMenuId() == 0){
 					if(_menuEntity.getMenuMenuId() == null){
 						i++;
-						if(i >= 3){
-							this.outJson(response,null,false,this.getResString("menu.parent.max"));
-							return ;
+						//保存i>=3更新i>3
+						if(!StringUtil.isInteger(menu.getMenuId())){
+							if(i>=3){
+								this.outJson(response,null,false,this.getResString("menu.parent.max"));
+								return ;
+							}
+						}else{
+							if(i>3){
+								this.outJson(response,null,false,this.getResString("menu.parent.max"));
+								return ;
+							}
 						}
 					}
 				}

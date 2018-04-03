@@ -14,13 +14,17 @@
 		}
 	</style> 
 	 <@ms.nav title="微信菜单编辑" back=true>
-    		<@ms.saveButton  onclick="save()"/>
+	 	<#if menuEntity.menuId?has_content>
+    		<@ms.updateButton class="btn btn-success" value="更新"  onclick="save()"/>
+		<#else>
+			<@ms.saveButton class="btn btn-success" value="保存" onclick="save()"/>
+    	</#if>
     </@ms.nav>
     <@ms.panel>
     	<@ms.form name="menuForm" isvalidation=true>
     		<@ms.hidden name="menuId" value="${(menuEntity.menuId)?default('')}"/>
     			<@ms.formRow label="所属菜单" width="240">
-					<@ms.treeInput  treeId="inputTree"  json="${listMenu?default('')}"  jsonId="menuId" jsonPid="menuMenuId" jsonName="menuTitle"  inputName="menuMenuId" inputValue="${(menuMenuId)?default(0)}" buttonText="${(menuSuper.menuTitle)?default('顶级菜单')}" clickZtreeId="clickZtreeId(event,treeId,treeNode);"  expandAll="true" showIcon="true"/>
+					<@ms.treeInput  treeId="inputTree"  json="${listMenu?default('')}"  jsonId="menuId" jsonPid="menuMenuId" jsonName="menuTitle"  inputName="menuMenuId" inputValue="${(menuEntity.menuMenuId)?default(0)}" buttonText="${(menuSuper.menuTitle)?default('顶级菜单')}" clickZtreeId="clickZtreeId(event,treeId,treeNode);"  expandAll="true" showIcon="true"/>
 				</@ms.formRow>
     			<@ms.text label="菜单名称" name="menuTitle" value="${(menuEntity.menuTitle)?default('')}"  width="240px;" placeholder="请输入菜单名称" validation={"required":"true","maxlength":"7","data-bv-stringlength-message":"菜单名称长度不能超过七个字符长度!", "data-bv-notempty-message":"必填项目"}/>
     			<@ms.select 
@@ -102,7 +106,6 @@
 	var url = "${managerPath}/mweixin/menu/save.do";
 	if($("input[name = 'menuId']").val() > 0){
 		url = "${managerPath}/mweixin/menu/update.do";
-		$(".btn-success").text("更新");
 	}
 	//选择栏目后查询自定义模型
 	function clickZtreeId(event,treeId,treeNode){
@@ -127,7 +130,6 @@
 				<@ms.notify msg= "数据提交失败，请检查数据格式！" type= "warning" />
 				return;
 		}
-		var saveArticle = $("#articleForm").serialize();
 		var menuData = $("form[name = 'menuForm']").serialize();
 		var btnWord =$(".btn-success").text();
 		$(".btn-success").text(btnWord+"中...");

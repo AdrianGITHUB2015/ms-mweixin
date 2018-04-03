@@ -14,7 +14,11 @@
 		}
 	</style>
 	 <@ms.nav title="微信消息回复编辑" back=true>
-		<@ms.button class="btn btn-success" onclick="save()" value="保存"/>
+		<#if passiveMessageEntity.pmId?has_content>
+    		<@ms.updateButton class="btn btn-success" value="更新"  onclick="save()"/>
+		<#else>
+			<@ms.saveButton class="btn btn-success" value="保存" onclick="save()"/>
+    	</#if>
     </@ms.nav>
     <@ms.panel>
     	<@ms.form name="passiveMessageForm" isvalidation=true>
@@ -47,7 +51,6 @@
 	var pmType = $("input[name = 'pmType']").val()
 	if(pmId > 0){
 		url = "${managerPath}/mweixin/passiveMessage/update.do";
-		$(".btn-success").text("更新");
 	}
 	//编辑按钮onclick
 	function save() {

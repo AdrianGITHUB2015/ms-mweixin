@@ -42,6 +42,9 @@
 			contentType : "application/x-www-form-urlencoded",
 			queryParamsType : "undefined",
 			toolbar: "#toolbar",
+			idField: 'menuId',
+			treeShowField: 'menuTitle',
+            parentIdField: 'menuMenuId',
 	    	columns: [{ checkbox: true},
 				    	{
 				        	field: 'menuId',
@@ -55,13 +58,9 @@
 				        	align: 'center',
 				        	formatter:function(value,row,index) {
 				        		var url = "${managerPath}/mweixin/menu/form.do?menuId="+row.menuId;
-				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
+				        		//return "<a href=" +url+ " target='_self'>" + value + "</a>";
+				        		return "<a href=" +url+ " target='_self' style='cursor:pointer;text-decoration:none;'>" + value + "</a>";
 				        	}
-				    	},{
-				        	field: 'menuMenuId',
-				        	title: '父集编号',
-				        	align: 'center',
-				        	width:'15'
 				    	},{
 				        	field: 'menuType',
 				        	title: '菜单属性',
@@ -76,7 +75,11 @@
 				    	}
 			]
 	    })
+	    setInterval("hides()",100);
 	})
+	function hides(){
+		$(".pagination-detail").css("display","none");
+	}
 	//增加按钮
 	$("#addMenuBtn").click(function(){
 		location.href ="${managerPath}/mweixin/menu/form.do"; 
