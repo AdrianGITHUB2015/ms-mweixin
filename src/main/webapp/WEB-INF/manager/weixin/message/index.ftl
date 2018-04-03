@@ -204,7 +204,7 @@
 	//调用微信官方群发接口群发，只支持图文发送
 	$("#sendMessageMassBtn").click(function() {
 		//若为图文，取msgType值为0.content取素材ID
-		//if ($(".bar li.sel").hasClass("news")) {
+		if ($(".bar li.sel").hasClass("news")) {
 			var content = $(".content>div").attr("data-id");
 			if(content == undefined || content == ""){
 			 	<@ms.notify msg="素材不能为空！" type="warning"/>
@@ -233,9 +233,9 @@
 			   		location.reload();
 			   	}	
 			});		
-		//}else{
-		//	 <@ms.notify msg="只能进行图文发送!" type="warning"/>
-		//}											
+		}else{
+			 <@ms.notify msg="只能进行图文发送!" type="warning"/>
+		}											
 	});	
 </script>
 
