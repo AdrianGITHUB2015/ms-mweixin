@@ -1,16 +1,31 @@
 package net.mingsoft.weixin.service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.mingsoft.cms.entity.ArticleEntity;
+import com.mingsoft.weixin.biz.INewsBiz;
+import com.mingsoft.weixin.entity.NewsEntity;
+
 import me.chanjar.weixin.common.api.WxConsts;
+import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
+import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.WxMpMassNews;
+import me.chanjar.weixin.mp.bean.WxMpMassOpenIdsMessage;
+import me.chanjar.weixin.mp.bean.material.WxMediaImgUploadResult;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+import me.chanjar.weixin.mp.bean.result.WxMpMassSendResult;
+import me.chanjar.weixin.mp.bean.result.WxMpMassUploadResult;
+import net.mingsoft.base.util.BaseUtil;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
@@ -29,10 +44,16 @@ public class MsgService extends AbstractService {
 	@Resource(name="netPassiveMessageBizImpl")
 	private IPassiveMessageBiz passiveMessageBiz;
 	
+	/**
+	 * 素材业务层注入
+	 */
+	@Autowired
+	private INewsBiz newsBiz;
+	
 	@Override
 	public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
                                   Map<String, Object> context, WxMpService wxMpService,
-                                  WxSessionManager sessionManager) {
+                                  WxSessionManager sessionManager) throws WxErrorException {
 
     PortalService weixinService = (PortalService) wxMpService;
 
@@ -70,14 +91,41 @@ public class MsgService extends AbstractService {
 //	    	//视频消息的配置
 //	    case 5: 
 //	    	//音乐消息的配置
-//	    case 6: 
-//	    	//图文消息的配置
-    }
+	    case 6:
+	    	//获取关键字对应的素材
+	    	NewsEntity _news = (NewsEntity) newsBiz.getNewsByNewsId(Integer.parseInt(passiveMessage.getPmContent()));
+	    	try (InputStream inputStream = ClassLoader.getSystemResourceAsStream(_news.getNewsMasterArticle().getBasicThumbnails())) {
+	            // 上传照片到媒体库
+	            WxMediaUploadResult uploadMediaRes = weixinService.getMaterialService()
+	              .mediaUpload(WxConsts.MediaFileType.IMAGE, "jpg", inputStream);
+
+	            // 上传图文消息
+	            WxMpMassNews news = new WxMpMassNews();
+	            if(_news.getChilds().size() > 0){
+	            	for(ArticleEntity _article : _news.getChilds()){
+	            		WxMpMassNews.WxMpMassNewsArticle article = new WxMpMassNews.WxMpMassNewsArticle();
+	            		article.setTitle(_article.getBasicTitle());
+	     	            article.setContent(_article.getArticleContent());
+	     	            article.setThumbMediaId(uploadMediaRes.getMediaId());
+	     	            news.addArticle(article);
+	            	}
+	            }
+		    	WxMpMassUploadResult massUploadResult = wxMpService.getMassMessageService().massNewsUpload(news);
+	
+		    	WxMpMassOpenIdsMessage massMessage = new WxMpMassOpenIdsMessage();
+		    	massMessage.setMsgType(WxConsts.KefuMsgType.NEWS);
+		    	massMessage.setMediaId(massUploadResult.getMediaId());
+		    	massMessage.getToUsers().add(wxMessage.getOpenId());
+		    	WxMpMassSendResult massResult = wxMpService.getMassMessageService().massOpenIdsMessageSend(massMessage);
+		    } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
     //设置content
 //    String content = passiveMessage.getPmContent();;
 //    return new TextBuilder().build(content, wxMessage, weixinService);
 	return null;
 
   }
-
 }
