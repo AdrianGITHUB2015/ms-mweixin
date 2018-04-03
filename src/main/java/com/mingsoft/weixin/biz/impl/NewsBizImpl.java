@@ -38,6 +38,8 @@ import com.mingsoft.weixin.biz.INewsBiz;
 import com.mingsoft.weixin.dao.INewsDao;
 import com.mingsoft.weixin.entity.NewsEntity;
 
+import cn.hutool.core.util.ObjectUtil;
+
 /**
  * 
  * Copyright: Copyright (c) 2014 - 2015
@@ -264,6 +266,19 @@ public class NewsBizImpl extends BaseBizImpl implements INewsBiz {
 			return list;
 		}else{
 			return null;
+		}
+	}
+
+	@Override
+	public List<NewsEntity> organizationList(int id) {
+		// TODO Auto-generated method stub
+		NewsEntity news = this.getNewsByNewsId(id);
+		if(ObjectUtil.isNull(news)){
+			return null;
+		}else{
+			List<NewsEntity> newsList = new ArrayList<NewsEntity>();
+			newsList.add(news);
+			return setNewsAction(newsList);
 		}
 	}	
 	

@@ -110,4 +110,11 @@ public interface INewsBiz extends IBaseBiz {
 	 * @return 素材列表
 	 */
 	public List<NewsEntity> queryNewsList(int appId,int newsWeixinId,Integer newsType,Integer categoryId,PageUtil page);
+	
+	/**
+	 * 组织页面数据
+	 * @param newsEntity
+	 * @return
+	 */
+	public List<NewsEntity> organizationList(int id);
 }

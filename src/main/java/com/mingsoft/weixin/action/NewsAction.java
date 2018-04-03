@@ -20,6 +20,7 @@ The MIT License (MIT) * Copyright (c) 2017 铭飞科技
  */package com.mingsoft.weixin.action;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -129,9 +130,8 @@ public class NewsAction extends BaseAction {
 		PageUtil page = new PageUtil(pageNo,recordCount, null);
 		//查询图文素材
 		List<NewsEntity> newsList = newsBiz.queryListNewsImage(appId,weixinId,NewsTypeEnum.SINGLE_NEWS.toInt(),NewsTypeEnum.NEWS.toInt(), page);
-		model.addAttribute("page",page);
 		model.addAttribute("newsList", newsList);
-		return Const.VIEW+"/weixin/news/news_list_ajax";
+		return view("/weixin/news/news_list_ajax");
 	}	
 	
 	/**
@@ -272,6 +272,23 @@ public class NewsAction extends BaseAction {
 			return;
 		}
 		this.outJson(response, JSONObject.toJSONStringWithDateFormat(news,"YYYY-MM-dd"));
+	}
+	
+	/**
+	 * 根据素材Id获取素材实体
+	 * @param response
+	 * @param mode
+	 * @param newsId 素材id
+	 */
+	@RequestMapping("/{newsId}/getHtml")
+	public String getHtml(@PathVariable int newsId,HttpServletResponse response,ModelMap mode,HttpServletRequest request){
+		if(newsId <= 0){
+			return null;
+		}
+		//根据素材ID获取相应素材
+		List<NewsEntity> newsList = newsBiz.organizationList(newsId);
+		mode.addAttribute("newsList", newsList);
+		return view("/weixin/news/news_list_ajax");
 	}
 	
 	/**

@@ -152,6 +152,10 @@ public class MessageAction extends BaseAction {
 			HttpServletResponse response) {
 
 		WxMpMassTagMessage massMessage = new WxMpMassTagMessage();
+		//判断群发消息的类型
+//		if(){
+//			
+//		}
 		massMessage.setMsgType(WxConsts.MassMsgType.TEXT);
 		massMessage.setContent("");
 		massMessage.setSendAll(true);
