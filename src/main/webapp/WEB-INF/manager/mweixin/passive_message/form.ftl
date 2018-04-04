@@ -89,7 +89,11 @@
 												<li data-toggle="tooltip" class="news" data-msg-type="mpnews"><i class="icon iconfont" style="font-size:23px"></i></li> 
 										    </ul> 
 								    	</div> 
-									    <div class="content" contenteditable="true"></div> 
+									    <div class="content" contenteditable="true">
+										    <#if passiveMessageEntity.pmNewType?default(0) != 6>
+										    	${(passiveMessageEntity.pmContent)?default("")}
+								    		</#if>
+									    </div> 
 									</div> 
 							  	</div>
 						  	</div>
@@ -123,7 +127,7 @@
 	if(pmId > 0){
 		url = "${managerPath}/mweixin/passiveMessage/update.do";
 		$(".btn-success").text("更新");
-		if(${(passiveMessageEntity.pmNewType)?default(0)} == 6){
+		<#if passiveMessageEntity.pmNewType?default(0) == 6>
 			$.ajax({
 				type:"post",
 				dataType:"json",
@@ -134,14 +138,12 @@
 						$(".content").html(data);
 					}
 				},
-				error: function(dataa){
-					var da= 1;
-					$(".content").html(dataa.responseText);
+				error: function(data){
+					$(".content").html(data.responseText);
 				}
 			})
-		}else{
-			$(".content").html("${(passiveMessageEntity.pmContent)?default("")}");
 		}
+		</#if>
 	}
 	
 	//编辑按钮onclick
@@ -205,7 +207,10 @@
 				else{
 					$(".btn-success").text(btnWord);
 					$(".btn-success").removeAttr("disabled");
-					<@ms.notify msg="保存或更新失败" type= "warning" />
+					$('.ms-notifications').offset({top:43}).notify({
+		    		    type:'warning',
+					    message: { text:status.resultMsg }
+					}).show();	
 					$(".btn-success").text(btnWord);
 				}
 			}

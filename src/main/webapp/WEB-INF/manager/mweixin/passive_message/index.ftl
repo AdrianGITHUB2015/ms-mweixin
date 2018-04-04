@@ -53,7 +53,7 @@
 				        	}
 				    	},{
 				        	field: 'pmContent',
-				        	title: '回复内容标签',
+				        	title: '回复内容',
 				        	width:'200',
 				        	align: 'center'
 				    	}
