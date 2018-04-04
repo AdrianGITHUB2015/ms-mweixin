@@ -26,7 +26,7 @@
 	</@ms.panel>
 	
 	<@ms.modal  modalName="delMenu" title="微信菜单数据删除" >
-		<@ms.modalBody>删除此微信菜单
+		<@ms.modalBody style="width:450px;">删除选中的微信菜单，如果此菜单中包含子菜单，子菜单将一并删除
 			<@ms.modalButton>
 				<!--模态框按钮组-->
 				<@ms.button  value="确认" class="btn btn-danger rightDelete"  id="deleteMenuBtn"  />
@@ -121,10 +121,17 @@
 		var rows = $("#menuList").bootstrapTable("getSelections");
 		$(this).text("正在删除...");
 		$(this).attr("disabled","true");
+		var ids = "";
+		for(var i=0;i<rows.length;i++){
+			if(ids == ""){
+				ids = rows[i].menuId;
+			}else{
+				ids = ids+","+rows[i].menuId;
+			}
+		}
 		$.ajax({
 			type: "post",
-			url: "${managerPath}/mweixin/menu/delete.do",
-			data: JSON.stringify(rows),
+			url: "${managerPath}/mweixin/menu/delete.do?ids="+ids,
 			dataType: "json",
 			contentType: "application/json",
 			success:function(msg) {

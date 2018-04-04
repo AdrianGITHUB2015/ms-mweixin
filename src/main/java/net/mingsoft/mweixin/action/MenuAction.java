@@ -337,11 +337,8 @@ public class MenuAction extends net.mingsoft.mweixin.action.BaseAction{
 	 */
 	@RequestMapping("/delete")
 	@ResponseBody
-	public void delete(@RequestBody List<MenuEntity> menus,HttpServletResponse response, HttpServletRequest request) {
-		int[] ids = new int[menus.size()];
-		for(int i = 0;i<menus.size();i++){
-			ids[i] =menus.get(i).getMenuId() ;
-		}
+	public void delete(HttpServletResponse response, HttpServletRequest request) {
+		int[] ids = BasicUtil.getInts("ids", ",");
 		menuBiz.delete(ids);		
 		this.outJson(response, true);
 	}
