@@ -149,7 +149,7 @@
 	$("#sendMessageBtn").click(function() {
 		//默认是输入框里的文本内容
 		var content;
-		var url;
+		var url = base+"${baseManager}/mweixin/message/sendAll.do";;
 		//发送类型
 		var type;
 		//若为图文，取msgType值为0.content取素材ID
@@ -170,7 +170,6 @@
 			 	<@ms.notify msg="内容过长！" type="warning"/>
 				return;
 			}
-			url = base+"${baseManager}/mweixin/message/sendAll.do";
 		}
 		$.ajax({
 		   	type: "POST",
