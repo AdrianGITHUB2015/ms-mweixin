@@ -142,7 +142,6 @@
 					$(".content").html(data.responseText);
 				}
 			})
-		}
 		</#if>
 	}
 	
