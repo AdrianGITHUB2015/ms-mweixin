@@ -291,6 +291,8 @@ public class MessageAction extends BaseAction {
 
 	}
 
+
+
 	/**
 	 * 查询微信所有用户信息
 	 * 
