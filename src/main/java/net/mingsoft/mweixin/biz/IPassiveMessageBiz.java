@@ -1,5 +1,7 @@
 package net.mingsoft.mweixin.biz;
 
+import java.util.List;
+
 import com.mingsoft.base.biz.IBaseBiz;
 
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
@@ -20,5 +22,12 @@ public interface IPassiveMessageBiz extends IBaseBiz {
 	 * @return
 	 */
 	public PassiveMessageEntity getEntity(PassiveMessageEntity passiveMessage);
+	
+	/**
+	 * 查询关键字列表，后台使用如果类型的图文，newsTitle显示素材的标题
+	 * @param passiveMessage
+	 * @return
+	 */
+	public List<PassiveMessageEntity> query(PassiveMessageEntity passiveMessage);
 
 }

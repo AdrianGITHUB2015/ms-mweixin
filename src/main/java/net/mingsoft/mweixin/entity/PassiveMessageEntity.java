@@ -71,6 +71,27 @@ public class PassiveMessageEntity extends BaseEntity {
 	private Integer pmNewType; 
 	
 	/**
+	 * 素材对应的标题（不参与表结构）
+	 */
+	private String newsTitle;
+	
+	/**
+	 * 获取素材对应的标题（不参与表结构）
+	 * @return
+	 */
+	public String getNewsTitle() {
+		return newsTitle;
+	}
+
+	/**
+	 * 设置素材对应的标题（不参与表结构）
+	 * @param newsTitle
+	 */
+	public void setNewsTitle(String newsTitle) {
+		this.newsTitle = newsTitle;
+	}
+
+	/**
 	 * 获取素材类型
 	 * @return
 	 */

@@ -88,6 +88,9 @@ public class NewsBizImpl extends BaseBizImpl implements INewsBiz {
 		// 获取微信素材实体
 		NewsEntity newsEntity = newsDao.getNewsByNewsId(newsId);
 		//获取应用实体
+		if(ObjectUtil.isNull(newsEntity)){
+			return null;
+		}
 		AppEntity app = (AppEntity)appDao.getEntity(newsEntity.getNewsAppId());
 		//保存应用
 		newsEntity.setApp(app);

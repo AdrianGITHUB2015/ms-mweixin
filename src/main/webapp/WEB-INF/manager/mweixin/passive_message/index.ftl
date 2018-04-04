@@ -52,10 +52,28 @@
 				        		return "<a href=" +url+ " target='_self'>" + value + "</a>";
 				        	}
 				    	},{
+				        	field: 'pmNewType',
+				        	title: '回复类型',
+				        	width:'100',
+				        	align: 'center',
+				        	formatter:function(value,row,index) {
+				        		switch(value){
+				        			case 1: return "文本";break;
+				        			case 6: return "图文";break;
+				        		}
+				        	}
+				    	},{
 				        	field: 'pmContent',
 				        	title: '回复内容',
 				        	width:'200',
-				        	align: 'center'
+				        	align: 'center',
+				        	formatter:function(value,row,index) {
+				        		if(row.pmNewType == 6){
+				        			return row.newsTitle;
+				        		}else{
+				        			return value;
+				        		}
+				        	}
 				    	}
 			]
 	    })
