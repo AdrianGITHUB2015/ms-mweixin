@@ -52,11 +52,11 @@ import com.mingsoft.weixin.util.MessageUtils;
 import com.mingsoft.weixin.util.bean.NewsEntityUtils;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IORuntimeException;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.bean.WxMpMassNews;
-import me.chanjar.weixin.mp.bean.WxMpMassOpenIdsMessage;
 import me.chanjar.weixin.mp.bean.WxMpMassTagMessage;
 import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpMassSendResult;
@@ -88,7 +88,7 @@ public class MessageAction extends BaseAction {
 	 */
 	@Autowired
 	private IWeixinPeopleBiz weixinPeopleBiz;
-	
+
 	@Autowired
 	private PortalService weixinService;
 
@@ -149,89 +149,87 @@ public class MessageAction extends BaseAction {
 				JSONObject.toJSONString(weixinPeopleSucessList));
 	}
 
-	
-
 	/**
 	 * 消息群发
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
-	 * @throws WxErrorException 
-	 * @throws IOException 
-	 * @throws IORuntimeException 
+	 * @throws WxErrorException
+	 * @throws IOException
+	 * @throws IORuntimeException
 	 */
 	@RequestMapping("/sendAll")
 	@ResponseBody
-	public void sendAll( ModelMap model, HttpServletRequest request,
-			HttpServletResponse response) throws WxErrorException, IOException {
+	public void sendAll(ModelMap model, HttpServletRequest request, HttpServletResponse response)
+			throws WxErrorException, IOException {
 
-		//获取微信对象
+		// 获取微信对象
 		WeixinEntity weixin = this.getWeixinSession(request);
-		//若微信不存在
+		// 若微信不存在
 		if (weixin == null || StringUtil.isBlank(weixin.getWeixinAppSecret())
 				|| StringUtil.isBlank(weixin.getWeixinAppId())) {
 			this.outJson(response, ModelCode.WEIXIN_MESSAGE, false, this.getResString("weixin.not.found"));
 			return;
 		}
-		//获取图文素材ID
+		// 获取图文素材ID
 		String contentStr = BasicUtil.getString("content");
 		String type = BasicUtil.getString("type");
-		String gourpId = BasicUtil.getString("gourpId",null);
+		String gourpId = BasicUtil.getString("gourpId", null);
+		// WxMpMassPreviewMessage massMessage = new WxMpMassPreviewMessage();
+		// //测试群发
 		WxMpMassTagMessage massMessage = new WxMpMassTagMessage();
-		WxMpMassOpenIdsMessage message = new WxMpMassOpenIdsMessage();
-		//判断群发消息的类型
-		if(type.equals(WxConsts.MassMsgType.TEXT)){
-			//发送文本消息
+		// 判断群发消息的类型
+		if (type.equals(WxConsts.MassMsgType.TEXT)) {
+			// 发送文本消息
 			massMessage.setMsgType(WxConsts.MassMsgType.TEXT);
 			massMessage.setContent(contentStr);
 			massMessage.setSendAll(true);
-		}else if(type.equals(WxConsts.MassMsgType.IMAGE)){
-			//发送图文消息
-			//将素材ID转整形
+
+		} else if (type.equals(WxConsts.MassMsgType.IMAGE)) {
+			// 发送图文消息
+			// 将素材ID转整形
 			int contentInt = Integer.valueOf(contentStr);
-			//获取选取的素材实体
-			NewsEntity _news = newsBiz.getNewsByNewsId(contentInt);	
-			if(_news == null){
+			// 获取选取的素材实体
+			NewsEntity _news = newsBiz.getNewsByNewsId(contentInt);
+			if (_news == null) {
 				this.outJson(response, null, false);
 				return;
 			}
-			//组织数据上传
-			try (InputStream inputStream = FileUtil.getInputStream(BasicUtil.getRealPath(_news.getNewsMasterArticle().getBasicThumbnails()))) {
-				 // 上传照片到媒体库
-	            WxMediaUploadResult uploadMediaRes = weixinService.getMaterialService()
-	              .mediaUpload(WxConsts.MediaFileType.IMAGE, "jpg", inputStream);
+			// 组织数据上传
+			try (InputStream inputStream = FileUtil
+					.getInputStream(BasicUtil.getRealPath(_news.getNewsMasterArticle().getBasicThumbnails()))) {
+				// 上传照片到媒体库
+				WxMediaUploadResult uploadMediaRes = weixinService.getMaterialService()
+						.mediaUpload(WxConsts.MediaFileType.IMAGE, "jpg", inputStream);
 
-	            // 上传图文消息
-	            WxMpMassNews news = new WxMpMassNews();
-	            if(_news.getChilds().size() > 0){
-	            	for(ArticleEntity _article : _news.getChilds()){
-	            		WxMpMassNews.WxMpMassNewsArticle article = new WxMpMassNews.WxMpMassNewsArticle();
-	            		article.setTitle(_article.getBasicTitle());
-	     	            article.setContent(_article.getArticleContent());
-	     	            article.setThumbMediaId(uploadMediaRes.getMediaId());
-	     	            news.addArticle(article);
-	            	}
-	            }
-	            WxMpMassUploadResult massUploadResult = weixinService.getMassMessageService()
-	                    .massNewsUpload(news);
-		    	message.setMsgType(WxConsts.KefuMsgType.NEWS);
-		    	message.setMediaId(massUploadResult.getMediaId());
-		    	message.getToUsers().add("oI3eS1C62AxTegL3_KiQugZvI-Ck");
-		    	message.getToUsers().add("oI3eS1BUsYUpe1otVBQnWmHbxh7o");
-		    	//WxMpMassSendResult massResult = weixinService.getMassMessageService().massOpenIdsMessageSend(message);
-			}
-			try {
-				WxMpMassSendResult result = this.builderWeixinService(weixin.getWeixinNo()).getMassMessageService()
-						.massOpenIdsMessageSend(message);
-				LOG.debug("群发返回日志:" + JSONObject.toJSONString(result));
-			} catch (WxErrorException e) {
-				LOG.error("发送失败:异常");
-				e.printStackTrace();
+				// 上传图文消息
+				WxMpMassNews news = new WxMpMassNews();
+				if (_news.getChilds().size() > 0) {
+					for (ArticleEntity _article : _news.getChilds()) {
+						WxMpMassNews.WxMpMassNewsArticle article = new WxMpMassNews.WxMpMassNewsArticle();
+						article.setTitle(_article.getBasicTitle());
+						article.setContent(_article.getArticleContent());
+						article.setThumbMediaId(uploadMediaRes.getMediaId());
+						news.addArticle(article);
+					}
+				}
+				WxMpMassUploadResult massUploadResult = weixinService.getMassMessageService().massNewsUpload(news);
+				massMessage.setMsgType(WxConsts.MassMsgType.MPNEWS);
+				massMessage.setMediaId(massUploadResult.getMediaId());
+				// massMessage.setToWxUserOpenid("ogHuk0w8LGN2zDM_M4JQbUkWat64");测试
+				// 铭飞
 			}
 		}
+		try {
+			WxMpMassSendResult result = this.builderWeixinService(weixin.getWeixinNo()).getMassMessageService()
+					.massGroupMessageSend(massMessage);
+			LOG.debug("群发返回日志:" + JSONObject.toJSONString(result));
+		} catch (WxErrorException e) {
+			LOG.error("发送失败:异常");
+			e.printStackTrace();
+		}
 	}
-
-	
 
 	/**
 	 * 返回群发消息界面
@@ -279,7 +277,7 @@ public class MessageAction extends BaseAction {
 		WxMpKefuMessage kefuMessage = new WxMpKefuMessage();
 		kefuMessage.setMsgType(WxConsts.MassMsgType.TEXT);
 		kefuMessage.setContent(content);
-		// kefuMessage.setToUser("oI3eS1Eb1VMk-CYvC7QtCwi7CXnc");
+		kefuMessage.setToUser("oI3eS1BUsYUpe1otVBQnWmHbxh7o");
 		kefuMessage.setToUser(openId);
 
 		try {
@@ -314,8 +312,7 @@ public class MessageAction extends BaseAction {
 		}
 		return weixinPeopleList;
 	}
-	
-	
+
 	/**
 	 * 订单回复
 	 * 
@@ -332,7 +329,7 @@ public class MessageAction extends BaseAction {
 		}
 		return Const.VIEW + "/weixin/message/send";
 	}
-	
+
 	/**
 	 * 遍历openId群发图文消息
 	 * 
