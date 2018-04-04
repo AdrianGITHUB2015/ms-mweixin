@@ -97,10 +97,10 @@
 									</div> 
 							  	</div>
 						  	</div>
-						<small class="help-block" data-bv-validator="notEmpty" data-bv-for="pmContent" data-bv-result="NOT_VALIDATED" style="display: none;">必填项目</small><small class="help-block" data-bv-validator="stringLength" data-bv-for="pmContent" data-bv-result="NOT_VALIDATED" style="display: none;">回复内容长度不能超过150个字符长度!</small></div>
+						<small class="help-block" data-bv-validator="notEmpty" data-bv-for="pmContent" data-bv-result="NOT_VALIDATED" style="display: none;">必填项目</small><small class="help-block" data-bv-validator="stringLength" data-bv-for="pmContent" data-bv-result="NOT_VALIDATED" style="display: none;">回复内容长度不能超过200个字符长度!</small></div>
 					</div>
     			<#else>
-    				<@ms.textarea colSm="2" name="pmContent"  wrap="Soft" rows="7"  size=""  label="回复内容" value="${(passiveMessageEntity.pmContent)?default('')}" placeholder="请输入回复内容" validation={"required":"true","maxlength":"150","data-bv-stringlength-message":"回复内容长度不能超过150个字符长度!", "data-bv-notempty-message":"必填项目"}/>
+    				<@ms.textarea colSm="2" name="pmContent"  wrap="Soft" rows="7"  size=""  label="回复内容" value="${(passiveMessageEntity.pmContent)?default('')}" placeholder="请输入回复内容" validation={"required":"true","maxlength":"200","data-bv-stringlength-message":"回复内容长度不能超过200个字符长度!", "data-bv-notempty-message":"必填项目"}/>
     			</#if>
     	</@ms.form>
     	<!--选择素材模态框-->
