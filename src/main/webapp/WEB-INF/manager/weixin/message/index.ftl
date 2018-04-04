@@ -50,8 +50,7 @@
 	<@ms.content>
 		<@ms.contentBody>
 			<@ms.contentNav title="素材管理">
-				<!--@ms.button class="btn btn-primary"  id="sendMessageBtn"  value="发送"/-->
-				<@ms.button class="btn btn-success"  id="sendMessageMassBtn"  value="群发"/>
+				<@ms.button class="btn btn-success"  id="sendMessageBtn"  value="群发"/>
 			</@ms.contentNav>
 			<@ms.contentPanel>				
 			  	<div class="row margin20"> 		  		
@@ -161,7 +160,6 @@
 			 	<@ms.notify msg="请选择素材！" type="warning"/>
 				return;
 			}
-			url = base+"${baseManager}/weixin/message/guiseSendAllNews.do";
 		}else{
 			type = "text";
 			content = $.trim($(".content").text());
@@ -172,7 +170,7 @@
 			 	<@ms.notify msg="内容过长！" type="warning"/>
 				return;
 			}
-			url = base+"${baseManager}/weixin/message/guiseSendAllText.do";
+			url = base+"${baseManager}/mweixin/message/sendAll.do";
 		}
 		$.ajax({
 		   	type: "POST",
@@ -205,42 +203,6 @@
 		   	}	
 		});	
 	});	
-	//调用微信官方群发接口群发，只支持图文发送
-	$("#sendMessageMassBtn").click(function() {
-		//若为图文，取msgType值为0.content取素材ID
-		if ($(".bar li.sel").hasClass("news")) {
-			var content = $(".content>div").attr("data-id");
-			type = "image";
-			if(content == undefined || content == ""){
-			 	<@ms.notify msg="素材不能为空！" type="warning"/>
-				return;
-			}
-			$.ajax({
-			   	type: "POST",
-			   	data:"groupId="+$(groupId).val()+"&content="+content+"&type="+type,
-			   	dataType:"json",
-			   	url: base+"${baseManager}/mweixin/message/sendAll.do",
-				beforeSend:function() {
-			   		$("#sendMessageMassBtn").text("发送中");
-			   		$("#sendMessageMassBtn").attr("disabled","disabled");
-				},
-			   	success: function(msg){
-			   		if(msg.result == true){
-			 			<@ms.notify msg="发送成功!" type="success"/>
-			   		}else{   				
-			 			<@ms.notify msg="发送失败!" type="fail"/>
-			   		}
-			   		$("#sendMessageMassBtn").text("官方群发");
-			   		$("#sendMessageMassBtn").attr("disabled",false);
-			   	},
-			   	error:function(XMLHttpRequest, textStatus, errorThrown){
-			 	 	<@ms.notify msg ="发送失败!" type="fail"/>
-			   		location.reload();
-			   	}	
-			});		
-		}else{
-			 <@ms.notify msg="只能进行图文发送!" type="warning"/>
-		}											
-	});	
+	
 </script>
 
