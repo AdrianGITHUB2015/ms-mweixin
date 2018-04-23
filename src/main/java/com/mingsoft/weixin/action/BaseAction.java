@@ -42,7 +42,7 @@ import com.mingsoft.weixin.util.OauthUtils;
 public abstract class BaseAction extends com.mingsoft.people.action.BaseAction {
 
 	/**
-	 * 读取国际化资源文件
+	 * 读取国际化资源文件 
 	 * 
 	 * @param key
 	 *            ，键值
