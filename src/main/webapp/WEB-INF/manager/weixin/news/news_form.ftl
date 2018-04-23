@@ -451,7 +451,7 @@
 		   	},
 		   	success: function(data){
 		   		$("#articleList").html("");
-		   		if (data.list.length==0) {
+		   		if (data.rows.length==0) {
 		   			$("#articleList").html("<tr><td colspan='3'><center>"+$("#noRecord").html()+"</td></tr>");
 		   		}
 		   		flag = true;
@@ -469,7 +469,7 @@
 						pageCount = parseInt(articleCount / pageSize )+ 1;
 					}
 				}			   				   		
-		   		$('#articleListTmpl').tmpl(data.list).appendTo('#articleList');
+		   		$('#articleListTmpl').tmpl(data.rows).appendTo('#articleList');
 		   	}			   
 		});
 	}
@@ -491,7 +491,7 @@
 		   	},
 		   	success: function(data){
 		   		$("#articleList").html("");
-		   		if (data.list.length==0) {
+		   		if (data.rows.length==0) {
 		   			$("#articleList").html("<tr><td colspan='3'><center>"+$("#noRecord").html()+"</td></tr>");
 		 		}	
 		   		flag = false;	   		
@@ -507,7 +507,7 @@
 						pageCount = parseInt(articleCount / pageSize )+ 1;
 					}
 				}			   				   		
-		   		$('#articleListTmpl').tmpl(data.list).appendTo('#articleList');
+		   		$('#articleListTmpl').tmpl(data.rows).appendTo('#articleList');
 		   	}			   
 		});
 	}
