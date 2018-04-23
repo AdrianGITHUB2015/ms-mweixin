@@ -20,9 +20,9 @@ import com.mingsoft.base.filter.DateValueFilter;
 import com.mingsoft.base.filter.DoubleValueFilter;
 import com.mingsoft.util.StringUtil;
 import com.mingsoft.weixin.entity.WeixinEntity;
-import com.xiaoleilu.hutool.lang.Validator;
-import com.xiaoleilu.hutool.util.ObjectUtil;
 
+import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.ObjectUtil;
 import net.mingsoft.base.util.JSONObject;
 import net.mingsoft.basic.bean.EUListBean;
 import net.mingsoft.basic.util.BasicUtil;
