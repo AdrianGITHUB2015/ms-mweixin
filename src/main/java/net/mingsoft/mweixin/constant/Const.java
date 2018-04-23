@@ -19,8 +19,4 @@ public final class Const {
 	
 	public static String MODEL_CODE = "modelCode";
 	
-	/**
-	 * 素材回复路径常量
-	 */
-	public static String HTML = "/html/";
 }

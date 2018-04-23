@@ -1,7 +1,5 @@
 package net.mingsoft.weixin.service;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,34 +9,25 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.mingsoft.base.constant.Const;
 import com.mingsoft.cms.entity.ArticleEntity;
+import com.mingsoft.parser.IParserRegexConstant;
 import com.mingsoft.weixin.biz.INewsBiz;
-import com.mingsoft.weixin.constant.ModelCode;
 import com.mingsoft.weixin.entity.NewsEntity;
 
-import cn.hutool.core.io.FileUtil;
 import me.chanjar.weixin.common.api.WxConsts;
-import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
-import me.chanjar.weixin.mp.bean.WxMpMassNews;
-import me.chanjar.weixin.mp.bean.WxMpMassOpenIdsMessage;
 import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage.WxArticle;
-import me.chanjar.weixin.mp.bean.material.WxMediaImgUploadResult;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
-import me.chanjar.weixin.mp.bean.result.WxMpMassSendResult;
-import me.chanjar.weixin.mp.bean.result.WxMpMassUploadResult;
 import net.mingsoft.base.util.BaseUtil;
 import net.mingsoft.basic.util.BasicUtil;
 import net.mingsoft.mweixin.biz.IPassiveMessageBiz;
-import net.mingsoft.mweixin.constant.Const;
 import net.mingsoft.mweixin.entity.PassiveMessageEntity;
-import net.mingsoft.weixin.builder.ImageBuilder;
 import net.mingsoft.weixin.builder.TextBuilder;
-import net.mingsoft.weixin.service.PortalService;
 
 /**
  * @author Binary Wang
@@ -108,7 +97,7 @@ public class MsgService extends AbstractService {
 	    		MasterArticle.setTitle(Marticle.getBasicTitle());
 	    		MasterArticle.setDescription(Marticle.getArticleContent());
 	    		MasterArticle.setPicUrl(BaseUtil.getUrl()+Marticle.getBasicThumbnails());
-	    		MasterArticle.setUrl(BaseUtil.getUrl() + Const.HTML + BasicUtil.getAppId() + Marticle.getArticleUrl());
+	    		MasterArticle.setUrl(BaseUtil.getUrl() + Const.SEPARATOR+IParserRegexConstant.HTML_SAVE_PATH +Const.SEPARATOR+ BasicUtil.getAppId() + Marticle.getArticleUrl());
 	    		
 	            List<WxArticle> articles = new ArrayList<>();
 	            articles.add(MasterArticle);
@@ -118,7 +107,7 @@ public class MsgService extends AbstractService {
 	            		article.setTitle(_article.getBasicTitle());
 	     	            article.setDescription(_article.getArticleContent());
 	     	            article.setPicUrl(BaseUtil.getUrl()+_article.getBasicThumbnails());
-	     	            article.setUrl(BaseUtil.getUrl()+ Const.HTML + BasicUtil.getAppId() +_article.getArticleUrl());
+	     	            article.setUrl(BaseUtil.getUrl()+ Const.SEPARATOR+IParserRegexConstant.HTML_SAVE_PATH +Const.SEPARATOR + BasicUtil.getAppId() +_article.getArticleUrl());
 	     	            articles.add(article);
 	            	}
 	            }
