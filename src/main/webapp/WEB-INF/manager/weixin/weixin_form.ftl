@@ -1,6 +1,10 @@
 <@ms.html5>
 	<@ms.nav title="微信设置" back=true>
-		<@ms.button class="btn btn-success"  id="saveOrUpdateWeixin"  value="编辑微信设置"/>
+		<#if weixin.weixinId!=0>
+			<@ms.updateButton class="btn btn-success"  id="saveOrUpdateWeixin"  value="更新"/>
+		<#else>
+			 <@ms.saveButton class="btn btn-success"  id="saveOrUpdateWeixin"  value="保存"/>
+		</#if>
 	</@ms.nav>
 	<@ms.panel>
 		<@ms.form isvalidation=true name="weixinForm" action="${managerPath}/weixin/save.do">
@@ -15,8 +19,6 @@
 		    <@ms.text  name="weixinPayKey"  label="微信支付key:" value="${weixin.weixinPayKey?default('')}" title="微信支付key" placeholder="请输入微信支付key"  validation={"maxlength":"255","data-bv-stringlength-message":"支付key在255个字符以内!"}/>
 		    <@ms.text  name="weixinPayMchId"  label="微信支付mchid:" value="${weixin.weixinPayMchId?default('')}" title="微信支付mchid" placeholder="请输入微信支付mchid" validation={"maxlength":"255","data-bv-stringlength-message":"支付mchid在255个字符以内!"}/>
 		    		-->
-		    <@ms.text  name="weixinProxyUrl"  label="映射内网测试网地址:" value="${weixin.weixinProxyUrl?default('')}" title="映射内网测试网地址" placeholder="请输入映射内网测试网地址(必须以http开头)" validation={"maxlength":"500","data-bv-stringlength-message":"测试网地址500个字符以内!"}/>
-		    <@ms.text  name="weixinOauthUrl"  label="网页2.0授权跳转地址:" value="${weixin.weixinOauthUrl?default('')}" title="网页2.0授权跳转地址" placeholder="请输入网页2.0授权跳转地址(必须以http开头)" validation={"maxlength":"200","data-bv-stringlength-message":"跳转地址在200个字符以内!"}/>
 		    <@ms.formRow label="头像：">
             	<#if weixin?has_content>
         			<@ms.uploadImg path="upload/weixin/${appId?c?default(0)}/" inputName="weixinHeadImg" size="1" filetype="" msg="头像缩略图"  maxSize="1" imgs="${weixin.weixinHeadImg?default('')}" />
@@ -63,21 +65,31 @@
 					}
 				}
 				<#if weixin.weixinId!=0>
+					$("#saveOrUpdateWeixin").prop("disabled",true);
 	     			$("#saveOrUpdateWeixin").text("更新中");	
      			<#else>
+     				$("#saveOrUpdateWeixin").prop("disabled",true);
 	     			$("#saveOrUpdateWeixin").text("保存中");		
 	     		</#if>		     							
 				$(this).postForm("#weixinForm",{func:function(msg) {
 					if (msg.result == true) {
 			     		<#if weixin.weixinId!=0>
-			 				<@ms.notify msg="保存成功" type="success"/>
+			 				<@ms.notify msg="更新成功" type="success"/>
+			 				$("#saveOrUpdateWeixin").prop("disabled",false);
+			 				location.reload();
 		     			<#else>
-			 				<@ms.notify msg="保存失败" type="fail"/>
-			     			location.href = "${managerPath}/weixin/index.do"; 	
+			 				<@ms.notify msg="保存成功" type="success"/>
+			 				$("#saveOrUpdateWeixin").prop("disabled",false);
+			 				location.href="${managerPath}/weixin/index.do";
 			     		</#if>		     					    		
 			    	}else{
-			 			<@ms.notify msg="提交失败" type="fail"/>
-			    		$("#saveOrUpdateWeixin").text(btnWord);	
+			    		<#if weixin.weixinId!=0>
+			 				<@ms.notify msg="更新失败" type="warning"/>
+			 				$("#saveOrUpdateWeixin").prop("disabled",false);
+						<#else>
+			 				<@ms.notify msg="保存失败" type="warning"/>
+			 				$("#saveOrUpdateWeixin").prop("disabled",false);
+			     		</#if>				 				
 			    	}
 				}});
 			}

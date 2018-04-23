@@ -125,7 +125,9 @@
 		from wx_people wp 
 		left join  people p on wp.PW_PEOPLE_ID=p.people_id
 		left join people_user pu on pu.pu_people_id=wp.PW_PEOPLE_ID
-		where wp.PW_APP_ID = #{appId} and wp.PW_WEIXIN_ID = #{weixinId}
+		<where>
+			wp.PW_APP_ID = #{appId} and  wp.PW_WEIXIN_ID = #{weixinId}
+		</where>
 	</select>
 	<!-- 根据应用ID和微信ID查询微信用户列表，不参与分页和排序,结束-->
 	
@@ -153,6 +155,7 @@
 	</select>
 	<!-- 根据自定义字段条件查询微信用户实体结束 -->
 	
+	<!-- 方法过期推荐使用 getByOpenId-->
 	<!-- 根据条件查询微信实体开始 -->
 	<select id="getWeixinPeopleEntity" resultMap="resultMap">
 		select <include refid="column_list"/> from wx_people wp
@@ -161,9 +164,19 @@
 		<where>
 			<if test="peopleId != null">and wp.PW_PEOPLE_ID = #{peopleId}</if>			
 			<if test="appId != null">and wp.PW_APP_ID = #{appId}</if>
-			<if test="weixinId != null">and wp.pw_weixin_id = #{weixinId}</if>
+			<if test="weixinId &gt; 0">and wp.pw_weixin_id = #{weixinId}</if>
 			<if test="openId != null">and wp.PW_OPEN_ID = #{openId}</if>		
 		</where>
 	</select>
 	<!-- 根据条件查询微信实体结束 -->
+	
+	<!-- 根据微信openId查询用户信息 -->
+	<select id="getByOpenId" resultMap="resultMap">
+		select <include refid="column_list"/> from wx_people wp
+		left join  people p on wp.PW_PEOPLE_ID=p.people_id
+		left join people_user pu on pu.pu_people_id=wp.PW_PEOPLE_ID
+		<where>
+			<if test="openId != null">and wp.PW_OPEN_ID = #{openId}</if>		
+		</where>
+	</select>
 </mapper>

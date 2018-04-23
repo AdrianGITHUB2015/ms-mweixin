@@ -38,6 +38,8 @@ import com.mingsoft.weixin.biz.INewsBiz;
 import com.mingsoft.weixin.dao.INewsDao;
 import com.mingsoft.weixin.entity.NewsEntity;
 
+import cn.hutool.core.util.ObjectUtil;
+
 /**
  * 
  * Copyright: Copyright (c) 2014 - 2015
@@ -86,6 +88,9 @@ public class NewsBizImpl extends BaseBizImpl implements INewsBiz {
 		// 获取微信素材实体
 		NewsEntity newsEntity = newsDao.getNewsByNewsId(newsId);
 		//获取应用实体
+		if(ObjectUtil.isNull(newsEntity)){
+			return null;
+		}
 		AppEntity app = (AppEntity)appDao.getEntity(newsEntity.getNewsAppId());
 		//保存应用
 		newsEntity.setApp(app);
@@ -144,15 +149,13 @@ public class NewsBizImpl extends BaseBizImpl implements INewsBiz {
 
 	/**
 	 * 根据素材应用ID查询素材</br>
-	 * 分页查询</br>
 	 * 根据自增长ID排序</br>
 	 * @param newsWeixinId 素材微信ID
-	 * @param page 分页
 	 * @return 素材列表
 	 */
 	@Override
-	public List<NewsEntity> queryList(int appId,int weixinId,PageUtil page){
-		List<NewsEntity> newsList = newsDao.queryList(appId,weixinId, page);
+	public List<NewsEntity> query(NewsEntity news){
+		List<NewsEntity> newsList = newsDao.query(news);
 		//重新组装图文
 		if(newsList != null){
 			return setNewsAction(newsList);
@@ -266,6 +269,19 @@ public class NewsBizImpl extends BaseBizImpl implements INewsBiz {
 			return list;
 		}else{
 			return null;
+		}
+	}
+
+	@Override
+	public List<NewsEntity> organizationList(int id) {
+		// TODO Auto-generated method stub
+		NewsEntity news = this.getNewsByNewsId(id);
+		if(ObjectUtil.isNull(news)){
+			return null;
+		}else{
+			List<NewsEntity> newsList = new ArrayList<NewsEntity>();
+			newsList.add(news);
+			return setNewsAction(newsList);
 		}
 	}	
 	

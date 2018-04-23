@@ -63,11 +63,16 @@
 			    field: 'peoplePhone',
 			    title: '用户电话',
 			    width:'200'
+			}, {
+			    align:'center',
+			    field: 'weixinPeopleOpenId',
+			    title: 'openId',
+			    width:'200'
 			},{
 			    align:'center',
 			    field: 'weixinPeopleCity',
 			    title: '操作',
-			    formatter:function(value,row,index){return "<button style='line-height: 9px;'  type='button' class='btn btn-success col-md sendMessage' data-id=" + row.weixinPeopleOpenId + ">发送消息</button>"}
+			    formatter:function(value,row,index){return "<button style='line-height: 9px;'  type='button' class='btn btn-success col-md sendMessage' data-id=" + row.weixinPeopleOpenId + " >发送消息</button>"}
 			}]
         });
     	//点击查询按钮触发
@@ -85,7 +90,7 @@
 	    	$.ajax({
 	        	type:"post",
 	        	dataType: "json",
-	        	url:"${managerPath}/weixin/weixinPeople/importPeople.do",
+	        	url:"${managerPath}/mweixin/weixinPeople/importPeople.do",
 	        	beforeSend:function(){
 	        		$("#synchronousPeople").text("同步中..");
 	        		$(".sendMessage").attr("disabled","true");
@@ -102,8 +107,10 @@
 	       })
 	   })
 	   //发送按钮弹出发送消息框
+	   	var openId ;
 	   $("body").delegate(".sendMessage","click",function() {
-	      $(".messageModel").modal();
+	   		openId = this.attributes[3].nodeValue;
+	      	$(".messageModel").modal();
 	   });
 	   //点击发送按钮开始发送消息，只支持文本发送
 	   $("body").delegate("#sendMessageButton","click",function(){
@@ -115,11 +122,12 @@
 	        	<@ms.notify msg="内容过长!" type="warning"/>
 	            return;
 	       	}
+	      
 	        $.ajax({
 	        	type: "post",
 	            dataType: "json",
-	            url:  "${base}${baseManager}/weixin/message/"+$(".sendMessage").attr("data-id")+"/sendText.do",
-	            data: "content=" + content,
+	            url:  "${base}${baseManager}/mweixin/message/sendToUser.do",
+	            data: "content=" + content+"&openId="+openId+"&type="+"text",
 	            beforeSend:function(){
 	            	$("#sendMessageButton").text("发送中..");
 	               	$("#sendMessageButton").attr("disabled",true);

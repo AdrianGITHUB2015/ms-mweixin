@@ -20,6 +20,7 @@ The MIT License (MIT) * Copyright (c) 2017 铭飞科技
  */package com.mingsoft.weixin.action;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,25 +44,22 @@ import com.mingsoft.cms.biz.IArticleBiz;
 import com.mingsoft.cms.entity.ArticleEntity;
 import com.mingsoft.util.PageUtil;
 import com.mingsoft.util.StringUtil;
-import com.mingsoft.weixin.biz.IMenuBiz;
 import com.mingsoft.weixin.biz.INewsBiz;
-import com.mingsoft.weixin.biz.IPassiveMessageBiz;
 import com.mingsoft.weixin.constant.ModelCode;
 import com.mingsoft.weixin.constant.e.NewsTypeEnum;
-import com.mingsoft.weixin.entity.MenuEntity;
 import com.mingsoft.weixin.entity.NewsEntity;
-import com.mingsoft.weixin.entity.PassiveMessageEntity;
 import com.mingsoft.weixin.entity.WeixinEntity;
 
 import net.mingsoft.basic.util.BasicUtil;
+
 /**
  * 
- * 微信素材控制层
- * @author 付琛  QQ1658879747
- * @version 
- * 版本号：100-000-000<br/>
- * 创建日期：2015年12月4日
- * 历史修订：<br/>
+ * @ClassName:  NewsAction   
+ * @Description:TODO(微信素材控制层)   
+ * @author: 铭飞开发团队
+ * @date:   2018年4月3日 上午9:29:10   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 @Controller
 @RequestMapping("/${managerPath}/weixin/news")
@@ -74,11 +72,6 @@ public class NewsAction extends BaseAction {
 	@Autowired
 	private INewsBiz newsBiz;
 	
-	/**
-	 * 注入菜单业务层
-	 */
-	@Autowired
-	private IMenuBiz menuBiz;
 	
 	/**
 	 * 文章业务层注入
@@ -92,11 +85,6 @@ public class NewsAction extends BaseAction {
 	@Autowired
 	private IColumnBiz columnBiz;	
 	
-	/**
-	 * 注入关注回复业务层
-	 */
-	@Autowired
-	private IPassiveMessageBiz passiveMessageBiz;
 	
 	/**
 	 * 图文素材列表
@@ -109,20 +97,13 @@ public class NewsAction extends BaseAction {
 		//取出微信实体
 		WeixinEntity weixin = this.getWeixinSession(request);
 		//获取微信ID
-		int weixinId = weixin.getWeixinId();
-		//获取appId
-		int appId = this.getAppId(request);
-		//获取当前页码
-		int pageNo= this.getPageNo(request);
-		//图文素材总数
-		int recordCount = newsBiz.queryCount(appId,weixinId);
-		//分页通用
-		PageUtil page = new PageUtil(pageNo,recordCount,"list.do?");
+		NewsEntity news = new NewsEntity();
+		news.setNewsAppId(BasicUtil.getAppId());
+		news.setNewsWeixinId(weixin.getWeixinId());
 		//查询图文素材
-		List<NewsEntity> newsList = newsBiz.queryList(appId,weixinId,page);
+		List<NewsEntity> newsList = newsBiz.query(news);
 		//压入url地址
-		this.setCookie(request, response, CookieConstEnum.BACK_COOKIE,"list.do?&pageNo="+pageNo);
-		model.addAttribute("page",page);
+		this.setCookie(request, response, CookieConstEnum.BACK_COOKIE,"list.do");
 		model.addAttribute("newsList", newsList);
 		return Const.VIEW+"/weixin/news/news_list";
 	}
@@ -149,9 +130,8 @@ public class NewsAction extends BaseAction {
 		PageUtil page = new PageUtil(pageNo,recordCount, null);
 		//查询图文素材
 		List<NewsEntity> newsList = newsBiz.queryListNewsImage(appId,weixinId,NewsTypeEnum.SINGLE_NEWS.toInt(),NewsTypeEnum.NEWS.toInt(), page);
-		model.addAttribute("page",page);
 		model.addAttribute("newsList", newsList);
-		return Const.VIEW+"/weixin/news/news_list_ajax";
+		return view("/weixin/news/news_list_ajax");
 	}	
 	
 	/**
@@ -295,6 +275,23 @@ public class NewsAction extends BaseAction {
 	}
 	
 	/**
+	 * 根据素材Id获取素材实体
+	 * @param response
+	 * @param mode
+	 * @param newsId 素材id
+	 */
+	@RequestMapping("/{newsId}/getHtml")
+	public String getHtml(@PathVariable int newsId,HttpServletResponse response,ModelMap mode,HttpServletRequest request){
+		if(newsId <= 0){
+			return null;
+		}
+		//根据素材ID获取相应素材
+		List<NewsEntity> newsList = newsBiz.organizationList(newsId);
+		mode.addAttribute("newsList", newsList);
+		return view("/weixin/news/news_list_ajax");
+	}
+	
+	/**
 	 * 更新素材
 	 * @param news 素材实体
 	 * @param request
@@ -350,20 +347,20 @@ public class NewsAction extends BaseAction {
 		int weixinId = weixin.getWeixinId(); 
 		//获取appId
 		int appId = this.getAppId(request);
-		//由于被动回复要调用素材，且素材与被动回复属于多对一的关系，若该关系存在，则素材不可直接删除，需先删除被哦的那个回复
-		List<PassiveMessageEntity> passiveMessageList =  this.passiveMessageBiz.queryListByNewsIdAndWeixinId(newsId, weixin.getWeixinId());
-		//若该素材关联被动回复
-		if(passiveMessageList.size()!= 0){
-			this.outJson(response, ModelCode.WEIXIN_NEWS, false,null);
-			return;
-		}
-		//获取newsId所对应的菜单列表中是否有实体存在与该newsId相等的menuUul
-		List<MenuEntity> menuList = this.menuBiz.queryListByMenuUrl(String.valueOf(newsId),appId,weixinId);
-		//若该素材关联菜单
-		if(menuList.size() != 0){
-			this.outJson(response, ModelCode.WEIXIN_NEWS, false,null);
-			return;
-		}
+//		//由于被动回复要调用素材，且素材与被动回复属于多对一的关系，若该关系存在，则素材不可直接删除，需先删除被哦的那个回复
+//		List<PassiveMessageEntity> passiveMessageList =  this.passiveMessageBiz.queryListByNewsIdAndWeixinId(newsId, weixin.getWeixinId());
+//		//若该素材关联被动回复
+//		if(passiveMessageList.size()!= 0){
+//			this.outJson(response, ModelCode.WEIXIN_NEWS, false,null);
+//			return;
+//		}
+//		//获取newsId所对应的菜单列表中是否有实体存在与该newsId相等的menuUul
+//		List<MenuEntity> menuList = this.menuBiz.queryListByMenuUrl(String.valueOf(newsId),appId,weixinId);
+//		//若该素材关联菜单
+//		if(menuList.size() != 0){
+//			this.outJson(response, ModelCode.WEIXIN_NEWS, false,null);
+//			return;
+//		}
 		//删除指定素材
 		newsBiz.deleteEntity(newsId);
 		this.outJson(response, ModelCode.WEIXIN_NEWS, true,null);

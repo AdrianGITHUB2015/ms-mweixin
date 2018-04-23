@@ -51,7 +51,7 @@ public interface IWeixinPeopleDao extends IBaseDao{
 	/**
 	 * 根据应用Id和微信ID查询微信用户列表(不带分页)
 	 * @param appId 应用Id
-	 * @param weixinId 微信ID
+	 * @param weixinId 微信ID(可选)
 	 * @return 微信用户列表
 	 */
 	public List<WeixinPeopleEntity> queryListByAppIdAndWeixinId(@Param("appId")int appId,@Param("weixinId") int weixinId);
@@ -82,4 +82,10 @@ public interface IWeixinPeopleDao extends IBaseDao{
 	 */
 	public WeixinPeopleEntity getWeixinPeopleEntity(@Param("peopleId") Integer peopleId,@Param("appId") Integer appId,@Param("weixinId") Integer weixinId,@Param("openId") String openId);
 	
+	/**
+	 * 根据微信openId查询用户实体
+	 * @param openId
+	 * @return
+	 */
+	public WeixinPeopleEntity getByOpenId(@Param("openId") String openId);
 }

@@ -49,12 +49,12 @@ import com.mingsoft.weixin.util.bean.NewsEntityUtils;
 
 /**
  * 
- * 消息发送控制层
- * @author 付琛  QQ1658879747
- * @version 
- * 版本号：100-000-000<br/>
- * 创建日期：2015年11月21日
- * 历史修订：<br/>
+ * @ClassName:  MessageAction   
+ * @Description:TODO(消息发送控制层)   
+ * @author: 铭飞开发团队
+ * @date:   2018年4月3日 上午9:03:12   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 @Controller
 @RequestMapping("/${managerPath}/weixin/message")

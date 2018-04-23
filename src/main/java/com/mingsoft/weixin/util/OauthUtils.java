@@ -22,10 +22,10 @@ The MIT License (MIT) * Copyright (c) 2017 铭飞科技
  */
 package com.mingsoft.weixin.util;
 
+import java.net.URLEncoder;
 import java.util.Map;
 
 import com.mingsoft.util.StringUtil;
-import com.qq.connect.utils.URLEncodeUtils;
 
 
 /**
@@ -254,7 +254,7 @@ public class OauthUtils extends BaseUtils {
 	 * @return　返回组织后的请求地址
 	 */
 	public static String builderOauthUrl(String link,String state,boolean isUserInfo,String appId) {
-		return "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+URLEncodeUtils.encodeURL(link)+"&response_type=code&scope="+(isUserInfo?SCOPE_USERINFO:SCOPE_BASE)+(state==null?"":"&state="+state)+"#wechat_redirect";
+		return "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+URLEncoder.encode(link)+"&response_type=code&scope="+(isUserInfo?SCOPE_USERINFO:SCOPE_BASE)+(state==null?"":"&state="+state)+"#wechat_redirect";
 	}
 	
 	

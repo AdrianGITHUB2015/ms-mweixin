@@ -93,6 +93,10 @@ public class WeixinEntity extends BaseEntity {
 	 * 微信支付key,申请认证是邮件里面有
 	 */
 	private String weixinPayKey;
+	/**
+	 * 消息加解密密钥
+	 */
+	private String weixinAesKey;
 	
 	/**
 	 * 微信支付mchid,申请认证是邮件里面有
@@ -282,5 +286,13 @@ public class WeixinEntity extends BaseEntity {
 		this.weixinOauthUrl = weixinOauthUrl;
 	}
 
+	public String getWeixinAesKey() {
+		return weixinAesKey;
+	}
+
+	public void setWeixinAesKey(String weixinAesKey) {
+		this.weixinAesKey = weixinAesKey;
+	}
+	
 	
 }

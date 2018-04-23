@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.mingsoft.mweixin.dao.IMenuDao">
+	
+	<resultMap id="resultMap" type="net.mingsoft.mweixin.entity.MenuEntity">
+		<id column="MENU_ID" property="menuId" /><!--菜单自增长编号 -->
+		<result column="MENU_APP_ID" property="menuAppId" /><!--菜单所属商家编号 -->
+		<result column="MENU_TITLE" property="menuTitle" /><!--菜单名称 -->
+		<result column="MENU_URL" property="menuUrl" /><!--菜单链接地址 -->
+		<result column="MENU_STATUS" property="menuStatus" /><!--菜单状态 0：不启用 1：启用 -->
+		<result column="MENU_MENU_ID" property="menuMenuId" /><!--父菜单编号 -->
+		<result column="MENU_TYPE" property="menuType" /><!--菜单属性 0:链接 1:回复 -->
+		<result column="MENU_SORT" property="menuSort" /><!-- -->
+		<result column="MENU_STYLE" property="menuStyle" /><!--类型：1文本 2图文 4外链接 -->
+		<result column="MENU_OAUTH_ID" property="menuOauthId" /><!--授权数据编号 -->
+		<result column="MENU_WEIXIN_ID" property="menuWeixinId" /><!--微信编号 -->
+		<result column="MENU_CONTENT" property="menuContent" /><!--微信菜单内容 -->
+	</resultMap>
+	
+	<!--保存-->	
+	<insert id="saveEntity" useGeneratedKeys="true" keyProperty="menuId"
+		parameterType="net.mingsoft.mweixin.entity.MenuEntity" >
+		insert into wx_menu
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="menuAppId &gt; 0">MENU_APP_ID,</if>
+			<if test="menuTitle != null and menuTitle != ''">MENU_TITLE,</if>
+			<if test="menuUrl != null and menuUrl != ''">MENU_URL,</if>
+			<if test="menuStatus &gt; 0">MENU_STATUS,</if>
+			<if test="menuMenuId &gt; 0">MENU_MENU_ID,</if>
+			<if test="menuType &gt; 0">MENU_TYPE,</if>
+			<if test="menuSort &gt; 0">MENU_SORT,</if>
+			<if test="menuStyle &gt; 0">MENU_STYLE,</if>
+			<if test="menuOauthId &gt; 0">MENU_OAUTH_ID,</if>
+			<if test="menuWeixinId &gt; 0">MENU_WEIXIN_ID,</if>
+			<if test="menuContent != null and menuContent != ''">MENU_CONTENT,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="menuAppId &gt; 0">#{menuAppId},</if>
+			<if test="menuTitle != null and menuTitle != ''">#{menuTitle},</if>
+			<if test="menuUrl != null and menuUrl != ''">#{menuUrl},</if>
+			<if test="menuStatus &gt; 0">#{menuStatus},</if>
+			<if test="menuMenuId &gt; 0">#{menuMenuId},</if>
+			<if test="menuType &gt; 0">#{menuType},</if>
+			<if test="menuSort &gt; 0">#{menuSort},</if>
+			<if test="menuStyle &gt; 0">#{menuStyle},</if>
+			<if test="menuOauthId &gt; 0">#{menuOauthId},</if>
+			<if test="menuWeixinId &gt; 0">#{menuWeixinId},</if>
+			<if test="menuContent != null and menuContent != ''">#{menuContent},</if>
+		</trim>
+	</insert>
+	
+	<!--更新-->	
+	<update id="updateEntity" parameterType="net.mingsoft.mweixin.entity.MenuEntity">
+		update wx_menu
+		<set>
+			<if test="menuAppId &gt; 0">MENU_APP_ID=#{menuAppId},</if>			
+			<if test="menuTitle != null and menuTitle != ''">MENU_TITLE=#{menuTitle},</if>			
+			<if test="menuUrl != null and menuUrl != ''">MENU_URL=#{menuUrl},</if>			
+			<if test="menuStatus &gt; 0">MENU_STATUS=#{menuStatus},</if>			
+			<if test="menuMenuId &gt; 0">MENU_MENU_ID=#{menuMenuId},</if>			
+			<if test="menuType &gt; 0">MENU_TYPE=#{menuType},</if>			
+			<if test="menuSort &gt; 0">MENU_SORT=#{menuSort},</if>			
+			<if test="menuStyle &gt; 0">MENU_STYLE=#{menuStyle},</if>			
+			<if test="menuOauthId &gt; 0">MENU_OAUTH_ID=#{menuOauthId},</if>			
+			<if test="menuWeixinId &gt; 0">MENU_WEIXIN_ID=#{menuWeixinId},</if>		
+			<if test="menuContent != null and menuContent != ''">MENU_CONTENT=#{menuContent},</if>	
+		</set>
+		where MENU_ID = #{menuId}
+	</update>
+	
+	<!--根据id获取-->	
+	<select id="getEntity" resultMap="resultMap" parameterType="int">
+		select * from wx_menu where MENU_ID=#{menuId}
+	</select>
+	
+	<!--根据实体获取-->
+	<select id="getByEntity" resultMap="resultMap" parameterType="net.mingsoft.mweixin.entity.MenuEntity">
+		select * from wx_menu 
+		<where>
+			<if test="menuAppId &gt; 0"> and MENU_APP_ID=#{menuAppId} </if>				
+			<if test="menuTitle != null and menuTitle != ''"> and MENU_TITLE=#{menuTitle} </if>				
+			<if test="menuUrl != null and menuUrl != ''"> and MENU_URL=#{menuUrl} </if>				
+			<if test="menuStatus &gt; 0"> and MENU_STATUS=#{menuStatus} </if>				
+			<if test="menuMenuId &gt; 0"> and MENU_MENU_ID=#{menuMenuId} </if>				
+			<if test="menuType &gt; 0"> and MENU_TYPE=#{menuType} </if>				
+			<if test="menuSort &gt; 0"> and MENU_SORT=#{menuSort} </if>				
+			<if test="menuStyle &gt; 0"> and MENU_STYLE=#{menuStyle} </if>				
+			<if test="menuOauthId &gt; 0"> and MENU_OAUTH_ID=#{menuOauthId} </if>				
+			<if test="menuWeixinId &gt; 0"> and MENU_WEIXIN_ID=#{menuWeixinId} </if>
+			<if test="menuContent != null and menuContent != ''"> and MENU_CONTENT=#{menuContent} </if>				
+		</where>
+		limit 0,1
+	</select>	
+	
+	
+	<!--删除-->	
+	<delete id="deleteEntity" parameterType="int">
+		delete from wx_menu  where MENU_ID=#{menuId}
+	</delete>	
+	
+	<!--批量删除-->	
+	<delete id="delete" >
+		delete from wx_menu
+		<where>
+			 MENU_ID  in <foreach collection="ids" item="item" index="index" 
+			open="(" separator="," close=")">#{item}</foreach>
+		</where>
+	</delete>
+	<!--查询全部-->	
+	<select id="queryAll" resultMap="resultMap">
+		select * from wx_menu order by MENU_ID desc
+	</select>
+	<!--条件查询-->	
+	<select id="query" resultMap="resultMap">
+		select * from wx_menu  
+		<where>
+				<if test="menuAppId &gt; 0"> and MENU_APP_ID=#{menuAppId} </if>				
+				<if test="menuTitle != null and menuTitle != ''"> and MENU_TITLE like CONCAT('%',#{menuTitle},'%')</if>				
+				<if test="menuUrl != null and menuUrl != ''"> and MENU_URL=#{menuUrl} </if>				
+				<if test="menuStatus &gt; 0"> and MENU_STATUS=#{menuStatus} </if>				
+				<if test="menuMenuId &gt; 0"> and MENU_MENU_ID=#{menuMenuId} </if>				
+				<if test="menuType &gt; 0"> and MENU_TYPE=#{menuType} </if>				
+				<if test="menuSort &gt; 0"> and MENU_SORT=#{menuSort} </if>				
+				<if test="menuStyle &gt; 0"> and MENU_STYLE=#{menuStyle} </if>				
+				<if test="menuOauthId &gt; 0"> and MENU_OAUTH_ID=#{menuOauthId} </if>				
+				<if test="menuWeixinId &gt; 0"> and MENU_WEIXIN_ID=#{menuWeixinId} </if>
+				<if test="menuContent != null and menuContent != ''"> and MENU_CONTENT=#{menuContent} </if>				
+		</where>		
+		order by MENU_ID desc
+	</select>
+	
+</mapper>

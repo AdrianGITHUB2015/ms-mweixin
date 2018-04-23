@@ -41,12 +41,9 @@ import com.mingsoft.basic.biz.IModelBiz;
 import com.mingsoft.basic.biz.IRoleModelBiz;
 import com.mingsoft.basic.entity.ModelEntity;
 import com.mingsoft.basic.entity.RoleModelEntity;
-import com.mingsoft.util.PageUtil;
 import com.mingsoft.util.StringUtil;
 import com.mingsoft.weixin.biz.IWeixinBiz;
 import com.mingsoft.weixin.constant.SessionConst;
-import com.mingsoft.weixin.constant.e.WeixinTypeEnum;
-import com.mingsoft.weixin.entity.PassiveMessageEntity;
 import com.mingsoft.weixin.entity.WeixinEntity;
 
 import net.mingsoft.basic.bean.EUListBean;
@@ -54,11 +51,12 @@ import net.mingsoft.basic.util.BasicUtil;
 
 /**
  * 
- * 微信基础信息控制层
- * 
- * @author 付琛 QQ1658879747
- * @version 版本号：100-000-000<br/>
- *          创建日期：2015年11月25日 历史修订：<br/>
+ * @ClassName:  WeixinAction   
+ * @Description:TODO(微信管理)   
+ * @author: 铭飞开发团队
+ * @date:   2018年4月3日 上午9:28:02   
+ *     
+ * @Copyright: 2018 www.mingsoft.net Inc. All rights reserved.
  */
 @Controller
 @RequestMapping("/${managerPath}/weixin")

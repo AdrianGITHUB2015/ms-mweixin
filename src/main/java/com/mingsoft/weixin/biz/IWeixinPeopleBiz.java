@@ -107,4 +107,11 @@ public interface IWeixinPeopleBiz  extends IPeopleUserBiz  {
 	 * @return 微信用户实体
 	 */
 	WeixinPeopleEntity getPeopleById(int peopleId);
+	
+	/**
+	 * 根据微信openId查询用户实体
+	 * @param openId
+	 * @return
+	 */
+	WeixinPeopleEntity getByOpenId(String openId);
 }

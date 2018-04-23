@@ -8,7 +8,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.mingsoft</groupId>
 	<artifactId>ms-mweixin</artifactId>
-	<version>1.0.5-SNAPSHOT</version>
+	<version>1.0.6-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>ms-mweixin tools Library</description>
@@ -48,7 +48,7 @@
 	<properties>
 		<java.version>1.7</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ms.base.version>1.0.2-SNAPSHOT</ms.base.version>
+		<ms.base.version>1.0.3-SNAPSHOT</ms.base.version>
 		<ms.basic.version>1.0.4-SNAPSHOT</ms.basic.version>
 		<ms.mdiy.version>1.0.3-SNAPSHOT</ms.mdiy.version>
 		<ms.mcms.version>4.6.1-SNAPSHOT</ms.mcms.version>
@@ -112,7 +112,27 @@
 			<version>${ms.mpeople.version}</version>
 			<type>war</type>
 		</dependency>
-		
+		<dependency>
+			<groupId>com.github.binarywang</groupId>
+			<artifactId>weixin-java-mp</artifactId>
+			<version>2.8.8.BETA</version>
+		</dependency>
+		<dependency>
+		  	<groupId>com.github.binarywang</groupId>
+		  	<artifactId>weixin-java-pay</artifactId>
+		  	<version>2.8.8.BETA</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5</version>
+		</dependency>
+		<!-- 工具依赖 -->
+		<dependency>
+			<groupId>com.xiaoleilu</groupId>
+			<artifactId>hutool-all</artifactId>
+			<version>3.1.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -209,41 +229,16 @@
 						</resource>
 					</webResources>
 					<attachClasses>true</attachClasses>
-					 <failOnMissingWebXml>false</failOnMissingWebXml>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
 					<warSourceExcludes> */web.xml,static</warSourceExcludes>
-					<!-- packagingExcludes>WEB-INF/web.xml,ms.install,html/,static/,temp,upgrader,WEB-INF/lib/,templets/,WEB-INF/classes/*.xml,WEB-INF/classes/*.properties,*.sh</packagingExcludes>
-					 < overlays>
-						<overlay>
-							<groupId>net.mingsoft</groupId>
-							<artifactId>ms-basic</artifactId>
-							<excludes>
-								<exclude>*/</exclude>
-							</excludes>
-						</overlay>
-						<overlay>
-							<groupId>net.mingsoft</groupId>
-							<artifactId>ms-mdiy</artifactId>
-							<excludes>
-								<exclude>*/</exclude>
-							</excludes>
-						</overlay>
-						
-						<overlay>
-							<groupId>net.mingsoft</groupId>
-							<artifactId>ms-mcms</artifactId>
-							<excludes>
-								<exclude>*/</exclude>
-							</excludes>
-						</overlay>
-						
-						<overlay>
-							<groupId>net.mingsoft</groupId>
-							<artifactId>ms-mpeople</artifactId>
-							<excludes>
-								<exclude>*/</exclude>
-							</excludes>
-						</overlay>
-					</overlays-->
+					<!-- packagingExcludes>WEB-INF/web.xml,ms.install,html/,static/,temp,upgrader,WEB-INF/lib/,templets/,WEB-INF/classes/*.xml,WEB-INF/classes/*.properties,*.sh</packagingExcludes> 
+						< overlays> <overlay> <groupId>net.mingsoft</groupId> <artifactId>ms-basic</artifactId> 
+						<excludes> <exclude>*/</exclude> </excludes> </overlay> <overlay> <groupId>net.mingsoft</groupId> 
+						<artifactId>ms-mdiy</artifactId> <excludes> <exclude>*/</exclude> </excludes> 
+						</overlay> <overlay> <groupId>net.mingsoft</groupId> <artifactId>ms-mcms</artifactId> 
+						<excludes> <exclude>*/</exclude> </excludes> </overlay> <overlay> <groupId>net.mingsoft</groupId> 
+						<artifactId>ms-mpeople</artifactId> <excludes> <exclude>*/</exclude> </excludes> 
+						</overlay> </overlays -->
 				</configuration>
 			</plugin>
 			<plugin>

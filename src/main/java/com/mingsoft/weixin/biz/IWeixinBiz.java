@@ -26,13 +26,9 @@ import com.mingsoft.util.PageUtil;
 import com.mingsoft.weixin.entity.WeixinEntity;
 
 /**
- * 
- * 微信公众帐号基础信息业务层接口
- * @author 付琛  QQ1658879747
- * @version 
- * 版本号：100-000-000<br/>
- * 创建日期：2015年12月4日
- * 历史修订：<br/>
+ * 微信业务层
+ * @author Administrator
+ *
  */
 public interface IWeixinBiz extends IBaseBiz {
 	
@@ -41,5 +37,9 @@ public interface IWeixinBiz extends IBaseBiz {
 	 * @param ids weixinID集合
 	 */
 	public void deleteByIds(int[] ids);
-
+	
+	/**
+	 * 根据token获取微信实体
+	 */
+	public WeixinEntity getByWeixinNo(String weixinNo);
 }
