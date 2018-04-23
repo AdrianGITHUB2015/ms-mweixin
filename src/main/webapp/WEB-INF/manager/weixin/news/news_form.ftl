@@ -349,7 +349,7 @@
 					               	<button type="text" id="treeLabelinputTree" class="form-control dropdown-toggle chooseCategory" data-toggle="dropdown" aria-expanded="true">
 										选择栏目
 									</button>
-					            </div>
+					            </div> 
 	                        	<div class="form-group">
 									<input type="text" name="keyword" class="form-control" title="请输入关键字" placeholder="请输入关键字">
 								</div>
