@@ -48,11 +48,11 @@
 	<properties>
 		<java.version>1.7</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ms.base.version>1.0.3-SNAPSHOT</ms.base.version>
+		<ms.base.version>1.0.3</ms.base.version>
 		<ms.basic.version>1.0.4-SNAPSHOT</ms.basic.version>
 		<ms.mdiy.version>1.0.3-SNAPSHOT</ms.mdiy.version>
-		<ms.mcms.version>4.6.1-SNAPSHOT</ms.mcms.version>
-		<ms.mpeople.version>1.0.2-SNAPSHOT</ms.mpeople.version>
+		<ms.mcms.version>4.6.2-SNAPSHOT</ms.mcms.version>
+		<ms.mpeople.version>1.0.3-SNAPSHOT</ms.mpeople.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -127,12 +127,7 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.5</version>
 		</dependency>
-		<!-- 工具依赖 -->
-		<dependency>
-			<groupId>com.xiaoleilu</groupId>
-			<artifactId>hutool-all</artifactId>
-			<version>3.1.2</version>
-		</dependency>
+		
 	</dependencies>
 
 	<build>

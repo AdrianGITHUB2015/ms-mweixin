@@ -18,4 +18,5 @@ public final class Const {
 	public final static ResourceBundle RESOURCES = ResourceBundle.getBundle("net.mingsoft.mweixin.resources.resources");
 	
 	public static String MODEL_CODE = "modelCode";
+	
 }

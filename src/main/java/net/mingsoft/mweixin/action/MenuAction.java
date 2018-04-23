@@ -22,9 +22,8 @@ import com.mingsoft.base.filter.DateValueFilter;
 import com.mingsoft.base.filter.DoubleValueFilter;
 import com.mingsoft.util.StringUtil;
 import com.mingsoft.weixin.entity.WeixinEntity;
-import com.xiaoleilu.hutool.util.ObjectUtil;
-import com.xiaoleilu.hutool.util.StrUtil;
 
+import cn.hutool.core.util.ObjectUtil;
 import me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.bean.menu.WxMenuButton;
