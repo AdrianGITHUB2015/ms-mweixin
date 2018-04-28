@@ -349,7 +349,7 @@
 					               	<button type="text" id="treeLabelinputTree" class="form-control dropdown-toggle chooseCategory" data-toggle="dropdown" aria-expanded="true">
 										选择栏目
 									</button>
-					            </div>
+					            </div> 
 	                        	<div class="form-group">
 									<input type="text" name="keyword" class="form-control" title="请输入关键字" placeholder="请输入关键字">
 								</div>
@@ -451,7 +451,7 @@
 		   	},
 		   	success: function(data){
 		   		$("#articleList").html("");
-		   		if (data.rows.length==0) {
+		   		if (data.list.length==0) {
 		   			$("#articleList").html("<tr><td colspan='3'><center>"+$("#noRecord").html()+"</td></tr>");
 		   		}
 		   		flag = true;
@@ -469,7 +469,7 @@
 						pageCount = parseInt(articleCount / pageSize )+ 1;
 					}
 				}			   				   		
-		   		$('#articleListTmpl').tmpl(data.rows).appendTo('#articleList');
+		   		$('#articleListTmpl').tmpl(data.list).appendTo('#articleList');
 		   	}			   
 		});
 	}
@@ -491,7 +491,7 @@
 		   	},
 		   	success: function(data){
 		   		$("#articleList").html("");
-		   		if (data.rows.length==0) {
+		   		if (data.list.length==0) {
 		   			$("#articleList").html("<tr><td colspan='3'><center>"+$("#noRecord").html()+"</td></tr>");
 		 		}	
 		   		flag = false;	   		
@@ -507,7 +507,7 @@
 						pageCount = parseInt(articleCount / pageSize )+ 1;
 					}
 				}			   				   		
-		   		$('#articleListTmpl').tmpl(data.rows).appendTo('#articleList');
+		   		$('#articleListTmpl').tmpl(data.list).appendTo('#articleList');
 		   	}			   
 		});
 	}
