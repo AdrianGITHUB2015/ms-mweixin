@@ -82,7 +82,10 @@ public class WeixinPeopleBizImpl  extends PeopleUserBizImpl implements IWeixinPe
 		weixinPeople.setWeixinPeopleAppId(BasicUtil.getAppId());//微信用户应用ID
 		weixinPeople.setWeixinPeopleWeixinId(weixinId);//微信用户微信ID
 		weixinPeople.setWeixinPeopleOpenId(user.getOpenId());//微信用户OpenId，用户在微信的唯一识别字段
-		weixinPeople.setPuSex(user.getSex());//用户性别
+		weixinPeople.setPuSex(1);//用户性别
+		if(user.getSex().equals("女")) {
+			weixinPeople.setPuSex(2);//用户性别
+		}
 		weixinPeople.setWeixinPeopleCity(user.getCity());//微信用户所在城市
 		weixinPeople.setWeixinPeopleHeadimgUrl(user.getHeadImgUrl());//微信用户头像
 		 if (user.getNickname() != null && user.getNickname().length() > 0) {
